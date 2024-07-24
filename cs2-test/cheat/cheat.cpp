@@ -3,6 +3,7 @@
 #include "../third-party/imgui/imgui.h"
 #include "../third-party/imgui/imgui_impl_win32.h"
 #include "../third-party/imgui/imgui_impl_dx11.h"
+
 #include "../third-party/minhook/include/MinHook.h"
 
 #pragma comment(lib, "minhook.x64.lib")
@@ -23,6 +24,11 @@ namespace cheat {
 
 	void* cs2_internal::PRESENT_ADDR = nullptr;
 
+	float cs2_internal::SCREEN_WIDTH = 0.f;
+	float cs2_internal::SCREEN_HEIGHT = 0.f;
+
+	float cs2_internal::fov = 0.f;
+
 	using Present = HRESULT(__stdcall*)(IDXGISwapChain*, UINT, UINT);
 
 	LRESULT __stdcall cs2_internal::modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -41,6 +47,9 @@ namespace cheat {
 			_this->GetDesc(&sd);
 			HWND _hwnd = sd.OutputWindow;
 
+			SCREEN_WIDTH = static_cast<float>(sd.BufferDesc.Width);
+			SCREEN_HEIGHT = static_cast<float>(sd.BufferDesc.Height);
+
 			ID3D11Texture2D* buf{};
 			_this->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buf);
 			if (!buf)
@@ -51,6 +60,12 @@ namespace cheat {
 			ORIGIN_WNDPROC = (WNDPROC)SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)modify_wndProc);
 
 			ImGui::CreateContext();
+
+			ImGuiIO& io = ImGui::GetIO();
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+
+			ImGui::StyleColorsDark();
+
 			ImGui_ImplWin32_Init(_hwnd);
 			ImGui_ImplDX11_Init(D3D_DEVICE, D3D_CONTEXT);
 			INITED = true;
@@ -59,16 +74,23 @@ namespace cheat {
 
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
-
 		ImGui::NewFrame();
+
 
 		ImGui::Begin("GUI TEST");
 		ImGui::Text("hello InkCrow");
+		ImGui::SliderFloat("FOV", &fov, 1.f, 500.f, u8"%.1fÎÒÊÇÉµ±Æ");
 		ImGui::End();
 
 
-		ImGui::EndFrame();
+		auto draw_list = ImGui::GetForegroundDrawList();
 
+		draw_list->AddCircle({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, fov, IM_COL32(255, 0, 0, 255));
+		draw_list->AddLine({ 0,0 }, { SCREEN_WIDTH, SCREEN_HEIGHT }, IM_COL32(255, 0, 0, 255));
+
+
+
+		ImGui::EndFrame();
 		ImGui::Render();
 		D3D_CONTEXT->OMSetRenderTargets(1, &D3D_VIEW, nullptr);
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -81,7 +103,10 @@ namespace cheat {
 		init();
 	}
 
-	cs2_internal::~cs2_internal() {}
+	cs2_internal::~cs2_internal() {
+		MH_DisableHook(NULL);
+		MH_Uninitialize();
+	}
 
 	void cs2_internal::init() {
 		const unsigned level_count = 2;

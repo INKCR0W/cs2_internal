@@ -361,3 +361,15 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/build/cs2-test.dll
+/build/intermediate/cs2-test.tlog/CL.read.1.tlog
+/build/intermediate/cs2-test.tlog/CL.write.1.tlog
+/build/intermediate/cs2-test.tlog/link.command.1.tlog
+/build/intermediate/cs2-test.tlog/link.read.1.tlog
+/build/intermediate/vc143.idb
+/build/cs2-test.dll
+/build/intermediate/cs2-test.tlog/CL.read.1.tlog
+/build/intermediate/cs2-test.tlog/CL.write.1.tlog
+/build/intermediate/cs2-test.tlog/link.command.1.tlog
+/build/intermediate/cs2-test.tlog/link.read.1.tlog
+/build/intermediate/vc143.idb

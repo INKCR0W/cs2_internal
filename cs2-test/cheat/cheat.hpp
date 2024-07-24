@@ -28,6 +28,11 @@ namespace cheat {
 		static WNDPROC ORIGIN_WNDPROC;
 
 		static void* PRESENT_ADDR;
+
+		static float SCREEN_WIDTH;
+		static float SCREEN_HEIGHT;
+
+		static float fov;
 	};
 
 }
