@@ -79,7 +79,8 @@ namespace cheat {
 
 		ImGui::Begin("GUI TEST");
 		ImGui::Text("hello InkCrow");
-		ImGui::SliderFloat("FOV", &fov, 1.f, 500.f, u8"%.1f我是傻逼");
+		ImGui::Text(u8"原神启动");
+		ImGui::SliderFloat("FOV", &fov, 1.f, 500.f, "%.1f");
 		ImGui::End();
 
 
