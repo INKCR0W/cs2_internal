@@ -166,7 +166,7 @@
     <ClInclude Include="third-party\minhook\include\MinHook.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="third-party\minhook\lib\minhook.x64d.lib" />
+    <Library Include="third-party\minhook\lib\MinHook.x64.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

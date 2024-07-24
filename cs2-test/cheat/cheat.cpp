@@ -5,10 +5,23 @@
 #include "../third-party/imgui/imgui_impl_dx11.h"
 #include "../third-party/minhook/include/MinHook.h"
 
-#pragma comment(lib, "minhook.x64d.lib")
+#pragma comment(lib, "minhook.x64.lib")
+#pragma comment(lib, "d3d11.lib")
+
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 namespace cheat {
-	extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
+	bool cs2_internal::INITED = false;
+	bool cs2_internal::HOOKED = false;
+
+	ID3D11Device* cs2_internal::D3D_DEVICE = nullptr;
+	IDXGISwapChain* cs2_internal::SWAP_CHAIN = nullptr;
+	ID3D11DeviceContext* cs2_internal::D3D_CONTEXT = nullptr;
+	ID3D11RenderTargetView* cs2_internal::D3D_VIEW = nullptr;
+	void* cs2_internal::ORIGIN_PRESENT = nullptr;
+	WNDPROC cs2_internal::ORIGIN_WNDPROC = nullptr;
+
+	void* cs2_internal::PRESENT_ADDR = nullptr;
 
 	using Present = HRESULT(__stdcall*)(IDXGISwapChain*, UINT, UINT);
 
@@ -65,18 +78,6 @@ namespace cheat {
 	}
 
 	cs2_internal::cs2_internal() {
-		INITED = false;
-		HOOKED = false;
-
-		D3D_DEVICE = nullptr;
-		SWAP_CHAIN = nullptr;
-		D3D_CONTEXT = nullptr;
-		D3D_VIEW = nullptr;
-		ORIGIN_PRESENT = nullptr;
-		ORIGIN_WNDPROC = nullptr;
-
-		PRESENT_ADDR = nullptr;
-
 		init();
 	}
 

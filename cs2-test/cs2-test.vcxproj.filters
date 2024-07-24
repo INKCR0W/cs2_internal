@@ -73,6 +73,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="third-party\minhook\lib\minhook.x64d.lib" />
+    <Library Include="third-party\minhook\lib\MinHook.x64.lib" />
   </ItemGroup>
 </Project>
