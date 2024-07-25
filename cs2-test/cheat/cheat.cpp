@@ -135,7 +135,7 @@ namespace cheat {
 			nullptr);
 
 		if (SWAP_CHAIN) {
-			auto vtable_ptr = (void***)(SWAP_CHAIN);
+			auto vtable_ptr = reinterpret_cast<void***>(SWAP_CHAIN);
 			auto vtable = *vtable_ptr;
 			PRESENT_ADDR = vtable[8];
 			MH_Initialize();
