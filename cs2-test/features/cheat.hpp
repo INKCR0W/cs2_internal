@@ -2,6 +2,14 @@
 
 #include <d3d11.h>
 
+
+#include "../utils/debug.hpp"
+
+#include "../third-party/imgui/imgui.h"
+#include "../third-party/imgui/imgui_impl_win32.h"
+#include "../third-party/imgui/imgui_impl_dx11.h"
+
+
 namespace cheat {
 
 	class cs2_internal {
@@ -9,10 +17,10 @@ namespace cheat {
 		cs2_internal();
 		~cs2_internal();
 
+		void init();
 		bool run();
 
 	private:
-		void init();
 
 		static long __stdcall hooked_present(IDXGISwapChain* _this, UINT a, UINT b);
 		static LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

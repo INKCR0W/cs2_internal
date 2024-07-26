@@ -379,3 +379,5 @@ FodyWeavers.xsd
 /build/intermediate/cs2-test.tlog/cs2-test.lastbuildstate
 /build/intermediate/cs2-test.tlog/link.secondary.1.tlog
 /build/intermediate/cs2-test.tlog/link.write.1.tlog
+/build/cs2-test.tlog
+/build

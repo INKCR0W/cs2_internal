@@ -1,8 +1,7 @@
-#include "cheat.hpp"
+#include <iostream>
+#include <format>
 
-#include "../third-party/imgui/imgui.h"
-#include "../third-party/imgui/imgui_impl_win32.h"
-#include "../third-party/imgui/imgui_impl_dx11.h"
+#include "cheat.hpp"
 
 #include "../third-party/minhook/include/MinHook.h"
 
@@ -29,11 +28,13 @@ namespace cheat {
 
 	float cs2_internal::fov = 0.f;
 
+	// void cs2_internal::render() {}
+
 	using Present = HRESULT(__stdcall*)(IDXGISwapChain*, UINT, UINT);
 
 	LRESULT __stdcall cs2_internal::modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam)) { return true; }
-		return CallWindowProc(ORIGIN_WNDPROC, hwnd, uMsg, wParam, lParam);
+		return CallWindowProc(cs2_internal::ORIGIN_WNDPROC, hwnd, uMsg, wParam, lParam);
 		return 0;
 	}
 
@@ -76,10 +77,8 @@ namespace cheat {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-
 		ImGui::Begin("GUI TEST");
 		ImGui::Text("hello InkCrow");
-		ImGui::Text(u8"Ô­ÉñÆô¶¯");
 		ImGui::SliderFloat("FOV", &fov, 1.f, 500.f, "%.1f");
 		ImGui::End();
 
@@ -88,8 +87,6 @@ namespace cheat {
 
 		draw_list->AddCircle({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, fov, IM_COL32(255, 0, 0, 255));
 		draw_list->AddLine({ 0,0 }, { SCREEN_WIDTH, SCREEN_HEIGHT }, IM_COL32(255, 0, 0, 255));
-
-
 
 		ImGui::EndFrame();
 		ImGui::Render();
@@ -101,7 +98,6 @@ namespace cheat {
 	}
 
 	cs2_internal::cs2_internal() {
-		init();
 	}
 
 	cs2_internal::~cs2_internal() {
@@ -110,6 +106,7 @@ namespace cheat {
 	}
 
 	void cs2_internal::init() {
+		dbg::dbg_print("1");
 		const unsigned level_count = 2;
 		D3D_FEATURE_LEVEL levels[level_count] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0 };
 		DXGI_SWAP_CHAIN_DESC sd{};
@@ -135,6 +132,7 @@ namespace cheat {
 			nullptr);
 
 		if (SWAP_CHAIN) {
+			dbg::dbg_print("2");
 			auto vtable_ptr = reinterpret_cast<void***>(SWAP_CHAIN);
 			auto vtable = *vtable_ptr;
 			PRESENT_ADDR = vtable[8];
@@ -144,13 +142,28 @@ namespace cheat {
 			SWAP_CHAIN->Release();
 			HOOKED = true;
 		}
+		else {
+			dbg::dbg_print(std::format("bad SWAP_CHAIN {}", reinterpret_cast<void*>(SWAP_CHAIN)));
+		}
+
+		dbg::dbg_print("3");
 	}
 
 	bool cs2_internal::run() {
-		if (!HOOKED)
-			return false;
+		dbg::dbg_print("4");
 
-		MH_EnableHook(PRESENT_ADDR);
+		if (!HOOKED) {
+			dbg::dbg_print("not hooked");
+			return false;
+		}
+
+		dbg::dbg_print("5");
+		MH_STATUS status = MH_EnableHook(PRESENT_ADDR);
+
+		if (status != MH_OK) {
+			dbg::dbg_print(std::format("hook error {}", static_cast<int>(status)));
+			return false;
+		}
 
 		return true;
 	}

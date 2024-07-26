@@ -18,7 +18,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="cheat\cheat.cpp">
+    <ClCompile Include="features\cheat.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="third-party\imgui\imgui.cpp">
@@ -39,9 +39,15 @@
     <ClCompile Include="third-party\imgui\imgui_widgets.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="utils\debug.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\random.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cheat\cheat.hpp">
+    <ClInclude Include="features\cheat.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="third-party\imgui\imconfig.h">
@@ -69,6 +75,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="third-party\minhook\include\MinHook.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\debug.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\random.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="offset\buttons.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="offset\client.dll.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="offset\offsets.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
