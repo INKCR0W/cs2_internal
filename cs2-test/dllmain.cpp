@@ -31,7 +31,7 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 
 #endif
 
-	cheat::cs2_internal::ensure_initialized();
+	// cheat::cs2_internal::ensure_initialized();
 
 	switch (ul_reason_for_call)
 	{

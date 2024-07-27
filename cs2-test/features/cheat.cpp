@@ -18,7 +18,6 @@ namespace cheat {
 	LRESULT __stdcall cs2_internal::modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam)) { return true; }
 		return CallWindowProc(cs2_internal::origin_wndproc, hwnd, uMsg, wParam, lParam);
-		return 0;
 	}
 
 	long __stdcall cs2_internal::hook_present(IDXGISwapChain* _this, UINT a, UINT b) {
@@ -53,7 +52,29 @@ namespace cheat {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		render();
+		// render();
+
+		ImGui::Begin("GUI TEST");
+
+		if (ImGui::BeginTabBar("Render")) {
+			if (ImGui::BeginTabItem("ESP")) {
+				ImGui::Text("hello InkCrow 1");
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Aimbot")) {
+				ImGui::Text("hello InkCrow 2");
+				ImGui::EndTabItem();
+			}
+
+			if (ImGui::BeginTabItem("Misc")) {
+				ImGui::Text("hello InkCrow 3");
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
+		}
+
+		ImGui::End();
 
 		ImGui::EndFrame();
 		ImGui::Render();
