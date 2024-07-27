@@ -1,3 +1,4 @@
+#include <Windows.h>
 #include <iostream>
 #include <format>
 
@@ -135,6 +136,7 @@ namespace cheat {
 
 		if (!hooked) {
 			dbg::dbg_print("not hooked");
+			MessageBox(NULL, "NOT HOOKED\nYou have to run your game first at all.", "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
 
@@ -143,6 +145,7 @@ namespace cheat {
 
 		if (status != MH_OK) {
 			dbg::dbg_print(std::format("hook error {}", static_cast<int>(status)));
+			MessageBox(NULL, std::format("HOOK ERROR: {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
 
