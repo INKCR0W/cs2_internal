@@ -53,11 +53,7 @@ namespace cheat {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin("GUI TEST");
-		ImGui::Text("hello InkCrow");
-		ImGui::SliderFloat("FOV", &fov, 1.f, 500.f, "%.1f");
-		ImGui::End();
-
+		render();
 
 		auto draw_list = ImGui::GetForegroundDrawList();
 

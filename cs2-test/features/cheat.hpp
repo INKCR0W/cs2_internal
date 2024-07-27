@@ -43,6 +43,10 @@ namespace cheat {
 		float screen_height;
 
 		float fov;
+
+		void render();
+
+		void menu();
 	};
 
 }

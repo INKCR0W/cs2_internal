@@ -151,6 +151,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="features\cheat.cpp" />
+    <ClCompile Include="features\menu\menu.cpp" />
+    <ClCompile Include="features\render\render.cpp" />
     <ClCompile Include="utils\debug.cpp" />
     <ClCompile Include="utils\hooked_func.cpp" />
     <ClCompile Include="utils\random.cpp" />
