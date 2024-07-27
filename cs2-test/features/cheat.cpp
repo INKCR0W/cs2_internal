@@ -3,6 +3,7 @@
 
 #include "cheat.hpp"
 
+#include "../utils/hooked_func.hpp"
 #include "../third-party/minhook/include/MinHook.h"
 
 #pragma comment(lib, "minhook.x64.lib")
@@ -11,65 +12,39 @@
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 namespace cheat {
-	bool cs2_internal::INITED = false;
-	bool cs2_internal::HOOKED = false;
-
-	ID3D11Device* cs2_internal::D3D_DEVICE = nullptr;
-	IDXGISwapChain* cs2_internal::SWAP_CHAIN = nullptr;
-	ID3D11DeviceContext* cs2_internal::D3D_CONTEXT = nullptr;
-	ID3D11RenderTargetView* cs2_internal::D3D_VIEW = nullptr;
-	void* cs2_internal::ORIGIN_PRESENT = nullptr;
-	WNDPROC cs2_internal::ORIGIN_WNDPROC = nullptr;
-
-	void* cs2_internal::PRESENT_ADDR = nullptr;
-
-	float cs2_internal::SCREEN_WIDTH = 0.f;
-	float cs2_internal::SCREEN_HEIGHT = 0.f;
-
-	float cs2_internal::fov = 0.f;
-
-	// void cs2_internal::render() {}
-
 	using Present = HRESULT(__stdcall*)(IDXGISwapChain*, UINT, UINT);
 
 	LRESULT __stdcall cs2_internal::modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam)) { return true; }
-		return CallWindowProc(cs2_internal::ORIGIN_WNDPROC, hwnd, uMsg, wParam, lParam);
+		return CallWindowProc(cs2_internal::origin_wndproc, hwnd, uMsg, wParam, lParam);
 		return 0;
 	}
 
-	long __stdcall cs2_internal::hooked_present(IDXGISwapChain* _this, UINT a, UINT b) {
+	long __stdcall cs2_internal::hook_present(IDXGISwapChain* _this, UINT a, UINT b) {
 
-		if (!INITED) {
-			_this->GetDevice(__uuidof(ID3D11Device), (void**)&D3D_DEVICE);
-			D3D_DEVICE->GetImmediateContext(&D3D_CONTEXT);
+		if (!inited) {
+			_this->GetDevice(__uuidof(ID3D11Device), (void**)&d3d_device);
+			d3d_device->GetImmediateContext(&d3d_context);
 
 			DXGI_SWAP_CHAIN_DESC sd;
 			_this->GetDesc(&sd);
 			HWND _hwnd = sd.OutputWindow;
 
-			SCREEN_WIDTH = static_cast<float>(sd.BufferDesc.Width);
-			SCREEN_HEIGHT = static_cast<float>(sd.BufferDesc.Height);
+			screen_width = static_cast<float>(sd.BufferDesc.Width);
+			screen_height = static_cast<float>(sd.BufferDesc.Height);
 
 			ID3D11Texture2D* buf{};
 			_this->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buf);
 			if (!buf)
 				return 1;
-			D3D_DEVICE->CreateRenderTargetView(buf, nullptr, &D3D_VIEW);
+			d3d_device->CreateRenderTargetView(buf, nullptr, &d3d_view);
 			buf->Release();
 
-			ORIGIN_WNDPROC = (WNDPROC)SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)modify_wndProc);
-
-			ImGui::CreateContext();
-
-			ImGuiIO& io = ImGui::GetIO();
-			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-
-			ImGui::StyleColorsDark();
+			origin_wndproc = (WNDPROC)SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)modified_wndProc);
 
 			ImGui_ImplWin32_Init(_hwnd);
-			ImGui_ImplDX11_Init(D3D_DEVICE, D3D_CONTEXT);
-			INITED = true;
+			ImGui_ImplDX11_Init(d3d_device, d3d_context);
+			inited = true;
 		}
 
 
@@ -85,19 +60,25 @@ namespace cheat {
 
 		auto draw_list = ImGui::GetForegroundDrawList();
 
-		draw_list->AddCircle({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, fov, IM_COL32(255, 0, 0, 255));
-		draw_list->AddLine({ 0,0 }, { SCREEN_WIDTH, SCREEN_HEIGHT }, IM_COL32(255, 0, 0, 255));
+		draw_list->AddCircle({ screen_width / 2, screen_height / 2 }, fov, IM_COL32(255, 0, 0, 255));
+		draw_list->AddLine({ 0,0 }, { screen_width, screen_height }, IM_COL32(255, 0, 0, 255));
 
 		ImGui::EndFrame();
 		ImGui::Render();
-		D3D_CONTEXT->OMSetRenderTargets(1, &D3D_VIEW, nullptr);
+		d3d_context->OMSetRenderTargets(1, &d3d_view, nullptr);
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-
-		return ((Present)ORIGIN_PRESENT)(_this, a, b);
+		return ((Present)origin_present)(_this, a, b);
 	}
 
-	cs2_internal::cs2_internal() {
+	cs2_internal::cs2_internal() : inited(false), hooked(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
+		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
+		screen_width(0.f), screen_height(0.f), fov(0.f)
+	{
+		ImGui::CreateContext();
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 	}
 
 	cs2_internal::~cs2_internal() {
@@ -126,24 +107,24 @@ namespace cheat {
 			level_count,
 			D3D11_SDK_VERSION,
 			&sd,
-			&SWAP_CHAIN,
-			&D3D_DEVICE,
+			&swap_chain,
+			&d3d_device,
 			nullptr,
 			nullptr);
 
-		if (SWAP_CHAIN) {
+		if (swap_chain) {
 			dbg::dbg_print("2");
-			auto vtable_ptr = reinterpret_cast<void***>(SWAP_CHAIN);
+			auto vtable_ptr = reinterpret_cast<void***>(swap_chain);
 			auto vtable = *vtable_ptr;
-			PRESENT_ADDR = vtable[8];
+			present_addr = vtable[8];
 			MH_Initialize();
-			MH_CreateHook(PRESENT_ADDR, hooked_present, &ORIGIN_PRESENT);
-			D3D_DEVICE->Release();
-			SWAP_CHAIN->Release();
-			HOOKED = true;
+			MH_CreateHook(present_addr, reinterpret_cast<void*>(hooked_present), &origin_present);
+			d3d_device->Release();
+			swap_chain->Release();
+			hooked = true;
 		}
 		else {
-			dbg::dbg_print(std::format("bad SWAP_CHAIN {}", reinterpret_cast<void*>(SWAP_CHAIN)));
+			dbg::dbg_print(std::format("bad swap_chain {}", reinterpret_cast<void*>(swap_chain)));
 		}
 
 		dbg::dbg_print("3");
@@ -152,13 +133,13 @@ namespace cheat {
 	bool cs2_internal::run() {
 		dbg::dbg_print("4");
 
-		if (!HOOKED) {
+		if (!hooked) {
 			dbg::dbg_print("not hooked");
 			return false;
 		}
 
 		dbg::dbg_print("5");
-		MH_STATUS status = MH_EnableHook(PRESENT_ADDR);
+		MH_STATUS status = MH_EnableHook(present_addr);
 
 		if (status != MH_OK) {
 			dbg::dbg_print(std::format("hook error {}", static_cast<int>(status)));
@@ -168,4 +149,8 @@ namespace cheat {
 		return true;
 	}
 
+	cs2_internal& cs2_internal::get_instance() {
+		static cs2_internal instance;
+		return instance;
+	}
 }

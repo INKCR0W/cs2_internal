@@ -20,27 +20,29 @@ namespace cheat {
 		void init();
 		bool run();
 
+		static cs2_internal& get_instance();
+
+		long __stdcall hook_present(IDXGISwapChain* _this, UINT a, UINT b);
+		LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 	private:
 
-		static long __stdcall hooked_present(IDXGISwapChain* _this, UINT a, UINT b);
-		static LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		bool inited;
+		bool hooked;
 
-		static bool INITED;
-		static bool HOOKED;
+		ID3D11Device* d3d_device;
+		IDXGISwapChain* swap_chain;
+		ID3D11DeviceContext* d3d_context;
+		ID3D11RenderTargetView* d3d_view;
+		void* origin_present;
+		WNDPROC origin_wndproc;
 
-		static ID3D11Device* D3D_DEVICE;
-		static IDXGISwapChain* SWAP_CHAIN;
-		static ID3D11DeviceContext* D3D_CONTEXT;
-		static ID3D11RenderTargetView* D3D_VIEW;
-		static void* ORIGIN_PRESENT;
-		static WNDPROC ORIGIN_WNDPROC;
+		void* present_addr;
 
-		static void* PRESENT_ADDR;
+		float screen_width;
+		float screen_height;
 
-		static float SCREEN_WIDTH;
-		static float SCREEN_HEIGHT;
-
-		static float fov;
+		float fov;
 	};
 
 }

@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="features\cheat.cpp" />
     <ClCompile Include="utils\debug.cpp" />
+    <ClCompile Include="utils\hooked_func.cpp" />
     <ClCompile Include="utils\random.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="third-party\imgui\imgui.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="offset\client.dll.hpp" />
     <ClInclude Include="offset\offsets.hpp" />
     <ClInclude Include="utils\debug.hpp" />
+    <ClInclude Include="utils\hooked_func.hpp" />
     <ClInclude Include="utils\random.hpp" />
     <ClInclude Include="third-party\imgui\imconfig.h" />
     <ClInclude Include="third-party\imgui\imgui.h" />

@@ -6,21 +6,18 @@
 #include "utils/debug.hpp"
 #include "utils/random.hpp"
 
-cheat::cs2_internal cs2;
-
 static unsigned long run(void* _) {
-	if (!cs2.run()) {
-		cs2.~cs2_internal();
+	if (!cheat::cs2_internal::get_instance().run()) {
+		cheat::cs2_internal::get_instance().~cs2_internal();
 		return 1;
 	}
-
-	std::cout << "Done" << std::endl;
 
 	return 0;
 }
 
 BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
+#ifdef _DEBUG_
 	AllocConsole();
 
 	FILE* fDummy;
@@ -32,12 +29,12 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 
 	// std::cerr.rdbuf(std::cout.rdbuf());
 
-	std::cout << "HOOKING..." << std::endl;;
+#endif
 
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		cs2.init();
+		cheat::cs2_internal::get_instance().init();
 		if (CreateThread(NULL, 0, &run, NULL, 0, NULL) == NULL) {
 			dbg::dbg_print(std::format("创建线程失败 {}", GetLastError()));
 		}

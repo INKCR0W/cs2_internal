@@ -45,6 +45,9 @@
     <ClCompile Include="utils\random.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="utils\hooked_func.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\cheat.hpp">
@@ -90,6 +93,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="offset\offsets.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\hooked_func.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
