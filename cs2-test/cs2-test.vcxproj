@@ -171,6 +171,7 @@
     <ClInclude Include="offset\offsets.hpp" />
     <ClInclude Include="utils\debug.hpp" />
     <ClInclude Include="utils\hooked_func.hpp" />
+    <ClInclude Include="utils\locale.hpp" />
     <ClInclude Include="utils\random.hpp" />
     <ClInclude Include="third-party\imgui\imconfig.h" />
     <ClInclude Include="third-party\imgui\imgui.h" />

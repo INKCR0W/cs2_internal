@@ -55,11 +55,6 @@ namespace cheat {
 
 		render();
 
-		auto draw_list = ImGui::GetForegroundDrawList();
-
-		draw_list->AddCircle({ screen_width / 2, screen_height / 2 }, fov, IM_COL32(255, 0, 0, 255));
-		draw_list->AddLine({ 0,0 }, { screen_width, screen_height }, IM_COL32(255, 0, 0, 255));
-
 		ImGui::EndFrame();
 		ImGui::Render();
 		d3d_context->OMSetRenderTargets(1, &d3d_view, nullptr);
@@ -83,8 +78,8 @@ namespace cheat {
 		MH_Uninitialize();
 	}
 
-	void cs2_internal::init() {
-		dbg::dbg_print("1");
+	bool cs2_internal::init() {
+		dbg::dbg_print("Initialization begins");
 		const unsigned level_count = 2;
 		D3D_FEATURE_LEVEL levels[level_count] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0 };
 		DXGI_SWAP_CHAIN_DESC sd{};
@@ -110,7 +105,7 @@ namespace cheat {
 			nullptr);
 
 		if (swap_chain) {
-			dbg::dbg_print("2");
+			dbg::dbg_print("Got swap_chain");
 			auto vtable_ptr = reinterpret_cast<void***>(swap_chain);
 			auto vtable = *vtable_ptr;
 			present_addr = vtable[8];
@@ -121,22 +116,25 @@ namespace cheat {
 			hooked = true;
 		}
 		else {
-			dbg::dbg_print(std::format("bad swap_chain {}", reinterpret_cast<void*>(swap_chain)));
-		}
-
-		dbg::dbg_print("3");
-	}
-
-	bool cs2_internal::run() {
-		dbg::dbg_print("4");
-
-		if (!hooked) {
-			dbg::dbg_print("not hooked");
-			MessageBox(NULL, "NOT HOOKED\nYou have to run your game first at all.", "ERROR", MB_OK | MB_ICONERROR);
+			dbg::dbg_print(std::format("Bad swap_chain {}", reinterpret_cast<void*>(swap_chain)));
 			return false;
 		}
 
-		dbg::dbg_print("5");
+		dbg::dbg_print("Initialization done");
+
+		return true;
+	}
+
+	bool cs2_internal::run() {
+		dbg::dbg_print("Running");
+
+		if (!hooked) {
+			dbg::dbg_print("Not hooked");
+			MessageBox(NULL, "NOT HOOKED\nMaybe you can try again.", "ERROR", MB_OK | MB_ICONERROR);
+			return false;
+		}
+
+		dbg::dbg_print("Enable hook");
 		MH_STATUS status = MH_EnableHook(present_addr);
 
 		if (status != MH_OK) {
@@ -145,11 +143,17 @@ namespace cheat {
 			return false;
 		}
 
+		dbg::dbg_print("All done, everything was fine");
+
 		return true;
 	}
 
 	cs2_internal& cs2_internal::get_instance() {
 		static cs2_internal instance;
 		return instance;
+	}
+
+	void cs2_internal::ensure_initialized() {
+		get_instance();
 	}
 }

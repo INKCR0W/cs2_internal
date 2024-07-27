@@ -104,6 +104,9 @@
     <ClInclude Include="utils\hooked_func.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="utils\locale.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third-party\minhook\lib\MinHook.x64.lib" />

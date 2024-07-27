@@ -17,10 +17,11 @@ namespace cheat {
 		cs2_internal();
 		~cs2_internal();
 
-		void init();
+		[[nodiscard]] bool init();
 		bool run();
 
 		static cs2_internal& get_instance();
+		static void ensure_initialized();
 
 		long __stdcall hook_present(IDXGISwapChain* _this, UINT a, UINT b);
 		LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
