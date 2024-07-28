@@ -42,39 +42,21 @@ namespace cheat {
 
 			origin_wndproc = (WNDPROC)SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)modified_wndProc);
 
+			ImGui::CreateContext();
+
+			ImGuiIO& io = ImGui::GetIO();
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+
 			ImGui_ImplWin32_Init(_hwnd);
 			ImGui_ImplDX11_Init(d3d_device, d3d_context);
 			inited = true;
 		}
 
-
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		// render();
-
-		ImGui::Begin("GUI TEST");
-
-		if (ImGui::BeginTabBar("Render")) {
-			if (ImGui::BeginTabItem("ESP")) {
-				ImGui::Text("hello InkCrow 1");
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Aimbot")) {
-				ImGui::Text("hello InkCrow 2");
-				ImGui::EndTabItem();
-			}
-
-			if (ImGui::BeginTabItem("Misc")) {
-				ImGui::Text("hello InkCrow 3");
-				ImGui::EndTabItem();
-			}
-
-			ImGui::EndTabBar();
-		}
-
-		ImGui::End();
+		render();
 
 		ImGui::EndFrame();
 		ImGui::Render();
@@ -87,12 +69,7 @@ namespace cheat {
 	cs2_internal::cs2_internal() : inited(false), hooked(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
 		screen_width(0.f), screen_height(0.f), fov(0.f)
-	{
-		ImGui::CreateContext();
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-	}
+	{}
 
 	cs2_internal::~cs2_internal() {
 		MH_DisableHook(NULL);
@@ -126,7 +103,7 @@ namespace cheat {
 			nullptr);
 
 		if (swap_chain) {
-			dbg::dbg_print("Got swap_chain");
+			dbg::dbg_print(std::format("Got swap_chain {}", reinterpret_cast<void*>(swap_chain)));
 			auto vtable_ptr = reinterpret_cast<void***>(swap_chain);
 			auto vtable = *vtable_ptr;
 			present_addr = vtable[8];
@@ -138,6 +115,7 @@ namespace cheat {
 		}
 		else {
 			dbg::dbg_print(std::format("Bad swap_chain {}", reinterpret_cast<void*>(swap_chain)));
+			MessageBox(NULL, std::format("Bad swap_chain {}", reinterpret_cast<void*>(swap_chain)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
 
@@ -149,17 +127,17 @@ namespace cheat {
 	bool cs2_internal::run() {
 		dbg::dbg_print("Running");
 
-		if (!hooked) {
-			dbg::dbg_print("Not hooked");
-			MessageBox(NULL, "NOT HOOKED\nMaybe you can try again.", "ERROR", MB_OK | MB_ICONERROR);
-			return false;
-		}
+		//if (!hooked) {
+		//	dbg::dbg_print("Not hooked");
+		//	MessageBox(NULL, "NOT HOOKED\nMaybe you can try again.", "ERROR", MB_OK | MB_ICONERROR);
+		//	return false;
+		//}
 
-		dbg::dbg_print("Enable hook");
+		dbg::dbg_print(std::format("Enable hook {}", present_addr));
 		MH_STATUS status = MH_EnableHook(present_addr);
 
 		if (status != MH_OK) {
-			dbg::dbg_print(std::format("hook error {}", static_cast<int>(status)));
+			dbg::dbg_print(std::format("Hook error {}", static_cast<int>(status)));
 			MessageBox(NULL, std::format("HOOK ERROR: {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
