@@ -66,9 +66,10 @@ namespace cheat {
 		return ((Present)origin_present)(_this, a, b);
 	}
 
-	cs2_internal::cs2_internal() : inited(false), hooked(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
+	cs2_internal::cs2_internal() : inited(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
-		screen_width(0.f), screen_height(0.f), fov(0.f)
+		screen_width(0.f), screen_height(0.f), fov(0.f),
+		esp(false)
 	{}
 
 	cs2_internal::~cs2_internal() {
@@ -107,11 +108,25 @@ namespace cheat {
 			auto vtable_ptr = reinterpret_cast<void***>(swap_chain);
 			auto vtable = *vtable_ptr;
 			present_addr = vtable[8];
+			dbg::dbg_print(std::format("Got present_addr {}", present_addr));
+
+			//if (MH_STATUS status = MH_Initialize(); status != MH_OK) {
+			//	dbg::dbg_print(std::format("Failed to initialize minhook {}", static_cast<int>(status)));
+			//	MessageBox(NULL, std::format("Failed to initialize minhook {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
+			//	return false;
+			//}
+
+			//if (MH_STATUS status = MH_CreateHook(present_addr, reinterpret_cast<void*>(hooked_present), &origin_present); status != MH_OK) {
+			//	dbg::dbg_print(std::format("Failed to initialize minhook {}", static_cast<int>(status)));
+			//	MessageBox(NULL, std::format("Failed to initialize minhook {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
+			//	return false;
+			//}
+
 			MH_Initialize();
 			MH_CreateHook(present_addr, reinterpret_cast<void*>(hooked_present), &origin_present);
+
 			d3d_device->Release();
 			swap_chain->Release();
-			hooked = true;
 		}
 		else {
 			dbg::dbg_print(std::format("Bad swap_chain {}", reinterpret_cast<void*>(swap_chain)));
@@ -127,12 +142,6 @@ namespace cheat {
 	bool cs2_internal::run() {
 		dbg::dbg_print("Running");
 
-		//if (!hooked) {
-		//	dbg::dbg_print("Not hooked");
-		//	MessageBox(NULL, "NOT HOOKED\nMaybe you can try again.", "ERROR", MB_OK | MB_ICONERROR);
-		//	return false;
-		//}
-
 		dbg::dbg_print(std::format("Enable hook {}", present_addr));
 		MH_STATUS status = MH_EnableHook(present_addr);
 
@@ -141,6 +150,8 @@ namespace cheat {
 			MessageBox(NULL, std::format("HOOK ERROR: {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
+
+
 
 		dbg::dbg_print("All done, everything was fine");
 

@@ -7,25 +7,13 @@ namespace cheat {
 	void cs2_internal::menu() {
 
 		try {
-			ImGui::Begin("GUI TEST");
-
-			ImGui::Text(ZH("hello InkCrow 我不要玩原神"));
+			ImGui::Begin("GUI TEST", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
 			if (ImGui::BeginTabBar("Render")) {
 				if (ImGui::BeginTabItem("ESP")) {
-					ImGui::Text("hello InkCrow 1");
+					ImGui::Checkbox("ESP", &esp);
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Aimbot")) {
-					ImGui::Text("hello InkCrow 2");
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Misc")) {
-					ImGui::Text("hello InkCrow 3");
-					ImGui::EndTabItem();
-				}
-
 				ImGui::EndTabBar();
 			}
 

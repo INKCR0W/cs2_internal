@@ -4,6 +4,7 @@
 
 
 #include "../utils/debug.hpp"
+#include "../utils/structs.hpp"
 
 #include "../third-party/imgui/imgui.h"
 #include "../third-party/imgui/imgui_impl_win32.h"
@@ -29,7 +30,8 @@ namespace cheat {
 	private:
 
 		bool inited;
-		bool hooked;
+
+		bool esp;
 
 		ID3D11Device* d3d_device;
 		IDXGISwapChain* swap_chain;
@@ -46,8 +48,9 @@ namespace cheat {
 		float fov;
 
 		void render();
-
 		void menu();
+
+		Vec2 world_to_screen(view_matrix_t matrix, Vec3 position) const;
 	};
 
 }

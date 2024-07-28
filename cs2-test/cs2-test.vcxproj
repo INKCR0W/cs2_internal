@@ -163,6 +163,7 @@
     <ClCompile Include="third-party\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="third-party\imgui\imgui_tables.cpp" />
     <ClCompile Include="third-party\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="features\game\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\cheat.hpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="third-party\imgui\imstb_textedit.h" />
     <ClInclude Include="third-party\imgui\imstb_truetype.h" />
     <ClInclude Include="third-party\minhook\include\MinHook.h" />
+    <ClInclude Include="utils\structs.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="third-party\minhook\lib\MinHook.x64.lib" />
