@@ -161,7 +161,7 @@ namespace cheat {
 		dbg::dbg_print("Hook initialize done");
 
 		dbg::dbg_print("Game information initialize begins");
-		client_dll_addr = reinterpret_cast<uintptr_t>(GetModuleHandleW(L"client.dll"));
+		client_dll_addr = reinterpret_cast<uintptr_t>(GetModuleHandleA("client.dll"));
 		dbg::dbg_print(std::format("Got client.dll {}", reinterpret_cast<void*>(client_dll_addr)));
 		dbg::dbg_print("Game information initialize done");
 
