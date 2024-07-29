@@ -2,6 +2,7 @@
 #include <iostream>
 #include <mutex>
 
+
 #include "features/cheat.hpp"
 #include "utils/debug.hpp"
 #include "utils/random.hpp"
@@ -31,7 +32,7 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 
 #endif
 
-	// cheat::cs2_internal::ensure_initialized();
+	cheat::cs2_internal::ensure_initialized();
 
 	switch (ul_reason_for_call)
 	{
@@ -39,6 +40,7 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 		if (!cheat::cs2_internal::get_instance().init()) {
 			dbg::dbg_print("Failed to initialization");
 			MessageBox(NULL, "Failed to initialization", "ERROR", MB_OK | MB_ICONERROR);
+			exit(1);
 		}
 		else {
 			dbg::dbg_print("Initialization completed");
@@ -49,6 +51,7 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 		if (CreateThread(NULL, 0, &run, NULL, 0, NULL) == NULL) {
 			dbg::dbg_print(std::format("Failed to create thread: {}", GetLastError()));
 			MessageBox(NULL, std::format("Failed to create thread: {}", GetLastError()).c_str(), "ERROR", MB_OK | MB_ICONERROR);
+			exit(1);
 		}
 		else {
 			dbg::dbg_print("Create thread completed");

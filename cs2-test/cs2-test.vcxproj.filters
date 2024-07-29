@@ -57,6 +57,12 @@
     <ClCompile Include="features\game\utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="features\game\entity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\esp\esp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\cheat.hpp">
@@ -111,6 +117,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="utils\structs.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="offset\offset.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\render\draw_list.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

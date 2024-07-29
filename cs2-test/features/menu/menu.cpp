@@ -11,7 +11,7 @@ namespace cheat {
 
 			if (ImGui::BeginTabBar("Render")) {
 				if (ImGui::BeginTabItem("ESP")) {
-					ImGui::Checkbox("ESP", &esp);
+					ImGui::Checkbox("ESP", &esp_on);
 					ImGui::EndTabItem();
 				}
 				ImGui::EndTabBar();

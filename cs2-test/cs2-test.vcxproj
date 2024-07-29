@@ -151,6 +151,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="features\cheat.cpp" />
+    <ClCompile Include="features\esp\esp.cpp" />
+    <ClCompile Include="features\game\entity.cpp" />
     <ClCompile Include="features\menu\menu.cpp" />
     <ClCompile Include="features\render\render.cpp" />
     <ClCompile Include="utils\debug.cpp" />
@@ -167,8 +169,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\cheat.hpp" />
+    <ClInclude Include="features\render\draw_list.hpp" />
     <ClInclude Include="offset\buttons.hpp" />
     <ClInclude Include="offset\client.dll.hpp" />
+    <ClInclude Include="offset\offset.hpp" />
     <ClInclude Include="offset\offsets.hpp" />
     <ClInclude Include="utils\debug.hpp" />
     <ClInclude Include="utils\hooked_func.hpp" />

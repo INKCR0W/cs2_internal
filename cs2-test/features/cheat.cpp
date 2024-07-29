@@ -1,6 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <Windows.h>
 #include <iostream>
 #include <format>
+#include <filesystem>
+#include <thread>
 
 #include "cheat.hpp"
 
@@ -46,6 +50,8 @@ namespace cheat {
 
 			ImGuiIO& io = ImGui::GetIO();
 			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			io.IniFilename = nullptr;
+			io.LogFilename = nullptr;
 
 			ImGui_ImplWin32_Init(_hwnd);
 			ImGui_ImplDX11_Init(d3d_device, d3d_context);
@@ -68,10 +74,36 @@ namespace cheat {
 
 	cs2_internal::cs2_internal() : inited(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
-		screen_width(0.f), screen_height(0.f), fov(0.f),
-		client_dll_addr(nullptr),
-		esp(false)
-	{}
+		file_path(""),
+		screen_width(0.f), screen_height(0.f), fov(0.f), player_entity_list({}),
+		client_dll_addr(NULL), is_in_match(false), local_player_controller(NULL), local_player_pawn(NULL),
+		esp_on(false)
+	{
+		const char* appdata_path = nullptr;
+
+		if (appdata_path = std::getenv("APPDATA"); appdata_path == nullptr) {
+			dbg::dbg_print("Failed to get appdata path");
+			MessageBox(NULL, "Failed to get appdata path", "ERROR", MB_OK | MB_ICONERROR);
+			exit(1);
+		}
+
+		std::string path = appdata_path;
+		path += "\\LfWare";
+		file_path = path;
+
+		if (std::filesystem::exists(path))
+			dbg::dbg_print(std::format("Config folder connected: {}", path));
+		else
+		{
+			if (std::filesystem::create_directory(path))
+				dbg::dbg_print(std::format("Config folder created: {}", path));
+			else
+			{
+				dbg::dbg_print("Failed to create the config directory");
+				MessageBox(NULL, "Failed to create the config directory", "ERROR", MB_OK | MB_ICONERROR);
+			}
+		}
+	}
 
 	cs2_internal::~cs2_internal() {
 		MH_DisableHook(NULL);
@@ -129,13 +161,19 @@ namespace cheat {
 		dbg::dbg_print("Hook initialize done");
 
 		dbg::dbg_print("Game information initialize begins");
-		client_dll_addr = GetModuleHandleW(L"client.dll");
+		client_dll_addr = reinterpret_cast<uintptr_t>(GetModuleHandleW(L"client.dll"));
 		dbg::dbg_print(std::format("Got client.dll {}", reinterpret_cast<void*>(client_dll_addr)));
 		dbg::dbg_print("Game information initialize done");
 
 		dbg::dbg_print("Initialization done");
 
 		return true;
+	}
+
+	void cs2_internal::ren() {
+		while (true) {
+			update_entity();
+		}
 	}
 
 	bool cs2_internal::run() {
@@ -164,5 +202,13 @@ namespace cheat {
 
 	void cs2_internal::ensure_initialized() {
 		get_instance();
+	}
+
+	void cs2_internal::set_path(const std::string& _path) {
+		file_path = _path;
+	}
+
+	const std::string& cs2_internal::get_path() {
+		return file_path;
 	}
 }
