@@ -69,6 +69,7 @@ namespace cheat {
 	cs2_internal::cs2_internal() : inited(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
 		screen_width(0.f), screen_height(0.f), fov(0.f),
+		client_dll_addr(nullptr),
 		esp(false)
 	{}
 
@@ -79,6 +80,9 @@ namespace cheat {
 
 	bool cs2_internal::init() {
 		dbg::dbg_print("Initialization begins");
+
+		dbg::dbg_print("Hook initialize begins");
+
 		const unsigned level_count = 2;
 		D3D_FEATURE_LEVEL levels[level_count] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0 };
 		DXGI_SWAP_CHAIN_DESC sd{};
@@ -110,18 +114,6 @@ namespace cheat {
 			present_addr = vtable[8];
 			dbg::dbg_print(std::format("Got present_addr {}", present_addr));
 
-			//if (MH_STATUS status = MH_Initialize(); status != MH_OK) {
-			//	dbg::dbg_print(std::format("Failed to initialize minhook {}", static_cast<int>(status)));
-			//	MessageBox(NULL, std::format("Failed to initialize minhook {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
-			//	return false;
-			//}
-
-			//if (MH_STATUS status = MH_CreateHook(present_addr, reinterpret_cast<void*>(hooked_present), &origin_present); status != MH_OK) {
-			//	dbg::dbg_print(std::format("Failed to initialize minhook {}", static_cast<int>(status)));
-			//	MessageBox(NULL, std::format("Failed to initialize minhook {}", static_cast<int>(status)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
-			//	return false;
-			//}
-
 			MH_Initialize();
 			MH_CreateHook(present_addr, reinterpret_cast<void*>(hooked_present), &origin_present);
 
@@ -133,6 +125,13 @@ namespace cheat {
 			MessageBox(NULL, std::format("Bad swap_chain {}", reinterpret_cast<void*>(swap_chain)).c_str(), "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
+
+		dbg::dbg_print("Hook initialize done");
+
+		dbg::dbg_print("Game information initialize begins");
+		client_dll_addr = GetModuleHandleW(L"client.dll");
+		dbg::dbg_print(std::format("Got client.dll {}", reinterpret_cast<void*>(client_dll_addr)));
+		dbg::dbg_print("Game information initialize done");
 
 		dbg::dbg_print("Initialization done");
 

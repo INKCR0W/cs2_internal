@@ -24,11 +24,7 @@ namespace cheat {
 		static cs2_internal& get_instance();
 		static void ensure_initialized();
 
-		long __stdcall hook_present(IDXGISwapChain* _this, UINT a, UINT b);
-		LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
 	private:
-
 		bool inited;
 
 		bool esp;
@@ -45,10 +41,18 @@ namespace cheat {
 		float screen_width;
 		float screen_height;
 
+		HMODULE client_dll_addr;
+
 		float fov;
 
 		void render();
 		void menu();
+
+		friend long __stdcall hooked_present(IDXGISwapChain* _this, UINT a, UINT b);
+		friend LRESULT __stdcall modified_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		long __stdcall hook_present(IDXGISwapChain* _this, UINT a, UINT b);
+		LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		Vec2 world_to_screen(view_matrix_t matrix, Vec3 position) const;
 	};

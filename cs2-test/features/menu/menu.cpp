@@ -7,7 +7,7 @@ namespace cheat {
 	void cs2_internal::menu() {
 
 		try {
-			ImGui::Begin("GUI TEST", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+			ImGui::Begin("A", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
 			if (ImGui::BeginTabBar("Render")) {
 				if (ImGui::BeginTabItem("ESP")) {
