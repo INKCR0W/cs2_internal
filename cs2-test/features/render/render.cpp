@@ -1,11 +1,11 @@
 #include "../cheat.hpp"
 
 namespace cheat {
-	void cs2_internal::render() {
+	void cs2_internal::render(IDXGISwapChain* _this) {
 		update_entity();
-		menu();
+		menu(_this);
 
-		if (esp_on)
+		if (esp_on && local_player_pawn)
 			esp();
 	}
 }

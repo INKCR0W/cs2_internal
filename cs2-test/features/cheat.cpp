@@ -46,12 +46,14 @@ namespace cheat {
 
 			origin_wndproc = (WNDPROC)SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)modified_wndProc);
 
-			ImGui::CreateContext();
+			ImGui::SetCurrentContext(ImGui::CreateContext());
 
 			ImGuiIO& io = ImGui::GetIO();
-			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 16.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 			io.IniFilename = nullptr;
 			io.LogFilename = nullptr;
+
+			io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
 			ImGui_ImplWin32_Init(_hwnd);
 			ImGui_ImplDX11_Init(d3d_device, d3d_context);
@@ -62,18 +64,20 @@ namespace cheat {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		render();
+		render(_this);
 
 		ImGui::EndFrame();
 		ImGui::Render();
 		d3d_context->OMSetRenderTargets(1, &d3d_view, nullptr);
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
+
 		return ((Present)origin_present)(_this, a, b);
 	}
 
 	cs2_internal::cs2_internal() : inited(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
+		base_handle(nullptr),
 		file_path(""),
 		screen_width(0.f), screen_height(0.f), fov(0.f), player_entity_list({}),
 		client_dll_addr(NULL), is_in_match(false), local_player_controller(NULL), local_player_pawn(NULL),
@@ -110,7 +114,9 @@ namespace cheat {
 		MH_Uninitialize();
 	}
 
-	bool cs2_internal::init() {
+	bool cs2_internal::init(HMODULE base) {
+		base_handle = base;
+
 		dbg::dbg_print("Initialization begins");
 
 		dbg::dbg_print("Hook initialize begins");
@@ -179,6 +185,12 @@ namespace cheat {
 	bool cs2_internal::run() {
 		dbg::dbg_print("Running");
 
+		if (!present_addr) {
+			dbg::dbg_print(std::format("Wrong present_addr {}", present_addr));
+			MessageBox(NULL, std::format("HOOK ERROR: {}", present_addr).c_str(), "ERROR", MB_OK | MB_ICONERROR);
+			return false;
+		}
+
 		dbg::dbg_print(std::format("Enable hook {}", present_addr));
 		MH_STATUS status = MH_EnableHook(present_addr);
 
@@ -194,6 +206,39 @@ namespace cheat {
 
 		return true;
 	}
+
+	void cs2_internal::unload(IDXGISwapChain* _this) const {
+		dbg::dbg_print("Unloading");
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+		MH_DisableHook(present_addr);
+		dbg::dbg_print("Hook disabled");
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+		ImGui_ImplDX11_Shutdown();
+		ImGui_ImplWin32_Shutdown();
+
+		// ImGui::CloseCurrentPopup();
+		ImGui::DestroyContext();
+
+		// ImGui::GetIO().Fonts->Clear();
+
+		dbg::dbg_print("ImGui destroyed");
+
+		DXGI_SWAP_CHAIN_DESC sd;
+		_this->GetDesc(&sd);
+		HWND _hwnd = sd.OutputWindow;
+
+		SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)origin_wndproc);
+
+		dbg::dbg_print("WndProc reseted");
+
+		FreeLibrary(reinterpret_cast<HMODULE>(base_handle));
+		FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(base_handle), 0);
+	}
+
 
 	cs2_internal& cs2_internal::get_instance() {
 		static cs2_internal instance;

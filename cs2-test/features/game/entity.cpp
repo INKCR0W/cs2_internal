@@ -8,8 +8,8 @@ namespace cheat{
 	bool cs2_internal::update_entity() {
 		const uintptr_t game_rules = read_memory<uintptr_t>(client_dll_addr + offsets::client_dll::dwGameRules);
 
-		if (is_in_match = read_memory<bool>(game_rules + schemas::client_dll::C_CSGameRules::m_bHasMatchStarted); is_in_match == false)
-			return false;
+		//if (is_in_match = read_memory<bool>(game_rules + schemas::client_dll::C_CSGameRules::m_bHasMatchStarted); is_in_match == false)
+		//	return false;
 
 		if (local_player_pawn = read_memory<uintptr_t>(client_dll_addr + offsets::client_dll::dwLocalPlayerPawn); local_player_pawn == NULL)
 			return false;

@@ -20,8 +20,9 @@ namespace cheat {
 		cs2_internal();
 		~cs2_internal();
 
-		[[nodiscard]] bool init();
+		[[nodiscard]] bool init(HMODULE base);
 		bool run();
+		void unload(IDXGISwapChain* _this) const;
 
 		static cs2_internal& get_instance();
 		static void ensure_initialized();
@@ -30,6 +31,8 @@ namespace cheat {
 		const std::string& get_path();
 
 	private:
+		HMODULE base_handle;
+
 		std::string file_path;
 
 		bool inited;
@@ -62,8 +65,8 @@ namespace cheat {
 		std::vector<command> command_list;
 
 		void ren();
-		void render();
-		void menu();
+		void render(IDXGISwapChain* _this);
+		void menu(IDXGISwapChain* _this);
 
 		void esp();
 

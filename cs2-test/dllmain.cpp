@@ -37,7 +37,7 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		if (!cheat::cs2_internal::get_instance().init()) {
+		if (!cheat::cs2_internal::get_instance().init(hModule)) {
 			dbg::dbg_print("Failed to initialization");
 			MessageBox(NULL, "Failed to initialization", "ERROR", MB_OK | MB_ICONERROR);
 			exit(1);

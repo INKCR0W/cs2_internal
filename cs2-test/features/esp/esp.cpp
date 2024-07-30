@@ -19,10 +19,11 @@ namespace cheat {
 			// const uintptr_t bone_array = read_memory<uintptr_t>(game_scene_node + schemas::client_dll::CSkeletonInstance::m_modelState + schemas::client_dll::CGameSceneNode::m_vecOrigin);
 			const uintptr_t bone_array = read_memory<uintptr_t>(game_scene_node + 0x1F0);
 
-			//float left = 99999.f;
-			//float right = -1.f;
-			//float top = 99999.f;
-			//float bottom = -1.f;
+			float left = 99999.f;
+			float right = -1.f;
+			float top = 99999.f;
+			float bottom = -1.f;
+
 
 			for (std::vector<int> current_group : bone_groups::all_groups) {
 				previous = { 0.f, 0.f, 0.f };
@@ -38,12 +39,12 @@ namespace cheat {
 					Vec2 current_screen_pos = world_to_screen(view_matrix, current);
 					Vec2 previous_screen_pos = world_to_screen(view_matrix, previous);
 
-					//if (current_screen_pos.x > 0.f) {
-					//	left = left > current_screen_pos.x ? current_screen_pos.x : left;
-					//	right = right < current_screen_pos.x ? current_screen_pos.x : right;
-					//	top = top > current_screen_pos.y ? current_screen_pos.y : top;
-					//	bottom = bottom < current_screen_pos.y ? current_screen_pos.y : bottom;
-					//}
+					if (current_screen_pos.x > 0.f) {
+						left = left > current_screen_pos.x ? current_screen_pos.x : left;
+						right = right < current_screen_pos.x ? current_screen_pos.x : right;
+						top = top > current_screen_pos.y ? current_screen_pos.y : top;
+						bottom = bottom < current_screen_pos.y ? current_screen_pos.y : bottom;
+					}
 
 					if (current_screen_pos.x > 0.f && previous_screen_pos.x > 0.f)
 						draw_list->AddLine({ previous_screen_pos.x, previous_screen_pos.y }, { current_screen_pos.x, current_screen_pos.y }, IM_COL32(255, 0, 0, 255));
@@ -52,6 +53,15 @@ namespace cheat {
 					previous = current;
 				}
 			}
+
+
+			const uintptr_t pawn_name_address = read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName);
+			// std::string player_name = reinterpret_cast<const char*>(pawn_name_address);
+
+			float half_size = ImGui::CalcTextSize(reinterpret_cast<const char*>(pawn_name_address)).x / 2;
+
+
+			 draw_list->AddText({ left - half_size, bottom }, IM_COL32(255, 0, 0, 255), reinterpret_cast<const char*>(pawn_name_address));
 		}
 
 	}
