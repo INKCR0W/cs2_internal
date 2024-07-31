@@ -15,12 +15,12 @@ namespace cheat {
 					ImGui::EndTabItem();
 				}
 
-				if (ImGui::BeginTabItem("Misc")) {
-					if (ImGui::Button("Unload", { 50, 20 })) {
-						unload(_this);
-					}
-					ImGui::EndTabItem();
-				}
+				//if (ImGui::BeginTabItem("Misc")) {
+				//	if (ImGui::Button("Unload", { 50, 20 })) {
+				//		unload(_this);
+				//	}
+				//	ImGui::EndTabItem();
+				//}
 
 				ImGui::EndTabBar();
 			}
