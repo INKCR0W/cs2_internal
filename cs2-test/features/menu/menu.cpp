@@ -4,7 +4,7 @@
 #include "../../utils/locale.hpp"
 
 namespace cheat {
-	void cs2_internal::menu(IDXGISwapChain* _this) {
+	void cs2_internal::menu() {
 
 		try {
 			ImGui::Begin("A", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
@@ -15,12 +15,12 @@ namespace cheat {
 					ImGui::EndTabItem();
 				}
 
-				//if (ImGui::BeginTabItem("Misc")) {
-				//	if (ImGui::Button("Unload", { 50, 20 })) {
-				//		unload(_this);
-				//	}
-				//	ImGui::EndTabItem();
-				//}
+				if (ImGui::BeginTabItem("Misc")) {
+					if (ImGui::Button("Unload", { 50, 20 })) {
+						unloading = true;
+					}
+					ImGui::EndTabItem();
+				}
 
 				ImGui::EndTabBar();
 			}

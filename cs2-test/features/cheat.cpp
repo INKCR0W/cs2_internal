@@ -11,7 +11,7 @@
 #include "../utils/hooked_func.hpp"
 #include "../third-party/minhook/include/MinHook.h"
 
-#pragma comment(lib, "minhook.x64.lib")
+// #pragma comment(lib, "minhook.x64.lib")
 #pragma comment(lib, "d3d11.lib")
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
@@ -27,6 +27,7 @@ namespace cheat {
 	long __stdcall cs2_internal::hook_present(IDXGISwapChain* _this, UINT a, UINT b) {
 
 		if (!inited) {
+			cs2_window = reinterpret_cast<HWND>(_this);
 			_this->GetDevice(__uuidof(ID3D11Device), (void**)&d3d_device);
 			d3d_device->GetImmediateContext(&d3d_context);
 
@@ -64,7 +65,7 @@ namespace cheat {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		render(_this);
+		render();
 
 		ImGui::EndFrame();
 		ImGui::Render();
@@ -77,11 +78,11 @@ namespace cheat {
 
 	cs2_internal::cs2_internal() : inited(false), d3d_device(nullptr), swap_chain(nullptr), d3d_context(nullptr), d3d_view(nullptr),
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
-		base_handle(nullptr),
+		base_handle(nullptr), cs2_window(nullptr), console_window(nullptr),
 		file_path(""),
 		screen_width(0.f), screen_height(0.f), fov(0.f), player_entity_list({}),
 		client_dll_addr(NULL), is_in_match(false), local_player_controller(NULL), local_player_pawn(NULL),
-		esp_on(false)
+		esp_on(false), unloading(false)
 	{
 		const char* appdata_path = nullptr;
 
@@ -178,7 +179,10 @@ namespace cheat {
 
 	void cs2_internal::ren() {
 		while (true) {
-			update_entity();
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			if (unloading) {
+				unload();
+			}
 		}
 	}
 
@@ -200,43 +204,45 @@ namespace cheat {
 			return false;
 		}
 
+		std::thread unload_thread([this]() { this->ren(); });
+		unload_thread.detach();
 
+		dbg::dbg_print("Unload thread created");
 
 		dbg::dbg_print("All done, everything was fine");
 
 		return true;
 	}
 
-	void cs2_internal::unload(IDXGISwapChain* _this) const {
+	void cs2_internal::unload() const {
 		dbg::dbg_print("Unloading");
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		// HWND _hwnd = FindWindow(NULL, "Counter-Strike 2");
+		SetWindowLongPtr(cs2_window, GWLP_WNDPROC, (LONG_PTR)origin_wndproc);
+		dbg::dbg_print("WndProc reseted");
 
-		MH_DisableHook(present_addr);
-		dbg::dbg_print("Hook disabled");
+		MH_DisableHook(MH_ALL_HOOKS);
+		MH_Uninitialize();
+		dbg::dbg_print("Hooks disabled");
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 		ImGui_ImplDX11_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 
-		// ImGui::CloseCurrentPopup();
 		ImGui::DestroyContext();
-
-		// ImGui::GetIO().Fonts->Clear();
 
 		dbg::dbg_print("ImGui destroyed");
 
-		DXGI_SWAP_CHAIN_DESC sd;
-		_this->GetDesc(&sd);
-		HWND _hwnd = sd.OutputWindow;
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-		SetWindowLongPtr(_hwnd, GWLP_WNDPROC, (LONG_PTR)origin_wndproc);
+		FreeConsole();
 
-		dbg::dbg_print("WndProc reseted");
+		if (console_window) {
+			PostMessage(console_window, WM_CLOSE, 0, 0);
+		}
 
-		FreeLibrary(reinterpret_cast<HMODULE>(base_handle));
-		FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(base_handle), 0);
+		FreeLibraryAndExitThread(base_handle, 0);
 	}
 
 
@@ -251,6 +257,10 @@ namespace cheat {
 
 	void cs2_internal::set_path(const std::string& _path) {
 		file_path = _path;
+	}
+
+	void cs2_internal::set_console(HWND handle) {
+		console_window = handle;
 	}
 
 	const std::string& cs2_internal::get_path() {

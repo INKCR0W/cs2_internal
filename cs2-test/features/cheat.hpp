@@ -22,20 +22,24 @@ namespace cheat {
 
 		[[nodiscard]] bool init(HMODULE base);
 		bool run();
-		void unload(IDXGISwapChain* _this) const;
+		void unload() const;
 
 		static cs2_internal& get_instance();
 		static void ensure_initialized();
 
 		void set_path(const std::string& _path);
+		void set_console(HWND handle);
 		const std::string& get_path();
 
 	private:
 		HMODULE base_handle;
+		HWND cs2_window;
+		HWND console_window;
 
 		std::string file_path;
 
 		bool inited;
+		bool unloading;
 
 		ID3D11Device* d3d_device;
 		IDXGISwapChain* swap_chain;
@@ -65,8 +69,8 @@ namespace cheat {
 		std::vector<command> command_list;
 
 		void ren();
-		void render(IDXGISwapChain* _this);
-		void menu(IDXGISwapChain* _this);
+		void render();
+		void menu();
 
 		void esp();
 

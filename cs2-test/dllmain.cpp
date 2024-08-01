@@ -28,11 +28,10 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 
 	SetConsoleTitle(utils::randomString(0ULL).c_str());
 
-	// std::cerr.rdbuf(std::cout.rdbuf());
-
+	cheat::cs2_internal::get_instance().set_console(GetConsoleWindow());
 #endif
 
-	cheat::cs2_internal::ensure_initialized();
+	// cheat::cs2_internal::ensure_initialized();
 
 	switch (ul_reason_for_call)
 	{
