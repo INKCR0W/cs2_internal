@@ -236,11 +236,13 @@ namespace cheat {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
+#ifdef _DEBUG_
 		FreeConsole();
 
 		if (console_window) {
 			PostMessage(console_window, WM_CLOSE, 0, 0);
 		}
+#endif
 
 		FreeLibraryAndExitThread(base_handle, 0);
 	}
