@@ -12,6 +12,13 @@ namespace cheat {
 			if (ImGui::BeginTabBar("Render")) {
 				if (ImGui::BeginTabItem("ESP")) {
 					ImGui::Checkbox("ESP", &esp_on);
+					if (esp_on) {
+						ImGui::ColorPicker4("Color", reinterpret_cast<float*>(&esp_color));
+						ImGui::Checkbox("Box", &box);
+						ImGui::Checkbox("Skeleton", &skeleton);
+						ImGui::Checkbox("Health", &health);
+						ImGui::Checkbox("Name", &name);
+					}
 					ImGui::EndTabItem();
 				}
 

@@ -64,7 +64,12 @@ namespace cheat {
 
 		float fov;
 
+		ImVec4 esp_color;
 		bool esp_on;
+		bool box;
+		bool skeleton;
+		bool health;
+		bool name;
 
 		std::vector<command> command_list;
 
