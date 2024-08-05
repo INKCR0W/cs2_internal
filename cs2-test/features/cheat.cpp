@@ -11,7 +11,7 @@
 #include "../utils/hooked_func.hpp"
 #include "../third-party/minhook/include/MinHook.h"
 
-// #pragma comment(lib, "minhook.x64.lib")
+//#pragma comment(lib, "MinHook.x64.lib")
 #pragma comment(lib, "d3d11.lib")
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);

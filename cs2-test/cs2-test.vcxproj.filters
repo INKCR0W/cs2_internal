@@ -127,6 +127,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="third-party\minhook\lib\MinHook.x64.lib" />
+    <Library Include="third-party\minhook\lib\libMinHook.x64.lib" />
   </ItemGroup>
 </Project>
