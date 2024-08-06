@@ -73,16 +73,16 @@ namespace cheat {
 			right += 1;
 
 			if (box && right > 5.f) {
-				draw_list->AddLine({ left, top }, { right, top }, current_color, 1.2f);
-				draw_list->AddLine({ left, bottom }, { right, bottom }, current_color, 1.2f);
-				draw_list->AddLine({ left, top }, { left, bottom }, current_color, 1.2f);
-				draw_list->AddLine({ right, top }, { right, bottom }, current_color, 1.2f);
-			}
+				Vec2 head_pos = world_to_screen(view_matrix, read_memory<Vec3>(bone_array + bones::head * sizeof(BoneJointData)));
+				Vec2 screen_pos = world_to_screen(view_matrix, read_memory<Vec3>(current_entity.pawn + schemas::client_dll::C_BasePlayerPawn::m_vOldOrigin));
 
-			if (name) {
-				const uintptr_t pawn_name_address = read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName);
-				float half_size = ImGui::CalcTextSize(reinterpret_cast<const char*>(pawn_name_address)).x / 2;
-				draw_list->AddText({ left + half_size, bottom }, current_color, reinterpret_cast<const char*>(pawn_name_address));
+				Vec2 size, pos;
+				size.y = (screen_pos.y - head_pos.y) * 1.09f;
+				size.x = size.y * 0.6f;
+
+				pos = { screen_pos.x - size.x / 2.f, head_pos.y - size.y * 0.08f };
+
+				draw_list->AddRect({ pos.x, pos.y }, { pos.x + size.x, pos.y + size.y }, current_color);
 			}
 
 			if (health) {
@@ -94,6 +94,32 @@ namespace cheat {
 				uint8_t g = static_cast<uint8_t>(healthPercentage * 255);
 
 				draw_list->AddText({ right, top }, IM_COL32(r, g, 0, 255), std::to_string(current_health).c_str());
+			}
+
+			if (name) {
+				const uintptr_t pawn_name_address = read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName);
+				float half_size = ImGui::CalcTextSize(reinterpret_cast<const char*>(pawn_name_address)).x / 2;
+				draw_list->AddText({ left + half_size, bottom }, current_color, reinterpret_cast<const char*>(pawn_name_address));
+			}
+
+			if (eye_ray) {
+				Vec2 start_point, end_point;
+				Vec3 temp;
+
+				Vec3 head = read_memory<Vec3>(bone_array + bones::head * sizeof(BoneJointData));
+				Vec2 view_angle = read_memory<Vec2>(current_entity.pawn + schemas::client_dll::C_CSPlayerPawnBase::m_angEyeAngles);
+
+				start_point = world_to_screen(view_matrix, head);
+
+				float LineLength = cos(view_angle.x * M_PI / 180) * 50.f;
+
+				temp.x = head.x + cos(view_angle.y * M_PI / 180) * LineLength;
+				temp.y = head.y + sin(view_angle.y * M_PI / 180) * LineLength;
+				temp.z = head.z - sin(view_angle.x * M_PI / 180) * 50.f;
+
+				end_point = world_to_screen(view_matrix, temp);
+
+				draw_list->AddLine({ start_point.x, start_point.y }, { end_point.x, end_point.y }, current_color, 1.2f);
 			}
 		}
 

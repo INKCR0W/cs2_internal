@@ -82,7 +82,7 @@ namespace cheat {
 		file_path(""),
 		screen_width(0.f), screen_height(0.f), fov(0.f), player_entity_list({}),
 		client_dll_addr(NULL), is_in_match(false), local_player_controller(NULL), local_player_pawn(NULL),
-		esp_on(false), skeleton(false), health(false), name(false), box(false), esp_color(ImVec4(1.0f, 0.0f, 0.0f, 1.0f)),
+		esp_on(false), skeleton(false), health(false), name(false), box(false), eye_ray(false), esp_color(ImVec4(1.0f, 0.0f, 0.0f, 1.0f)),
 		unloading(false)
 	{
 		const char* appdata_path = nullptr;

@@ -14,6 +14,7 @@
 
 
 namespace cheat {
+	constexpr float M_PI = 3.1415926535f;
 
 	class cs2_internal {
 	public:
@@ -70,6 +71,7 @@ namespace cheat {
 		bool skeleton;
 		bool health;
 		bool name;
+		bool eye_ray;
 
 		std::vector<command> command_list;
 
