@@ -1,4 +1,5 @@
 #include "../cheat.hpp"
+#include "../../utils/structs.hpp"
 #include "../../offset/offset.hpp"
 
 namespace cheat {
@@ -21,11 +22,6 @@ namespace cheat {
 			// const uintptr_t bone_array = read_memory<uintptr_t>(game_scene_node + schemas::client_dll::CSkeletonInstance::m_modelState + schemas::client_dll::CGameSceneNode::m_vecOrigin);
 			const uintptr_t bone_array = read_memory<uintptr_t>(game_scene_node + 0x1F0);
 
-			float left = 99999.f;
-			float right = -1.f;
-			float top = 99999.f;
-			float bottom = -1.f;
-
 
 			for (std::vector<int> current_group : bone_groups::all_groups) {
 				previous = { 0.f, 0.f, 0.f };
@@ -33,31 +29,13 @@ namespace cheat {
 				for (int currentBone : current_group) {
 					current = read_memory<Vec3>(bone_array + currentBone * sizeof(BoneJointData));
 
-					offset_current = { current.x, current.y, current.z - 5 };
-
 					if (previous.x == 0 && previous.y == 0) {
 						previous = current;
-
-						current_screen_pos = world_to_screen(view_matrix, { current.x, current.y, current.z + 7 });
-						if (current_screen_pos.x > 0.f) {
-							left = left > current_screen_pos.x ? current_screen_pos.x : left;
-							right = right < current_screen_pos.x ? current_screen_pos.x : right;
-							top = top > current_screen_pos.y ? current_screen_pos.y : top;
-							bottom = bottom < current_screen_pos.y ? current_screen_pos.y : bottom;
-						}
 						continue;
 					}
 
 					current_screen_pos = world_to_screen(view_matrix, current);
 					previous_screen_pos = world_to_screen(view_matrix, previous);
-					offset_screen_pos = world_to_screen(view_matrix, offset_current);
-
-					if (current_screen_pos.x > 0.f) {
-						left = left > current_screen_pos.x ? current_screen_pos.x : left;
-						right = right < current_screen_pos.x ? current_screen_pos.x : right;
-						top = top > current_screen_pos.y ? current_screen_pos.y : top;
-						bottom = bottom < offset_screen_pos.y ? offset_screen_pos.y : bottom;
-					}
 
 					if (skeleton) {
 						if (current_screen_pos.x > 0.f && previous_screen_pos.x > 0.f)
@@ -69,20 +47,29 @@ namespace cheat {
 				}
 			}
 
-			left -= 1;
-			right += 1;
 
-			if (box && right > 5.f) {
-				Vec2 head_pos = world_to_screen(view_matrix, read_memory<Vec3>(bone_array + bones::head * sizeof(BoneJointData)));
-				Vec2 screen_pos = world_to_screen(view_matrix, read_memory<Vec3>(current_entity.pawn + schemas::client_dll::C_BasePlayerPawn::m_vOldOrigin));
 
-				Vec2 size, pos;
-				size.y = (screen_pos.y - head_pos.y) * 1.09f;
-				size.x = size.y * 0.6f;
+			Vec2 head_pos = world_to_screen(view_matrix, read_memory<Vec3>(bone_array + bones::head * sizeof(BoneJointData)));
 
-				pos = { screen_pos.x - size.x / 2.f, head_pos.y - size.y * 0.08f };
+			if (head_pos.x < 0)
+				continue;
 
+			Vec2 origin_pos = world_to_screen(view_matrix, read_memory<Vec3>(current_entity.pawn + schemas::client_dll::C_BasePlayerPawn::m_vOldOrigin));
+
+			Vec2 size, pos;
+			size.y = (origin_pos.y - head_pos.y) * 1.09f;
+			size.x = size.y * 0.6f;
+
+			pos = { origin_pos.x - size.x / 2.f, head_pos.y - size.y * 0.08f };
+
+			if (box) {
 				draw_list->AddRect({ pos.x, pos.y }, { pos.x + size.x, pos.y + size.y }, current_color);
+			}
+
+			if (name) {
+				const uintptr_t pawn_name_address = read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName);
+				float half_size = ImGui::CalcTextSize(reinterpret_cast<const char*>(pawn_name_address)).x / 2;
+				draw_list->AddText({ pos.x + size.x, pos.y }, current_color, reinterpret_cast<const char*>(pawn_name_address));
 			}
 
 			if (health) {
@@ -93,13 +80,7 @@ namespace cheat {
 				uint8_t r = static_cast<uint8_t>((1.0f - healthPercentage) * 255);
 				uint8_t g = static_cast<uint8_t>(healthPercentage * 255);
 
-				draw_list->AddText({ right, top }, IM_COL32(r, g, 0, 255), std::to_string(current_health).c_str());
-			}
-
-			if (name) {
-				const uintptr_t pawn_name_address = read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName);
-				float half_size = ImGui::CalcTextSize(reinterpret_cast<const char*>(pawn_name_address)).x / 2;
-				draw_list->AddText({ left + half_size, bottom }, current_color, reinterpret_cast<const char*>(pawn_name_address));
+				draw_list->AddText({ pos.x + size.x, pos.y + 12 }, IM_COL32(r, g, 0, 255), std::to_string(current_health).c_str());
 			}
 
 			if (eye_ray) {

@@ -16,8 +16,8 @@ namespace cheat {
 						ImGui::ColorPicker4("Color", reinterpret_cast<float*>(&esp_color));
 						ImGui::Checkbox("Box", &box);
 						ImGui::Checkbox("Skeleton", &skeleton);
-						ImGui::Checkbox("Health", &health);
 						ImGui::Checkbox("Name", &name);
+						ImGui::Checkbox("Health", &health);
 						ImGui::Checkbox("Eye Ray", &eye_ray);
 					}
 					ImGui::EndTabItem();
