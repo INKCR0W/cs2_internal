@@ -24,6 +24,7 @@
     <ProjectGuid>{ee3de37c-cb71-4209-a755-77d8af64a3c7}</ProjectGuid>
     <RootNamespace>cs2test</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>cs2_internal</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
