@@ -62,6 +62,7 @@ namespace cheat {
 
 		uintptr_t local_player_pawn;
 		uintptr_t local_player_controller;
+		uintptr_t local_player_pawn_handle;
 
 		float fov;
 
@@ -72,8 +73,10 @@ namespace cheat {
 		bool health;
 		bool name;
 		bool eye_ray;
+		bool spectator_list;
 
 		std::vector<command> command_list;
+		std::vector<uintptr_t> spectators_list;
 
 		void ren();
 		void render();
@@ -88,6 +91,7 @@ namespace cheat {
 		LRESULT __stdcall modify_wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		bool update_entity();
+		uintptr_t get_from_handle(uintptr_t entityList, uintptr_t handle);
 
 		Vec2 world_to_screen(view_matrix_t matrix, Vec3 position) const;
 

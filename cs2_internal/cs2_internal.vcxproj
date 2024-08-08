@@ -174,7 +174,7 @@
     <ClInclude Include="features\cheat.hpp" />
     <ClInclude Include="features\render\draw_list.hpp" />
     <ClInclude Include="offset\buttons.hpp" />
-    <ClInclude Include="offset\client.dll.hpp" />
+    <ClInclude Include="offset\client_dll.hpp" />
     <ClInclude Include="offset\offset.hpp" />
     <ClInclude Include="offset\offsets.hpp" />
     <ClInclude Include="utils\debug.hpp" />

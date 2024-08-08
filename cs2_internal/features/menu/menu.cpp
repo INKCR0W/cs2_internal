@@ -19,6 +19,7 @@ namespace cheat {
 						ImGui::Checkbox("Name", &name);
 						ImGui::Checkbox("Health", &health);
 						ImGui::Checkbox("Eye Ray", &eye_ray);
+						ImGui::Checkbox("Spectator List", &spectator_list);
 					}
 					ImGui::EndTabItem();
 				}

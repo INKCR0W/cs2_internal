@@ -127,6 +127,7 @@ namespace cheat {
 	public:
 		uintptr_t controller;
 		uintptr_t pawn;
+		uint32_t pawn_handle;
 	};
 
 	enum bones : int {

@@ -50,7 +50,7 @@ namespace cheat {
 			ImGui::SetCurrentContext(ImGui::CreateContext());
 
 			ImGuiIO& io = ImGui::GetIO();
-			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 16.f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 16.f, NULL, io.Fonts->GetGlyphRangesChineseFull());
 			io.IniFilename = nullptr;
 			io.LogFilename = nullptr;
 
@@ -80,9 +80,9 @@ namespace cheat {
 		origin_present(nullptr), origin_wndproc(nullptr), present_addr(nullptr),
 		base_handle(nullptr), cs2_window(nullptr), console_window(nullptr),
 		file_path(""),
-		screen_width(0.f), screen_height(0.f), fov(0.f), player_entity_list({}),
-		client_dll_addr(NULL), is_in_match(false), local_player_controller(NULL), local_player_pawn(NULL),
-		esp_on(false), skeleton(false), health(false), name(false), box(false), eye_ray(false), esp_color(ImVec4(1.0f, 0.0f, 0.0f, 1.0f)),
+		screen_width(0.f), screen_height(0.f), fov(0.f), player_entity_list({}), spectators_list({}),
+		client_dll_addr(NULL), is_in_match(false), local_player_controller(NULL), local_player_pawn(NULL), local_player_pawn_handle(NULL),
+		esp_on(false), skeleton(false), health(false), name(false), box(false), eye_ray(false), spectator_list(false), esp_color(ImVec4(1.0f, 0.0f, 0.0f, 1.0f)),
 		unloading(false)
 	{
 		const char* appdata_path = nullptr;
