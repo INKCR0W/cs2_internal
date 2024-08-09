@@ -14,6 +14,7 @@ namespace cheat {
 					ImGui::Checkbox("ESP", &esp_on);
 					if (esp_on) {
 						ImGui::ColorPicker4("Color", reinterpret_cast<float*>(&esp_color));
+						ImGui::Checkbox("Teammate ESP", &teammate_esp);
 						ImGui::Checkbox("Box", &box);
 						ImGui::Checkbox("Skeleton", &skeleton);
 						ImGui::Checkbox("Name", &name);

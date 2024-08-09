@@ -68,6 +68,7 @@ namespace cheat {
 
 		ImVec4 esp_color;
 		bool esp_on;
+		bool teammate_esp;
 		bool box;
 		bool skeleton;
 		bool health;
