@@ -69,6 +69,23 @@ namespace cheat {
 				}
 			}
 
+			if (spectator_list) {
+				uint32_t spectatorPawn = read_memory<uint32_t>(current_entity.controller + schemas::client_dll::CBasePlayerController::m_hPawn);
+				uintptr_t pawn = get_from_handle(entity_list_address, spectatorPawn);
+
+				uintptr_t obs = read_memory<uintptr_t>(pawn + schemas::client_dll::C_BasePlayerPawn::m_pObserverServices);
+				uint64_t oTarget = read_memory<uint64_t>(obs + schemas::client_dll::CPlayer_ObserverServices::m_hObserverTarget);
+				uintptr_t target_pawn = get_from_handle(entity_list_address, oTarget);
+
+
+				if (obs && (target_pawn == my_target)) {
+					const char* pawn_name_address = reinterpret_cast<const char*>(read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName));
+					const auto size = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFont()->FontSize, std::numeric_limits<float>::max(), 0.0f, pawn_name_address);
+					draw_list->AddText({ screen_width - size.x, y_offset }, current_color, pawn_name_address);
+					y_offset += size.y;
+				}
+			}
+
 			Vec2 head_pos = world_to_screen(view_matrix, read_memory<Vec3>(bone_array + bones::head * sizeof(BoneJointData)));
 
 			if (head_pos.x < 0)
@@ -123,23 +140,6 @@ namespace cheat {
 
 				if (start_point.x > 0 && end_point.x > 0)
 					draw_list->AddLine({ start_point.x, start_point.y }, { end_point.x, end_point.y }, current_color, 1.2f);
-			}
-
-			if (spectator_list) {
-				uint32_t spectatorPawn = read_memory<uint32_t>(current_entity.controller + schemas::client_dll::CBasePlayerController::m_hPawn);
-				uintptr_t pawn = get_from_handle(entity_list_address, spectatorPawn);
-
-				uintptr_t obs = read_memory<uintptr_t>(pawn + schemas::client_dll::C_BasePlayerPawn::m_pObserverServices);
-				uint64_t oTarget = read_memory<uint64_t>(obs + schemas::client_dll::CPlayer_ObserverServices::m_hObserverTarget);
-				uintptr_t target_pawn = get_from_handle(entity_list_address, oTarget);
-
-
-				if (obs && (target_pawn == my_target)) {
-					const char* pawn_name_address = reinterpret_cast<const char*>(read_memory<uintptr_t>(current_entity.controller + schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName));
-					const auto size = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFont()->FontSize, std::numeric_limits<float>::max(), 0.0f, pawn_name_address);
-					draw_list->AddText({ screen_width - size.x, y_offset }, current_color, pawn_name_address);
-					y_offset += size.y;
-				}
 			}
 		}
 
