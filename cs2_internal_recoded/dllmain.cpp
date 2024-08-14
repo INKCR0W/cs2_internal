@@ -16,7 +16,8 @@ bool __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 
 	SetConsoleTitle(utils::randomString(0ULL).c_str());
 
-	cheat::cs2_internal::get_instance().set_console(GetConsoleWindow());
+	// @todo: save the console window handle, so we can close it when the DLL is about to unload
+	// cheat::cs2_internal::get_instance().set_console(GetConsoleWindow());
 #endif
 
 
