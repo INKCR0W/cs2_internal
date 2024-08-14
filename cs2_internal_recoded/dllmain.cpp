@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "utils/random.hpp"
+#include "cheat/cheat.hpp"
 
 bool __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
