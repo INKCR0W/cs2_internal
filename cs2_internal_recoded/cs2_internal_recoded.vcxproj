@@ -155,29 +155,29 @@
   <ItemGroup>
     <ClCompile Include="cheat\cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="extensions\imgui\imgui.cpp" />
-    <ClCompile Include="extensions\imgui\imgui_draw.cpp" />
-    <ClCompile Include="extensions\imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="extensions\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="extensions\imgui\imgui_tables.cpp" />
-    <ClCompile Include="extensions\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="third_party\imgui\imgui.cpp" />
+    <ClCompile Include="third_party\imgui\imgui_draw.cpp" />
+    <ClCompile Include="third_party\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="third_party\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="third_party\imgui\imgui_tables.cpp" />
+    <ClCompile Include="third_party\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat\cheat.hpp" />
-    <ClInclude Include="extensions\imgui\imconfig.h" />
-    <ClInclude Include="extensions\imgui\imgui.h" />
-    <ClInclude Include="extensions\imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="extensions\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="extensions\imgui\imgui_internal.h" />
-    <ClInclude Include="extensions\imgui\imstb_rectpack.h" />
-    <ClInclude Include="extensions\imgui\imstb_textedit.h" />
-    <ClInclude Include="extensions\imgui\imstb_truetype.h" />
-    <ClInclude Include="extensions\minhook\include\MinHook.h" />
+    <ClInclude Include="third_party\imgui\imconfig.h" />
+    <ClInclude Include="third_party\imgui\imgui.h" />
+    <ClInclude Include="third_party\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="third_party\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="third_party\imgui\imgui_internal.h" />
+    <ClInclude Include="third_party\imgui\imstb_rectpack.h" />
+    <ClInclude Include="third_party\imgui\imstb_textedit.h" />
+    <ClInclude Include="third_party\imgui\imstb_truetype.h" />
+    <ClInclude Include="third_party\minhook\include\MinHook.h" />
     <ClInclude Include="utils\hook_manager.hpp" />
     <ClInclude Include="utils\random.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="extensions\minhook\lib\libMinHook.x64.lib" />
+    <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

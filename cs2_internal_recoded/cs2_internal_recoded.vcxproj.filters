@@ -21,22 +21,22 @@
     <ClCompile Include="cheat\cheat.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="extensions\imgui\imgui.cpp">
+    <ClCompile Include="third_party\imgui\imgui.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="extensions\imgui\imgui_draw.cpp">
+    <ClCompile Include="third_party\imgui\imgui_draw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="extensions\imgui\imgui_impl_dx11.cpp">
+    <ClCompile Include="third_party\imgui\imgui_impl_dx11.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="extensions\imgui\imgui_impl_win32.cpp">
+    <ClCompile Include="third_party\imgui\imgui_impl_win32.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="extensions\imgui\imgui_tables.cpp">
+    <ClCompile Include="third_party\imgui\imgui_tables.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="extensions\imgui\imgui_widgets.cpp">
+    <ClCompile Include="third_party\imgui\imgui_widgets.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,35 +50,35 @@
     <ClInclude Include="utils\hook_manager.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\minhook\include\MinHook.h">
+    <ClInclude Include="third_party\minhook\include\MinHook.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imconfig.h">
+    <ClInclude Include="third_party\imgui\imconfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imgui.h">
+    <ClInclude Include="third_party\imgui\imgui.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imgui_impl_dx11.h">
+    <ClInclude Include="third_party\imgui\imgui_impl_dx11.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imgui_impl_win32.h">
+    <ClInclude Include="third_party\imgui\imgui_impl_win32.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imgui_internal.h">
+    <ClInclude Include="third_party\imgui\imgui_internal.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imstb_rectpack.h">
+    <ClInclude Include="third_party\imgui\imstb_rectpack.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imstb_textedit.h">
+    <ClInclude Include="third_party\imgui\imstb_textedit.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="extensions\imgui\imstb_truetype.h">
+    <ClInclude Include="third_party\imgui\imstb_truetype.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="extensions\minhook\lib\libMinHook.x64.lib" />
+    <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />
   </ItemGroup>
 </Project>

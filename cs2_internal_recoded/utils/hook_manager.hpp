@@ -4,8 +4,8 @@
 #pragma once
 // used: [ext] minhook
 // @credits: https://github.com/TsudaKageyu/minhook
-#include "../extensions/minhook/include/MinHook.h"
-#pragma comment(lib, "../extensions/minhook/lib/libMinHook.x64.lib")
+#include "../third_party/minhook/include/MinHook.h"
+#pragma comment(lib, "../third_party/minhook/lib/libMinHook.x64.lib")
 
 template <typename T>
 class hook_object
