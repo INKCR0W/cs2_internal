@@ -75,4 +75,8 @@ namespace log_system {
 
 		return true;
 	}
+
+	void log_class::close_file() const {
+		::CloseHandle(file_handle);
+	}
 }
