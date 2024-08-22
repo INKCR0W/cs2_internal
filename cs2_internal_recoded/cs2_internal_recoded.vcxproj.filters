@@ -86,6 +86,9 @@
     <ClInclude Include="utils\ct_constants.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="core\core.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />

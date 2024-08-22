@@ -9,6 +9,8 @@
 
 namespace utils
 {
+	using std::uint32_t;
+
 	class fnv1a_class {
 	public:
 		// use the default fnv1a_class()
