@@ -47,7 +47,7 @@
     <ClInclude Include="cheat\cheat.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="utils\hook_manager.hpp">
+    <ClInclude Include="hook\hook_manager.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="third_party\minhook\include\MinHook.h">
@@ -75,6 +75,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="third_party\imgui\imstb_truetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="log\log.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\fnv1a.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\ct_constants.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
