@@ -39,6 +39,9 @@
     <ClCompile Include="third_party\imgui\imgui_widgets.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="log\log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
