@@ -101,6 +101,15 @@
     <ClInclude Include="offset\offset.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="third_party\xorstr.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\crt_string.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\malloc.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />

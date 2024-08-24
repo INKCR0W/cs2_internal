@@ -180,8 +180,11 @@
     <ClInclude Include="third_party\imgui\imstb_truetype.h" />
     <ClInclude Include="third_party\minhook\include\MinHook.h" />
     <ClInclude Include="hook\hook_manager.hpp" />
+    <ClInclude Include="third_party\xorstr.hpp" />
+    <ClInclude Include="utils\crt_string.hpp" />
     <ClInclude Include="utils\ct_constants.hpp" />
     <ClInclude Include="utils\fnv1a.hpp" />
+    <ClInclude Include="utils\malloc.hpp" />
     <ClInclude Include="utils\random.hpp" />
   </ItemGroup>
   <ItemGroup>

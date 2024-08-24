@@ -2,10 +2,10 @@
 
 // used: uint32_t
 #include <cstdint>
-// used: strlen
-#include <cstring>
 // used: get_constant
 #include "ct_constants.hpp"
+// used: str_length
+#include "../utils/crt_string.hpp"
 
 namespace utils
 {
@@ -32,7 +32,7 @@ namespace utils
 
 	// The two strings here should change every time the project is updated
 	// Of course using two random numbers directly is also feasible
-	// But I think it's not enough RANDOM in source lol
+	// But I think it's not enough RANDOM lol
 	// nwm, this is just a random shit
 	fnv1a_class::fnv1a_class() {
 		// This should be a random string
@@ -53,7 +53,7 @@ namespace utils
 		const char* data = const_cast<char*>(str);
 		uint32_t hash = fnv1a_seed;
 
-		for (size_t i = 0U; i < strlen(str); ++i)
+		for (size_t i = 0U; i < crt::str_length(str); ++i)
 		{
 			const uint8_t value = data[i];
 			hash = hash ^ value;

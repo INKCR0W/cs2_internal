@@ -26,9 +26,9 @@ namespace log_system {
 #endif
 	}
 
-	const bool log_class::attach_console(const char* console_title = nullptr) {
+	const bool log_class::attach_console(const wchar_t* console_title = nullptr) {
 		if (console_title == nullptr) {
-			console_title = utils::random_string().c_str();
+			console_title = utils::random_wstring().c_str();
 		}
 		
 		if (::AllocConsole() != true)
@@ -37,7 +37,7 @@ namespace log_system {
 		if (console_handle = ::CreateFileW(L"CONOUT$", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); console_handle == INVALID_HANDLE_VALUE)
 			return false;
 
-		if (::SetConsoleTitle(console_title) != TRUE)
+		if (::SetConsoleTitleW(console_title) != TRUE)
 			return false;
 
 		return true;
@@ -70,7 +70,6 @@ namespace log_system {
 		if (file_handle = ::CreateFile(log_path.c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr); file_handle == INVALID_HANDLE_VALUE)
 			return false;
 
-		// insert UTF-8 BOM
 		::WriteFile(file_handle, "\xEF\xBB\xBF", 3UL, nullptr, nullptr);
 
 		return true;

@@ -7,6 +7,8 @@
 // used: generate
 #include <algorithm>
 
+#include "../utils/crt_string.hpp"
+
 namespace utils {
     /// <summary>
     /// Return a random string¡£
@@ -35,5 +37,20 @@ namespace utils {
         std::generate(result.begin(), result.end(), [&]() { return charset[distribution(generator)]; });
 
         return result;
+    }
+    
+    /// <summary>
+    /// Return a random wchar string¡£
+    /// </summary>
+    /// <param name="length">
+    /// The <c>length</c> of string
+    /// </param>
+    /// <param name="charset">
+    /// Char set for string
+    /// </param>
+    /// <returns>The <c>random</c> wchar string</returns>
+    const std::wstring random_wstring(size_t length = 0, const std::string& charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=-[]{};':,.<>/?") noexcept
+    {
+        return crt::string2wstring(random_string(length, charset));
     }
 }

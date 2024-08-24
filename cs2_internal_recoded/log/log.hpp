@@ -54,19 +54,23 @@ namespace log_system {
 		log_class();
 		~log_class();
 		
-		const bool attach_console(const char* console_title = nullptr);
+		const bool attach_console(const wchar_t* console_title = nullptr);
 		void detach_console() const;
 
 		const bool open_file();
 		void close_file() const;
 
-		log_class& operator<<(const char* message);
-		log_class& operator<<(const wchar_t* wchar_message);
-		log_class& operator<<(const bool value);
-		log_class& operator<<(const log_color_flags color);
+		log_class& operator<<(const std::string message) const;
+		log_class& operator<<(const std::wstring wchar_message) const;
+		log_class& operator<<(const bool value) const;
+		log_class& operator<<(const log_color_flags color) const;
 
 	private:
 		HANDLE console_handle = INVALID_HANDLE_VALUE;
 		HANDLE file_handle = INVALID_HANDLE_VALUE;
+
+		void write_message(const char* message, const size_t message_length) const;
+		//void write_console(const char* message, const size_t message_length);
+		//void write_file(const char* message, const size_t message_length);
 	};
 }
