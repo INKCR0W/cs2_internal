@@ -167,6 +167,9 @@
     <ClInclude Include="cheat\cheat.hpp" />
     <ClInclude Include="core\core.hpp" />
     <ClInclude Include="log\log.hpp" />
+    <ClInclude Include="offset\client_dll.hpp" />
+    <ClInclude Include="offset\offset.hpp" />
+    <ClInclude Include="offset\offsets.hpp" />
     <ClInclude Include="third_party\imgui\imconfig.h" />
     <ClInclude Include="third_party\imgui\imgui.h" />
     <ClInclude Include="third_party\imgui\imgui_impl_dx11.h" />

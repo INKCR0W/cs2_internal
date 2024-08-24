@@ -92,6 +92,15 @@
     <ClInclude Include="core\core.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="offset\client_dll.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="offset\offsets.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="offset\offset.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />
