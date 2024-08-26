@@ -51,6 +51,22 @@ namespace log_system {
 
 	class log_class {
 	public:
+
+#pragma region structs
+
+		struct color_t
+		{
+			uint16_t clr;
+		};
+
+		struct mode_t
+		{
+			uint16_t mode;
+		};
+
+#pragma endregion
+
+
 		log_class();
 		~log_class();
 		
@@ -60,17 +76,25 @@ namespace log_system {
 		const bool open_file();
 		void close_file() const;
 
-		log_class& operator<<(const std::string message) const;
-		log_class& operator<<(const std::wstring wchar_message) const;
-		log_class& operator<<(const bool value) const;
-		log_class& operator<<(const log_color_flags color) const;
+		log_class& operator<<(const std::string message);
+		log_class& operator<<(const std::wstring wchar_message);
+		log_class& operator<<(const bool value);
+
+		log_class& operator<<(const color_t color);
+
+		log_class& operator<<(const mode_t level);
+
+		const color_t set_color(uint16_t color);
+		const mode_t set_level(uint16_t level);
+
+
 
 	private:
 		HANDLE console_handle = INVALID_HANDLE_VALUE;
 		HANDLE file_handle = INVALID_HANDLE_VALUE;
 
-		void write_message(const char* message, const size_t message_length) const;
-		//void write_console(const char* message, const size_t message_length);
-		//void write_file(const char* message, const size_t message_length);
+		uint8_t current_log_level = log_level::LOG_INFO;
+
+		void write_message(const std::string message);
 	};
 }

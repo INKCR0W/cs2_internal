@@ -1,13 +1,22 @@
 #include "log.hpp"
 
-// used: random_string
-#include "../utils/random.hpp"
-// used: get_woring_path
-#include "../core/core.hpp"
+
 // used: string
 #include <string>
 // used: exists create_directory
 #include <filesystem>
+// used: tm
+#include <ctime>
+// used: format
+#include <format>
+
+// used: random_string
+#include "../utils/random.hpp"
+// used: get_woring_path
+#include "../core/core.hpp"
+// used: wstring2string
+#include "../utils/crt_string.hpp"
+
 
 namespace log_system {
 	log_class::log_class() {
@@ -30,7 +39,7 @@ namespace log_system {
 		if (console_title == nullptr) {
 			console_title = utils::random_wstring().c_str();
 		}
-		
+
 		if (::AllocConsole() != true)
 			return false;
 
@@ -77,5 +86,83 @@ namespace log_system {
 
 	void log_class::close_file() const {
 		::CloseHandle(file_handle);
+	}
+
+	void log_class::write_message(const std::string message) {
+		const std::time_t time = std::time(nullptr);
+		std::tm time_point;
+		localtime_s(&time_point, &time);
+
+		const char* level = nullptr;
+		log_color_flags level_color;
+		switch (current_log_level)
+		{
+		case log_level::LOG_INFO:
+			level = " [INFO] ";
+			level_color = LOG_COLOR_FORE_WHITE;
+			break;
+		case log_level::LOG_WARNING:
+			level = " [WARNING] ";
+			level_color = LOG_COLOR_FORE_YELLOW;
+			break;
+		case log_level::LOG_ERROR:
+			level = " [ERROR] ";
+			level_color = LOG_COLOR_FORE_RED;
+			break;
+		default:
+			level = " [UNKNOWN] ";
+			level_color = LOG_COLOR_FORE_GRAY;
+			break;
+		}
+
+		// [DAY-MONTH-YEAR HOUR:MINUTE:SECOND]
+		std::string result_string =
+			std::format("[{}-{}-{} {}:{}:{}]", time_point.tm_mday, time_point.tm_mon, time_point.tm_year, time_point.tm_hour, time_point.tm_min, time_point.tm_sec)
+			+ level
+			+ message;
+
+#ifdef _LOG_CONSOLE
+		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(level_color));
+		::WriteConsoleA(console_handle, result_string.c_str(), result_string.length(), nullptr, nullptr);
+		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(log_color_flags::LOG_COLOR_FORE_WHITE));
+#elif _LOG_FILE
+		::WriteFile(file_handle, result_string.c_str(), result_string.length(), nullptr, nullptr);
+#endif
+	}
+
+	log_class& log_class::operator<<(const std::string message) {
+		write_message(message);
+		return *this;
+	}
+
+	log_class& log_class::operator<<(const std::wstring wchar_message) {
+		write_message(crt::wstring2string(wchar_message));
+		return *this;
+	}
+
+	log_class& log_class::operator<<(const bool value) {
+		const char* boolean = value ? "true" : "false";
+		write_message(boolean);
+		return *this;
+	}
+
+	log_class& log_class::operator<<(const color_t color) {
+#ifdef _LOG_CONSOLE
+		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(color.clr));
+#endif
+		return *this;
+	}
+
+	log_class& log_class::operator<<(const mode_t level) {
+		current_log_level = level.mode;
+		return *this;
+	}
+
+	const log_class::color_t log_class::set_color(uint16_t color) {
+		return { color };
+	}
+
+	const log_class::mode_t log_class::set_level(uint16_t level) {
+		return { level };
 	}
 }
