@@ -19,11 +19,15 @@
 #include "../utils/crt_string.hpp"
 
 
+#include <Windows.h>
+
 namespace log_system {
 	log_class::~log_class() {
 #ifdef _LOG_CONSOLE
 		detach_console();
-#elif _LOG_FILE
+#endif
+
+#ifdef _LOG_FILE
 		close_file();
 #endif
 	}
@@ -31,7 +35,9 @@ namespace log_system {
 	const bool log_class::setup() {
 #ifdef _LOG_CONSOLE
 		return attach_console();
-#elif _LOG_FILE
+#endif
+
+#ifdef _LOG_FILE
 		return open_file();
 #endif
 	}
@@ -71,6 +77,15 @@ namespace log_system {
 
 	const bool log_class::open_file() {
 		std::string log_path = core::get_working_path();
+
+		if (std::filesystem::exists(log_path) == false)
+		{
+			if (std::filesystem::create_directory(log_path) == false)
+			{
+				return false;
+			}
+		}
+
 		log_path += "\\logs";
 
 		if (std::filesystem::exists(log_path) == false)
@@ -131,7 +146,9 @@ namespace log_system {
 #ifdef _LOG_CONSOLE
 		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(level_color));
 		::WriteConsoleA(console_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
-#elif _LOG_FILE
+#endif
+
+#ifdef _LOG_FILE
 		::WriteFile(file_handle, result_string.c_str(), result_string.length(), nullptr, nullptr);
 #endif
 	}
