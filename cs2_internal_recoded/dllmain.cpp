@@ -8,6 +8,7 @@
 
 bool __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
+	using namespace cheat;
 #ifdef _DEBUG
 	//AllocConsole();
 
@@ -22,11 +23,12 @@ bool __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 	// cheat::cs2_internal::get_instance().set_console(GetConsoleWindow());
 #endif
 
-
 	DisableThreadLibraryCalls(hModule);
 
     if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
-
+		if (cs2_internal::get_instance().setup()) {
+			cs2_internal::get_instance().run();
+		}
     }
 
     return TRUE;

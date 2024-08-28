@@ -10,6 +10,7 @@
 // used: format
 #include <format>
 
+
 // used: random_string
 #include "../utils/random.hpp"
 // used: get_woring_path
@@ -19,14 +20,6 @@
 
 
 namespace log_system {
-	log_class::log_class() {
-#ifdef _LOG_CONSOLE
-		attach_console();
-#elif _LOG_FILE
-		open_file();
-#endif
-	}
-
 	log_class::~log_class() {
 #ifdef _LOG_CONSOLE
 		detach_console();
@@ -35,12 +28,26 @@ namespace log_system {
 #endif
 	}
 
-	const bool log_class::attach_console(const wchar_t* console_title = nullptr) {
+	const bool log_class::setup() {
+#ifdef _LOG_CONSOLE
+		return attach_console();
+#elif _LOG_FILE
+		return open_file();
+#endif
+	}
+
+	log_class& log_class::get_instance() {
+		static log_class instance;
+		return instance;
+	}
+
+	const bool log_class::attach_console(const wchar_t* console_title) {
+		const std::wstring random_title = utils::random_wstring();
 		if (console_title == nullptr) {
-			console_title = utils::random_wstring().c_str();
+			console_title = random_title.c_str();
 		}
 
-		if (::AllocConsole() != true)
+		if (::AllocConsole() != TRUE)
 			return false;
 
 		if (console_handle = ::CreateFileW(L"CONOUT$", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); console_handle == INVALID_HANDLE_VALUE)
@@ -94,7 +101,7 @@ namespace log_system {
 		localtime_s(&time_point, &time);
 
 		const char* level = nullptr;
-		log_color_flags level_color;
+		uint16_t level_color = LOG_COLOR_FORE_WHITE;
 		switch (current_log_level)
 		{
 		case log_level::LOG_INFO:
@@ -110,28 +117,38 @@ namespace log_system {
 			level_color = LOG_COLOR_FORE_RED;
 			break;
 		default:
-			level = " [UNKNOWN] ";
-			level_color = LOG_COLOR_FORE_GRAY;
+			level = " ";
+			level_color = current_log_color;
 			break;
 		}
 
 		// [DAY-MONTH-YEAR HOUR:MINUTE:SECOND]
 		std::string result_string =
-			std::format("[{}-{}-{} {}:{}:{}]", time_point.tm_mday, time_point.tm_mon, time_point.tm_year, time_point.tm_hour, time_point.tm_min, time_point.tm_sec)
+			std::format("[{:02}-{:02}-{} {:02}:{:02}:{:02}]", time_point.tm_mday, time_point.tm_mon, time_point.tm_year + 1900, time_point.tm_hour, time_point.tm_min, time_point.tm_sec)
 			+ level
 			+ message;
 
 #ifdef _LOG_CONSOLE
 		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(level_color));
-		::WriteConsoleA(console_handle, result_string.c_str(), result_string.length(), nullptr, nullptr);
-		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(log_color_flags::LOG_COLOR_FORE_WHITE));
+		::WriteConsoleA(console_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
 #elif _LOG_FILE
 		::WriteFile(file_handle, result_string.c_str(), result_string.length(), nullptr, nullptr);
 #endif
 	}
 
+
+	log_class& log_class::operator<<(const char* message) {
+		write_message(message);
+		return *this;
+	}
+
 	log_class& log_class::operator<<(const std::string message) {
 		write_message(message);
+		return *this;
+	}
+
+	log_class& log_class::operator<<(const wchar_t* wchar_message) {
+		write_message(crt::wstring2string(wchar_message));
 		return *this;
 	}
 
@@ -159,6 +176,7 @@ namespace log_system {
 	}
 
 	const log_class::color_t log_class::set_color(uint16_t color) {
+		current_log_color = color;
 		return { color };
 	}
 

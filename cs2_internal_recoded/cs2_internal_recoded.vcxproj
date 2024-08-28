@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)build\</OutDir>
-    <IntDir>$(SolutionDir)build\intermediate\</IntDir>
+    <OutDir>$(SolutionDir)recoded_build\</OutDir>
+    <IntDir>$(SolutionDir)recoded_build\intermediate\</IntDir>
     <TargetName>cs2</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)build\</OutDir>
-    <IntDir>$(SolutionDir)build\intermediate\</IntDir>
+    <OutDir>$(SolutionDir)recoded_build\</OutDir>
+    <IntDir>$(SolutionDir)recoded_build\intermediate\</IntDir>
     <TargetName>cs2</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

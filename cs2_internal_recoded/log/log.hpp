@@ -1,5 +1,8 @@
 #pragma once
 
+// fuck this
+#define _CRT_SECURE_NO_WARNINGS
+
 #ifdef _DEBUG
 #define _LOG_CONSOLE
 #else
@@ -10,9 +13,11 @@
 #include <Windows.h>
 // used: source_location
 #include <source_location>
+// used: string wstring
+#include <string>
 
 namespace log_system {
-	enum log_level : std::uint8_t
+	enum log_level : std::uint16_t
 	{
 		LOG_NONE = 0,
 		LOG_INFO,
@@ -67,8 +72,11 @@ namespace log_system {
 #pragma endregion
 
 
-		log_class();
+		log_class() = default;
 		~log_class();
+
+		const bool setup();
+		static log_class& get_instance();
 		
 		const bool attach_console(const wchar_t* console_title = nullptr);
 		void detach_console() const;
@@ -76,7 +84,10 @@ namespace log_system {
 		const bool open_file();
 		void close_file() const;
 
+		log_class& operator<<(const char* message);
 		log_class& operator<<(const std::string message);
+
+		log_class& operator<<(const wchar_t* wchar_message);
 		log_class& operator<<(const std::wstring wchar_message);
 		log_class& operator<<(const bool value);
 
@@ -93,7 +104,8 @@ namespace log_system {
 		HANDLE console_handle = INVALID_HANDLE_VALUE;
 		HANDLE file_handle = INVALID_HANDLE_VALUE;
 
-		uint8_t current_log_level = log_level::LOG_INFO;
+		uint16_t current_log_level = log_level::LOG_INFO;
+		uint16_t current_log_color = log_color_flags::LOG_COLOR_FORE_WHITE;
 
 		void write_message(const std::string message);
 	};

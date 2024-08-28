@@ -1,4 +1,8 @@
+
 #pragma once
+
+// fuck this
+#define _CRT_SECURE_NO_WARNINGS
 
 // used string
 #include <string>
