@@ -18,9 +18,6 @@
 // used: wstring2string
 #include "../utils/crt_string.hpp"
 
-
-#include <Windows.h>
-
 namespace log_system {
 	log_class::~log_class() {
 #ifdef _LOG_CONSOLE
