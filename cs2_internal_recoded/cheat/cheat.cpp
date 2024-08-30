@@ -3,6 +3,7 @@
 
 #include "cheat.hpp"
 #include "../utils/fnv1a.hpp"
+#include "../third_party/xorstr.hpp"
 
 #include <string>
 
@@ -21,15 +22,13 @@ namespace cheat {
 			<< set_color(log_color_flags::LOG_COLOR_FORE_BLUE) << "blue" << endl
 			<< set_color(log_color_flags::LOG_COLOR_FORE_GREEN) << "green" << endl;
 
+		logger << set_color(log_color_flags::LOG_COLOR_FORE_WHITE) << end;
 
 		logger << "fnv1a test start" << endl;
 		using std::string;
 
-		string str = "This is a string that should be encrypted";
-
-		logger << "hash_ct:\t" << utils::fnv1a.hash_ct(str.c_str()) << endl;
-		logger << "hash:\t" << utils::fnv1a.hash(str.c_str()) << endl;
-
+		logger << "xor test start" << endl;
+		logger << "xor:   " << xorstr_("This is a string that should be encrypted") << endl;
 
 
 		return true;
