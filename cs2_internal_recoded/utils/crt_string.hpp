@@ -89,7 +89,7 @@ namespace crt {
 		return pBufferBegin - szOutBuffer;
 	}
 
-	std::wstring string2wstring(const std::string& str) {
+	inline std::wstring string2wstring(const std::string& str) {
 		std::size_t len = std::mbstowcs(nullptr, str.c_str(), 0);
 		if (len == static_cast<std::size_t>(-1)) {
 			throw std::runtime_error("Invalid multibyte sequence");
@@ -100,7 +100,7 @@ namespace crt {
 		return wstr;
 	}
 
-	std::string wstring2string(const std::wstring& wstr) {
+	inline std::string wstring2string(const std::wstring& wstr) {
 		std::size_t len = std::wcstombs(nullptr, wstr.c_str(), 0);
 		if (len == static_cast<std::size_t>(-1)) {
 			throw std::runtime_error("Invalid wide character sequence");

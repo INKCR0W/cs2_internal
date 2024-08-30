@@ -1,8 +1,5 @@
 #pragma once
 
-// fuck this
-#define _CRT_SECURE_NO_WARNINGS
-
 #ifdef _DEBUG
 #define _LOG_CONSOLE
 #else
@@ -69,6 +66,11 @@ namespace log_system {
 			uint16_t mode;
 		};
 
+		struct end_t
+		{
+			bool line;
+		};
+
 #pragma endregion
 
 
@@ -76,7 +78,6 @@ namespace log_system {
 		~log_class();
 
 		const bool setup();
-		static log_class& get_instance();
 		
 		const bool attach_console(const wchar_t* console_title = nullptr);
 		void detach_console() const;
@@ -92,15 +93,22 @@ namespace log_system {
 		log_class& operator<<(const bool value);
 
 		log_class& operator<<(const color_t color);
-
 		log_class& operator<<(const mode_t level);
+		
+		log_class& operator<<(const end_t end);
 
-		const color_t set_color(uint16_t color);
-		const mode_t set_level(uint16_t level);
+		template <typename T> requires std::is_integral_v<T>
+		log_class& operator<<(const T value)
+		{
+			write_message(std::to_string(value));
+			return *this;
+		}
 
 
 
 	private:
+		bool ended = true;
+
 		HANDLE console_handle = INVALID_HANDLE_VALUE;
 		HANDLE file_handle = INVALID_HANDLE_VALUE;
 
@@ -109,4 +117,11 @@ namespace log_system {
 
 		void write_message(const std::string message);
 	};
+
+	const log_class::color_t set_color(uint16_t color);
+	const log_class::mode_t set_level(uint16_t level);
+
+	inline log_class::end_t end = { false };
+	inline log_class::end_t endl = { true };
+	inline log_class logger;
 }

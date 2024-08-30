@@ -13,9 +13,8 @@ namespace utils
 
 	class fnv1a_class {
 	public:
-		// use the default fnv1a_class()
 		fnv1a_class();
-		fnv1a_class(const uint32_t seed = 2166136261U, const uint32_t prime = 16777619U);
+		fnv1a_class(const uint32_t seed, const uint32_t prime);
 
 		fnv1a_class(const fnv1a_class& copy) = delete;
 		fnv1a_class& operator=(const fnv1a_class& other) = delete;
@@ -30,14 +29,14 @@ namespace utils
 	};
 
 
-	// The two strings here should change every time the project is updated
+	// The two strings here should be changed each time the project is updated
 	// Of course using two random numbers directly is also feasible
 	// But I think it's not enough RANDOM lol
 	// nwm, this is just a random shit
 	fnv1a_class::fnv1a_class() {
 		// This should be a random string
 		uint32_t fnv1a_seed = hash_ct("r7Xk3kvdSMyK4dCgBb31nHNDKR6ieqwO", 2166136261U);
-		// This should be another random string
+		// This should be a random string
 		uint32_t fnv1a_prime = hash_ct("jl3PCfiND4qPSiWjnRiG0oUxVYF2UnDJ", 2166136261U);
 	}
 
@@ -63,7 +62,7 @@ namespace utils
 		return hash;
 	}
 
-	constexpr const uint32_t fnv1a_class::hash_ct(const char* str, const uint32_t value = fnv1a_seed) noexcept {
+	constexpr const uint32_t fnv1a_class::hash_ct(const char* str, const uint32_t value) noexcept {
 		return !*str ? value : hash_ct(str + 1, static_cast<unsigned>(1ull * (value ^ static_cast<uint8_t>(*str)) * fnv1a_prime));
 	}
 
@@ -72,5 +71,5 @@ namespace utils
 	}
 
 
-	static fnv1a_class fnv1a;
+	inline fnv1a_class fnv1a;
 }

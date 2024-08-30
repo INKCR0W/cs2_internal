@@ -39,10 +39,6 @@ namespace log_system {
 #endif
 	}
 
-	log_class& log_class::get_instance() {
-		static log_class instance;
-		return instance;
-	}
 
 	const bool log_class::attach_console(const wchar_t* console_title) {
 		const std::wstring random_title = utils::random_wstring();
@@ -131,31 +127,44 @@ namespace log_system {
 
 		const char* level = nullptr;
 		uint16_t level_color = LOG_COLOR_FORE_WHITE;
-		switch (current_log_level)
-		{
-		case log_level::LOG_INFO:
-			level = " [INFO] ";
-			level_color = LOG_COLOR_FORE_WHITE;
-			break;
-		case log_level::LOG_WARNING:
-			level = " [WARNING] ";
-			level_color = LOG_COLOR_FORE_YELLOW;
-			break;
-		case log_level::LOG_ERROR:
-			level = " [ERROR] ";
-			level_color = LOG_COLOR_FORE_RED;
-			break;
-		default:
-			level = " ";
+
+
+		// [YEAR-MONTH-DAY HOUR:MINUTE:SECOND]
+		std::string curr_time;
+
+		if (ended) {
+			curr_time = std::format("[{}-{:02}-{:02} {:02}:{:02}:{:02}]", time_point.tm_year + 1900, time_point.tm_mon + 1, time_point.tm_mday, time_point.tm_hour, time_point.tm_min, time_point.tm_sec);
+
+			switch (current_log_level)
+			{
+			case log_level::LOG_INFO:
+				level = " [INFO] ";
+				level_color = LOG_COLOR_FORE_WHITE;
+				break;
+			case log_level::LOG_WARNING:
+				level = " [WARNING] ";
+				level_color = LOG_COLOR_FORE_YELLOW;
+				break;
+			case log_level::LOG_ERROR:
+				level = " [ERROR] ";
+				level_color = LOG_COLOR_FORE_RED;
+				break;
+			default:
+				level = " ";
+				level_color = current_log_color;
+				break;
+			}
+
+			ended = false;
+		}
+		else {
+			curr_time = "";
+
+			level = "";
 			level_color = current_log_color;
-			break;
 		}
 
-		// [DAY-MONTH-YEAR HOUR:MINUTE:SECOND]
-		std::string result_string =
-			std::format("[{:02}-{:02}-{} {:02}:{:02}:{:02}]", time_point.tm_mday, time_point.tm_mon, time_point.tm_year + 1900, time_point.tm_hour, time_point.tm_min, time_point.tm_sec)
-			+ level
-			+ message;
+		std::string result_string = curr_time + level + message;
 
 #ifdef _LOG_CONSOLE
 		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(level_color));
@@ -195,6 +204,7 @@ namespace log_system {
 	}
 
 	log_class& log_class::operator<<(const color_t color) {
+		current_log_color = color.clr;
 #ifdef _LOG_CONSOLE
 		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(color.clr));
 #endif
@@ -206,12 +216,19 @@ namespace log_system {
 		return *this;
 	}
 
-	const log_class::color_t log_class::set_color(uint16_t color) {
-		current_log_color = color;
+	log_class& log_class::operator<<(const end_t end) {
+		if (end.line)
+			write_message("\n");
+		ended = true;
+
+		return *this;
+	}
+
+	const log_class::color_t set_color(uint16_t color) {
 		return { color };
 	}
 
-	const log_class::mode_t log_class::set_level(uint16_t level) {
+	const log_class::mode_t set_level(uint16_t level) {
 		return { level };
 	}
 }

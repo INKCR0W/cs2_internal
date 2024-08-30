@@ -2,6 +2,9 @@
 #include <Windows.h>
 
 #include "cheat.hpp"
+#include "../utils/fnv1a.hpp"
+
+#include <string>
 
 namespace cheat {
 	bool cs2_internal::setup() {
@@ -9,15 +12,25 @@ namespace cheat {
 
 		using namespace log_system;
 
-		log_class& logger = log_class::get_instance();
 		logger.setup();
 
-		logger << logger.set_level(log_level::LOG_INFO) << "logger inited\n"
-			<< logger.set_level(log_level::LOG_WARNING) << "warning\n"
-			<< logger.set_level(log_level::LOG_ERROR) << "error\n"
-			<< logger.set_level(log_level::LOG_NONE) << "none\n"
-			<< logger.set_color(log_color_flags::LOG_COLOR_FORE_BLUE) << "blue\n"
-			<< logger.set_color(log_color_flags::LOG_COLOR_FORE_GREEN) << "green\n";
+		logger << set_level(log_level::LOG_INFO) << "logger inited" << endl
+			<< set_level(log_level::LOG_WARNING) << "warning" << endl
+			<< set_level(log_level::LOG_ERROR) << "error" << endl
+			<< set_level(log_level::LOG_NONE) << "none" << endl
+			<< set_color(log_color_flags::LOG_COLOR_FORE_BLUE) << "blue" << endl
+			<< set_color(log_color_flags::LOG_COLOR_FORE_GREEN) << "green" << endl;
+
+
+		logger << "fnv1a test start" << endl;
+		using std::string;
+
+		string str = "This is a string that should be encrypted";
+
+		logger << "hash_ct:\t" << utils::fnv1a.hash_ct(str.c_str()) << endl;
+		logger << "hash:\t" << utils::fnv1a.hash(str.c_str()) << endl;
+
+
 
 		return true;
 	}
