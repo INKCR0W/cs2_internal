@@ -93,10 +93,27 @@ namespace log_system {
 			}
 		}
 
-		log_path += "\\himc.log";
+		auto now = std::chrono::system_clock::now();
+		auto in_time_t = std::chrono::system_clock::to_time_t(now);
+		std::stringstream ss;
+		ss << log_path << "\\log_" << std::put_time(std::localtime(&in_time_t), "%Y%m%d_%H%M%S") << ".txt";
+		std::string new_log_file = ss.str();
 
-		if (file_handle = ::CreateFile(log_path.c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr); file_handle == INVALID_HANDLE_VALUE)
+		if (file_handle = ::CreateFile(new_log_file.c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr); file_handle == INVALID_HANDLE_VALUE)
 			return false;
+
+		std::vector<std::filesystem::path> logFiles;
+		for (const auto& entry : std::filesystem::directory_iterator(log_path)) {
+			if (entry.path().extension() == ".txt") {
+				logFiles.push_back(entry.path());
+			}
+		}
+		std::sort(logFiles.begin(), logFiles.end(), std::greater<std::filesystem::path>());
+
+		while (logFiles.size() > 10) {
+			std::filesystem::remove(logFiles.back());
+			logFiles.pop_back();
+		}
 
 		::WriteFile(file_handle, "\xEF\xBB\xBF", 3UL, nullptr, nullptr);
 
@@ -146,7 +163,7 @@ namespace log_system {
 #endif
 
 #ifdef _LOG_FILE
-		::WriteFile(file_handle, result_string.c_str(), result_string.length(), nullptr, nullptr);
+		::WriteFile(file_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
 #endif
 	}
 
