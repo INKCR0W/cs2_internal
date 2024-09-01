@@ -8,106 +8,141 @@
 #include <stdexcept>
 
 namespace crt {
-	template <typename any_char> requires (std::is_same_v<any_char, char> || std::is_same_v<any_char, wchar_t>)
-	constexpr std::size_t str_length(const any_char* tszSource)
-	{
-		const any_char* tszSourceEnd = tszSource;
+	class crt_class {
+	public:
+		crt_class() = default;
+		~crt_class() = default;
 
-		while (*tszSourceEnd != any_char('\0'))
-			++tszSourceEnd;
-
-		return tszSourceEnd - tszSource;
-	}
-
-	template <typename any_char> requires (std::is_same_v<any_char, char> || std::is_same_v<any_char, wchar_t>)
-	int StringLengthMultiByte(const any_char* tszBegin, const any_char* tszEnd = nullptr)
-	{
-		int nOctetCount = 0;
-
-		// go through each character until terminating null up to end if given
-		while (*tszBegin != any_char('\0') && (tszEnd == nullptr || tszBegin < tszEnd))
+		template <typename any_char> requires (std::is_same_v<any_char, char> || std::is_same_v<any_char, wchar_t>)
+			constexpr std::size_t str_length(const any_char* tszSource)
 		{
-			if (const std::uint32_t uChar = static_cast<std::uint32_t>(*tszBegin++); uChar < 0x80)
-				nOctetCount += 1;
-			else if (uChar < 0x800)
-				nOctetCount += 2;
-			else if (uChar < 0x10000)
-				nOctetCount += 3;
-			else if (uChar <= 0x7FFFFFFF)
-				nOctetCount += 4;
+			const any_char* tszSourceEnd = tszSource;
+
+			while (*tszSourceEnd != any_char('\0'))
+				++tszSourceEnd;
+
+			return tszSourceEnd - tszSource;
 		}
 
-		return nOctetCount;
-	}
-
-	inline std::ptrdiff_t CharMultiByteFromUTF32(char* szOutBuffer, const std::size_t nOutBufferSize, const std::uint32_t uChar)
-	{
-		// utf-8
-		if (uChar < 0x80)
+		template <typename any_char> requires (std::is_same_v<any_char, char> || std::is_same_v<any_char, wchar_t>)
+			int StringLengthMultiByte(const any_char* tszBegin, const any_char* tszEnd = nullptr)
 		{
-			szOutBuffer[0] = static_cast<char>(uChar);
-			return 1;
+			int nOctetCount = 0;
+
+			// go through each character until terminating null up to end if given
+			while (*tszBegin != any_char('\0') && (tszEnd == nullptr || tszBegin < tszEnd))
+			{
+				if (const std::uint32_t uChar = static_cast<std::uint32_t>(*tszBegin++); uChar < 0x80)
+					nOctetCount += 1;
+				else if (uChar < 0x800)
+					nOctetCount += 2;
+				else if (uChar < 0x10000)
+					nOctetCount += 3;
+				else if (uChar <= 0x7FFFFFFF)
+					nOctetCount += 4;
+			}
+
+			return nOctetCount;
 		}
-		// utf-16
-		if (uChar < 0x800 && nOutBufferSize >= 2U)
+
+		inline std::ptrdiff_t CharMultiByteFromUTF32(char* szOutBuffer, const std::size_t nOutBufferSize, const std::uint32_t uChar)
 		{
-			szOutBuffer[0] = static_cast<char>(0xC0 + (uChar >> 6U));
-			szOutBuffer[1] = static_cast<char>(0x80 + (uChar & 0x3F));
-			return 2;
+			// utf-8
+			if (uChar < 0x80)
+			{
+				szOutBuffer[0] = static_cast<char>(uChar);
+				return 1;
+			}
+			// utf-16
+			if (uChar < 0x800 && nOutBufferSize >= 2U)
+			{
+				szOutBuffer[0] = static_cast<char>(0xC0 + (uChar >> 6U));
+				szOutBuffer[1] = static_cast<char>(0x80 + (uChar & 0x3F));
+				return 2;
+			}
+			// utf-16
+			if (uChar < 0x10000 && nOutBufferSize >= 3U)
+			{
+				szOutBuffer[0] = static_cast<char>(0xE0 + (uChar >> 12U));
+				szOutBuffer[1] = static_cast<char>(0x80 + ((uChar >> 6U) & 0x3F));
+				szOutBuffer[2] = static_cast<char>(0x80 + (uChar & 0x3F));
+				return 3;
+			}
+			// utf-32
+			if (uChar <= 0x10FFFF && nOutBufferSize >= 4U)
+			{
+				szOutBuffer[0] = static_cast<char>(0xF0 + (uChar >> 18U));
+				szOutBuffer[1] = static_cast<char>(0x80 + ((uChar >> 12U) & 0x3F));
+				szOutBuffer[2] = static_cast<char>(0x80 + ((uChar >> 6U) & 0x3F));
+				szOutBuffer[3] = static_cast<char>(0x80 + (uChar & 0x3F));
+				return 4;
+			}
+
+			// invalid code point
+			return 0;
 		}
-		// utf-16
-		if (uChar < 0x10000 && nOutBufferSize >= 3U)
+
+		__forceinline std::ptrdiff_t str_unicode2multibyte(char* szOutBuffer, const std::size_t nOutBufferLength, const wchar_t* wszBegin, const wchar_t* wszEnd = nullptr)
 		{
-			szOutBuffer[0] = static_cast<char>(0xE0 + (uChar >> 12U));
-			szOutBuffer[1] = static_cast<char>(0x80 + ((uChar >> 6U) & 0x3F));
-			szOutBuffer[2] = static_cast<char>(0x80 + (uChar & 0x3F));
-			return 3;
+			char* pBufferBegin = szOutBuffer;
+			const char* pBufferEnd = szOutBuffer + nOutBufferLength;
+
+			while (pBufferBegin < pBufferEnd - 1 && (wszEnd == nullptr || wszBegin < wszEnd) && *wszBegin != L'\0')
+				pBufferBegin += CharMultiByteFromUTF32(pBufferBegin, pBufferEnd - pBufferBegin - 1, *wszBegin++);
+
+			*pBufferBegin = '\0';
+			return pBufferBegin - szOutBuffer;
 		}
-		// utf-32
-		if (uChar <= 0x10FFFF && nOutBufferSize >= 4U)
+
+		std::wstring string2wstring(const std::string& str) {
+			std::size_t len = std::mbstowcs(nullptr, str.c_str(), 0);
+			if (len == static_cast<std::size_t>(-1)) {
+				throw std::runtime_error("Invalid multibyte sequence");
+			}
+
+			std::wstring wstr(len, L'\0');
+			std::mbstowcs(&wstr[0], str.c_str(), len);
+			return wstr;
+		}
+
+		std::string wstring2string(const std::wstring& wstr) {
+			std::size_t len = std::wcstombs(nullptr, wstr.c_str(), 0);
+			if (len == static_cast<std::size_t>(-1)) {
+				throw std::runtime_error("Invalid wide character sequence");
+			}
+
+			std::string str(len, '\0');
+			std::wcstombs(&str[0], wstr.c_str(), len);
+			return str;
+		}
+
+		// compare two strings, alternative of 'strcmp()', 'wcscmp()'
+		// remarks: performs a signed/unsigned character comparison depending on the string type
+		// returns: <0 - if @a'tszLeft' less than @a'tszRight', 0 - if @a'tszLeft' is identical to @a'tszRight', >0 - if @a'tszLeft' greater than @a'tszRight'
+		template <typename C> requires (std::is_same_v<C, char> || std::is_same_v<C, wchar_t>)
+		constexpr int string_compare(const C* tszLeft, const C* tszRight)
 		{
-			szOutBuffer[0] = static_cast<char>(0xF0 + (uChar >> 18U));
-			szOutBuffer[1] = static_cast<char>(0x80 + ((uChar >> 12U) & 0x3F));
-			szOutBuffer[2] = static_cast<char>(0x80 + ((uChar >> 6U) & 0x3F));
-			szOutBuffer[3] = static_cast<char>(0x80 + (uChar & 0x3F));
-			return 4;
+			if (tszLeft == nullptr)
+				return -1;
+
+			if (tszRight == nullptr)
+				return 1;
+
+			using ComparisonType_t = std::conditional_t<std::is_same_v<C, char>, std::uint8_t, std::conditional_t<sizeof(wchar_t) == 2U, std::int16_t, std::int32_t>>;
+
+			ComparisonType_t nLeft, nRight;
+			do
+			{
+				nLeft = static_cast<ComparisonType_t>(*tszLeft++);
+				nRight = static_cast<ComparisonType_t>(*tszRight++);
+
+				if (nLeft == C('\0'))
+					break;
+			} while (nLeft == nRight);
+
+			return nLeft - nRight;
 		}
+	};
 
-		// invalid code point
-		return 0;
-	}
-
-	__forceinline std::ptrdiff_t str_unicode2multibyte(char* szOutBuffer, const std::size_t nOutBufferLength, const wchar_t* wszBegin, const wchar_t* wszEnd = nullptr)
-	{
-		char* pBufferBegin = szOutBuffer;
-		const char* pBufferEnd = szOutBuffer + nOutBufferLength;
-
-		while (pBufferBegin < pBufferEnd - 1 && (wszEnd == nullptr || wszBegin < wszEnd) && *wszBegin != L'\0')
-			pBufferBegin += CharMultiByteFromUTF32(pBufferBegin, pBufferEnd - pBufferBegin - 1, *wszBegin++);
-
-		*pBufferBegin = '\0';
-		return pBufferBegin - szOutBuffer;
-	}
-
-	inline std::wstring string2wstring(const std::string& str) {
-		std::size_t len = std::mbstowcs(nullptr, str.c_str(), 0);
-		if (len == static_cast<std::size_t>(-1)) {
-			throw std::runtime_error("Invalid multibyte sequence");
-		}
-
-		std::wstring wstr(len, L'\0');
-		std::mbstowcs(&wstr[0], str.c_str(), len);
-		return wstr;
-	}
-
-	inline std::string wstring2string(const std::wstring& wstr) {
-		std::size_t len = std::wcstombs(nullptr, wstr.c_str(), 0);
-		if (len == static_cast<std::size_t>(-1)) {
-			throw std::runtime_error("Invalid wide character sequence");
-		}
-
-		std::string str(len, '\0');
-		std::wcstombs(&str[0], wstr.c_str(), len);
-		return str;
-	}
+	inline crt_class crt;
 }

@@ -137,15 +137,15 @@ namespace log_system {
 
 			switch (current_log_level)
 			{
-			case log_level::LOG_INFO:
+			case log_level_flags::LOG_INFO:
 				level = " [INFO] ";
 				level_color = LOG_COLOR_FORE_WHITE;
 				break;
-			case log_level::LOG_WARNING:
+			case log_level_flags::LOG_WARNING:
 				level = " [WARNING] ";
 				level_color = LOG_COLOR_FORE_YELLOW;
 				break;
-			case log_level::LOG_ERROR:
+			case log_level_flags::LOG_ERROR:
 				level = " [ERROR] ";
 				level_color = LOG_COLOR_FORE_RED;
 				break;
@@ -188,12 +188,12 @@ namespace log_system {
 	}
 
 	log_class& log_class::operator<<(const wchar_t* wchar_message) {
-		write_message(crt::wstring2string(wchar_message));
+		write_message(crt::crt.wstring2string(wchar_message));
 		return *this;
 	}
 
 	log_class& log_class::operator<<(const std::wstring wchar_message) {
-		write_message(crt::wstring2string(wchar_message));
+		write_message(crt::crt.wstring2string(wchar_message));
 		return *this;
 	}
 

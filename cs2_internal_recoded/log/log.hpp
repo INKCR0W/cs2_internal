@@ -14,7 +14,7 @@
 #include <string>
 
 namespace log_system {
-	enum log_level : std::uint16_t
+	enum log_level_flags : std::uint16_t
 	{
 		LOG_NONE = 0,
 		LOG_INFO,
@@ -112,14 +112,14 @@ namespace log_system {
 		HANDLE console_handle = INVALID_HANDLE_VALUE;
 		HANDLE file_handle = INVALID_HANDLE_VALUE;
 
-		uint16_t current_log_level = log_level::LOG_INFO;
+		uint16_t current_log_level = log_level_flags::LOG_INFO;
 		uint16_t current_log_color = log_color_flags::LOG_COLOR_FORE_WHITE;
 
 		void write_message(const std::string message);
 	};
 
-	const log_class::color_t set_color(uint16_t color);
-	const log_class::mode_t set_level(uint16_t level);
+	const log_class::color_t set_color(uint16_t color = log_color_flags::LOG_COLOR_FORE_WHITE);
+	const log_class::mode_t set_level(uint16_t level = log_level_flags::LOG_NONE);
 
 	inline log_class::end_t end = { false };
 	inline log_class::end_t endl = { true };

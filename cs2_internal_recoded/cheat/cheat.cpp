@@ -1,31 +1,29 @@
+#include "cheat.hpp"
+
 #include <iostream>
 #include <Windows.h>
-
-#include "cheat.hpp"
-#include "../utils/fnv1a.hpp"
-#include "../third_party/xorstr.hpp"
-
 #include <string>
+
+#include "../utils/fnv1a.hpp"
+#include "../utils/xorstr.hpp"
+#include "../windows_api/win_api.hpp"
+
 
 namespace cheat {
 	bool cs2_internal::setup() {
-		// TODO
-
-#pragma region testing_code
-
+		using namespace windows_api;
 		using namespace log_system;
 
-		logger.setup();
+		if (!winapi.setup()) {
+			return false;
+		}
 
-		jm::xor_string encrypted_str = xorstr("This is a string that should be save in variable");
-
-		logger << "This is an unencrypted string" << endl;
-		logger << xorstr("This is an encrypted string").get() << endl;
-		logger << xorstr_("This is an encrypted string") << endl;
-
-		logger << encrypted_str << endl;
-#pragma endregion
-
+		if (logger.setup()) {
+			logger << set_level(log_level_flags::LOG_INFO) << xorstr_("The log system initialization is complete") << set_level() << endl;
+		}
+		else {
+			return false;
+		}
 
 		return true;
 	}

@@ -42,6 +42,12 @@
     <ClCompile Include="log\log.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="windows_api\win_api.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="memory\memory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -101,13 +107,25 @@
     <ClInclude Include="offset\offset.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="third_party\xorstr.hpp">
+    <ClInclude Include="utils\xorstr.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="utils\crt_string.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="utils\malloc.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="game\game_modules.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="windows_api\win_api.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="memory\memory.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\pe64.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

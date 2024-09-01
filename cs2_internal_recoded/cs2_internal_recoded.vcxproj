@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -156,17 +156,21 @@
     <ClCompile Include="cheat\cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="log\log.cpp" />
+    <ClCompile Include="memory\memory.cpp" />
     <ClCompile Include="third_party\imgui\imgui.cpp" />
     <ClCompile Include="third_party\imgui\imgui_draw.cpp" />
     <ClCompile Include="third_party\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="third_party\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="third_party\imgui\imgui_tables.cpp" />
     <ClCompile Include="third_party\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="windows_api\win_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat\cheat.hpp" />
     <ClInclude Include="core\core.hpp" />
+    <ClInclude Include="game\game_modules.hpp" />
     <ClInclude Include="log\log.hpp" />
+    <ClInclude Include="memory\memory.hpp" />
     <ClInclude Include="offset\client_dll.hpp" />
     <ClInclude Include="offset\offset.hpp" />
     <ClInclude Include="offset\offsets.hpp" />
@@ -180,12 +184,14 @@
     <ClInclude Include="third_party\imgui\imstb_truetype.h" />
     <ClInclude Include="third_party\minhook\include\MinHook.h" />
     <ClInclude Include="hook\hook_manager.hpp" />
-    <ClInclude Include="third_party\xorstr.hpp" />
+    <ClInclude Include="utils\pe64.hpp" />
+    <ClInclude Include="utils\xorstr.hpp" />
     <ClInclude Include="utils\crt_string.hpp" />
     <ClInclude Include="utils\ct_constants.hpp" />
     <ClInclude Include="utils\fnv1a.hpp" />
     <ClInclude Include="utils\malloc.hpp" />
     <ClInclude Include="utils\random.hpp" />
+    <ClInclude Include="windows_api\win_api.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />

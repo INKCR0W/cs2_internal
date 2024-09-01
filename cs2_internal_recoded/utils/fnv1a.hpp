@@ -52,7 +52,7 @@ namespace utils
 		const char* data = const_cast<char*>(str);
 		uint32_t hash = fnv1a_seed;
 
-		for (size_t i = 0U; i < crt::str_length(str); ++i)
+		for (size_t i = 0U; i < crt::crt.str_length(str); ++i)
 		{
 			const uint8_t value = data[i];
 			hash = hash ^ value;

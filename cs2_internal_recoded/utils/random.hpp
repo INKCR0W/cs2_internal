@@ -51,6 +51,6 @@ namespace utils {
     /// <returns>The <c>random</c> wchar string</returns>
     const std::wstring random_wstring(size_t length = 0, const std::string& charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=-[]{};':,.<>/?") noexcept
     {
-        return crt::string2wstring(random_string(length, charset));
+        return crt::crt.string2wstring(random_string(length, charset));
     }
 }
