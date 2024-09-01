@@ -125,3 +125,6 @@ namespace log_system {
 	inline log_class::end_t endl = { true };
 	inline log_class logger;
 }
+
+
+
