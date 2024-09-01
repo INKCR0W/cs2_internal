@@ -11,24 +11,20 @@ namespace cheat {
 	bool cs2_internal::setup() {
 		// TODO
 
+#pragma region testing_code
+
 		using namespace log_system;
 
 		logger.setup();
 
-		logger << set_level(log_level::LOG_INFO) << "logger inited" << endl
-			<< set_level(log_level::LOG_WARNING) << "warning" << endl
-			<< set_level(log_level::LOG_ERROR) << "error" << endl
-			<< set_level(log_level::LOG_NONE) << "none" << endl
-			<< set_color(log_color_flags::LOG_COLOR_FORE_BLUE) << "blue" << endl
-			<< set_color(log_color_flags::LOG_COLOR_FORE_GREEN) << "green" << endl;
+		jm::xor_string encrypted_str = xorstr("This is a string that should be save in variable");
 
-		logger << set_color(log_color_flags::LOG_COLOR_FORE_WHITE) << end;
+		logger << "This is an unencrypted string" << endl;
+		logger << xorstr("This is an encrypted string").get() << endl;
+		logger << xorstr_("This is an encrypted string") << endl;
 
-		logger << "fnv1a test start" << endl;
-		using std::string;
-
-		logger << "xor test start" << endl;
-		logger << "xor:   " << xorstr_("This is a string that should be encrypted") << endl;
+		logger << encrypted_str << endl;
+#pragma endregion
 
 
 		return true;

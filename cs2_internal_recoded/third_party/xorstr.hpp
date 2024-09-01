@@ -202,6 +202,10 @@ namespace jm
 
 			return (pointer)(_storage);
 		}
+
+		operator const char* () {
+			return this->crypt_get();
+		}
 	};
 
 	template <class L, std::size_t Size, std::size_t... Indices>
