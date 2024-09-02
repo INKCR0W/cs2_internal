@@ -42,9 +42,6 @@
     <ClCompile Include="log\log.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="windows_api\win_api.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="memory\memory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="game\game_modules.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_api\win_api.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="memory\memory.hpp">

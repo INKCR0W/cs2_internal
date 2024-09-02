@@ -589,6 +589,34 @@ struct _TEB
 	ULONGLONG ExtendedFeatureDisableMask; //0x1848
 };
 
+
+typedef struct _PEB_LOADER_DATA
+{
+	ULONG Length;
+	BOOLEAN Initialized;
+	PVOID SsHandle;
+	LIST_ENTRY InLoadOrderModuleList;
+	LIST_ENTRY InMemoryOrderModuleList;
+	LIST_ENTRY InInitializationOrderModuleList;
+} PEB_LOADER_DATA, * PPEB_LOADER_DATA;
+
+typedef struct _LDR_MODULE
+{
+	LIST_ENTRY InLoadOrderModuleList;
+	LIST_ENTRY InMemoryOrderModuleList;
+	LIST_ENTRY InInitializationOrderModuleList;
+	PVOID BaseAddress;
+	PVOID EntryPoint;
+	ULONG SizeOfImage;
+	UNICODE_STRING FullDllName;
+	UNICODE_STRING BaseDllName;
+	ULONG Flags;
+	SHORT LoadCount;
+	SHORT TlsIndex;
+	LIST_ENTRY HashTableEntry;
+	ULONG TimeDateStamp;
+} LDR_MODULE, * PLDR_MODULE;
+
+
 static_assert(sizeof(_TEB) == 0x1850);
 #pragma endregion
-

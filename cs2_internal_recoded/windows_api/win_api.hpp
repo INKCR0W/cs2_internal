@@ -11,8 +11,28 @@
 #include <functional>
 // used: runtime_error
 #include <stdexcept>
+// used: hash_ct
+#include "../utils/fnv1a.hpp"
 
 namespace windows_api{
+
+
+	enum function_hash : uint32_t {
+		AllocConsole =				FNV1A("AllocConsole"),
+		CreateFileW =				FNV1A("CreateFileW"),
+		SetConsoleTitleW =			FNV1A("SetConsoleTitleW"),
+		CloseHandle =				FNV1A("CloseHandle"),
+		FreeConsole =				FNV1A("FreeConsole"),
+		GetConsoleWindow =			FNV1A("GetConsoleWindow"),
+		PostMessageW =				FNV1A("PostMessageW"),
+		WriteFile =					FNV1A("WriteFile"),
+		SetConsoleTextAttribute =	FNV1A("SetConsoleTextAttribute"),
+		WriteConsoleA =				FNV1A("WriteConsoleA"),
+		DisableThreadLibraryCalls =	FNV1A("DisableThreadLibraryCalls"),
+		CreateThread =				FNV1A("CreateThread"),
+	};
+
+
 	class win_api {
 	public:
 		win_api() = default;
@@ -20,27 +40,41 @@ namespace windows_api{
 
 		const bool setup();
 
-        template<typename... Args>
-        auto operator()(const std::string& func_name, Args&&... args) -> decltype(auto) {
-            auto it = func_ptr.find(func_name);
-            if (it == func_ptr.end()) {
-                throw std::runtime_error("Function not found: " + func_name);
-            }
+		BOOL fn_AllocConsole();
+		HANDLE fn_CreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+		BOOL fn_SetConsoleTitleW(LPCWSTR lpConsoleTitle);
+		BOOL fn_CloseHandle(HANDLE hObject);
+		BOOL fn_FreeConsole();
+		HWND fn_GetConsoleWindow();
+		BOOL fn_PostMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+		BOOL fn_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
+		BOOL fn_SetConsoleTextAttribute(HANDLE hConsoleOutput, WORD wAttributes);
+		BOOL fn_WriteConsoleA(HANDLE hConsoleOutput, const VOID* lpBuffer, DWORD nNumberOfCharsToWrite, LPDWORD lpNumberOfCharsWritten, LPVOID lpReserved);
+		BOOL fn_DisableThreadLibraryCalls(HMODULE hModule);
+		HANDLE fn_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId);
 
-            using FuncType = std::function<decltype(std::invoke(reinterpret_cast<std::add_pointer_t<decltype(args)...>>(nullptr), std::forward<Args>(args)...))(Args...)>;
-
-            FuncType func = reinterpret_cast<FuncType>(it->second);
-            return std::invoke(func, std::forward<Args>(args)...);
-        }
 
 	private:
-        bool inited = false;
+		using FN_AllocConsole = BOOL(WINAPI*)();
+		using FN_CreateFileW = HANDLE(WINAPI*)(LPCWSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
+		using FN_SetConsoleTitleW = BOOL(WINAPI*)(LPCWSTR);
+		using FN_CloseHandle = BOOL(WINAPI*)(HANDLE);
+		using FN_FreeConsole = BOOL(WINAPI*)();
+		using FN_GetConsoleWindow = HWND(WINAPI*)();
+		using FN_PostMessageW = BOOL(WINAPI*)(HWND, UINT, WPARAM, LPARAM);
+		using FN_WriteFile = BOOL(WINAPI*)(HANDLE, LPCVOID, DWORD, LPDWORD, LPOVERLAPPED);
+		using FN_SetConsoleTextAttribute = BOOL(WINAPI*)(HANDLE, WORD);
+		using FN_WriteConsoleA = BOOL(WINAPI*)(HANDLE, const VOID*, DWORD, LPDWORD, LPVOID);
+		using FN_DisableThreadLibraryCalls = BOOL(WINAPI*)(HMODULE);
+		using FN_CreateThread = HANDLE(WINAPI*)(LPSECURITY_ATTRIBUTES, SIZE_T, LPTHREAD_START_ROUTINE, LPVOID, DWORD, LPDWORD);
+
+        // bool inited = false;
 
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;
 
-        std::unordered_map<std::string, void*> func_ptr;
-        std::unordered_map<std::string, HMODULE> func_info;
+		std::unordered_map<uint32_t, void*> func_ptr = {};
+        // std::unordered_map<std::string, HMODULE> func_info;
 	};
 
     inline win_api winapi;

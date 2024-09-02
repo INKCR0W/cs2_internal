@@ -19,6 +19,8 @@
 #include "../utils/crt_string.hpp"
 
 namespace log_system {
+	// using windows_api::winapi;
+
 	log_class::~log_class() {
 #ifdef _LOG_CONSOLE
 		detach_console();

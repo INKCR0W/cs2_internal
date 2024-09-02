@@ -12,8 +12,9 @@ namespace cheat {
 
 		// The setup function, run this before everything
 		bool setup();
-		// This one should run in a loop
 		bool run();
+
+		static DWORD WINAPI ren(LPVOID lpParameter);
 
 		// Return a static cs2_internal object
 		static cs2_internal& get_instance();
