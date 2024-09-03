@@ -45,6 +45,9 @@
     <ClCompile Include="memory\memory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="windows_api\win_api.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -120,6 +123,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="utils\pe64.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="windows_api\win_api.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

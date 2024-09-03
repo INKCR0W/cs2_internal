@@ -163,6 +163,7 @@
     <ClCompile Include="third_party\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="third_party\imgui\imgui_tables.cpp" />
     <ClCompile Include="third_party\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="windows_api\win_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat\cheat.hpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="utils\fnv1a.hpp" />
     <ClInclude Include="utils\malloc.hpp" />
     <ClInclude Include="utils\random.hpp" />
+    <ClInclude Include="windows_api\win_api.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />

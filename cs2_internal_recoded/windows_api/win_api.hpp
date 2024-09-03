@@ -16,8 +16,9 @@
 
 namespace windows_api{
 
+	using hash_t = uint32_t;
 
-	enum function_hash : uint32_t {
+	enum function_hash : hash_t {
 		AllocConsole =				FNV1A("AllocConsole"),
 		CreateFileW =				FNV1A("CreateFileW"),
 		SetConsoleTitleW =			FNV1A("SetConsoleTitleW"),
@@ -68,13 +69,10 @@ namespace windows_api{
 		using FN_DisableThreadLibraryCalls = BOOL(WINAPI*)(HMODULE);
 		using FN_CreateThread = HANDLE(WINAPI*)(LPSECURITY_ATTRIBUTES, SIZE_T, LPTHREAD_START_ROUTINE, LPVOID, DWORD, LPDWORD);
 
-        // bool inited = false;
-
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;
 
 		std::unordered_map<uint32_t, void*> func_ptr = {};
-        // std::unordered_map<std::string, HMODULE> func_info;
 	};
 
     inline win_api winapi;

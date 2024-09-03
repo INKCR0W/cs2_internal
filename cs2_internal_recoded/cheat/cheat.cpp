@@ -8,12 +8,17 @@
 #include "../utils/fnv1a.hpp"
 #include "../utils/xorstr.hpp"
 #include "../memory/memory.hpp"
+#include "../windows_api/win_api.hpp"
 
 
 namespace cheat {
 	bool cs2_internal::setup() {
 		using namespace log_system;
 		using namespace utils;
+
+		if (!windows_api::winapi.setup()) {
+			return false;
+		}
 
 		if (logger.setup()) {
 			logger << set_level(log_level_flags::LOG_INFO) << xorstr_("The log system initialization is complete") << set_level() << endl;

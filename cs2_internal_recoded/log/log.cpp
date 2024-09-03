@@ -18,8 +18,10 @@
 // used: wstring2string
 #include "../utils/crt_string.hpp"
 
+#include "../windows_api/win_api.hpp"
+
 namespace log_system {
-	// using windows_api::winapi;
+	using windows_api::winapi;
 
 	log_class::~log_class() {
 #ifdef _LOG_CONSOLE
@@ -48,8 +50,11 @@ namespace log_system {
 			console_title = random_title.c_str();
 		}
 
-		if (::AllocConsole() != TRUE)
+		if (winapi.fn_AllocConsole() != TRUE)
 			return false;
+
+		// if (::AllocConsole() != TRUE)
+		// 	return false;
 
 		if (console_handle = ::CreateFileW(L"CONOUT$", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); console_handle == INVALID_HANDLE_VALUE)
 			return false;
