@@ -27,8 +27,8 @@ namespace cheat {
 			return false;
 		}
 
-		logger << "kernal_32.dll: " << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle("KERNeL32.DLL")) << endl;
-		logger << "kernal_32.dll: " << reinterpret_cast<uint64_t>(GetModuleHandleA("kernel32.dll")) << endl;
+		logger << "kernal_32.dll: " << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle("kernel32.dll")) << endl;
+		logger << "client.dll: " << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle("client.dll")) << endl;
 
 		return true;
 	}

@@ -77,6 +77,19 @@ namespace windows_api{
         return reinterpret_cast<FN_CreateFileW>(func_ptr[hash])(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
     }
 
+    HANDLE win_api::fn_CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
+        hash_t hash = function_hash::CreateFileA;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("CreateFileA"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : CreateFileA"));
+                return HANDLE();
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_CreateFileA>(func_ptr[hash])(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+    }
+
     BOOL win_api::fn_SetConsoleTitleW(LPCWSTR lpConsoleTitle) {
         hash_t hash = function_hash::SetConsoleTitleW;
         if (func_ptr.find(hash) == func_ptr.end()) {

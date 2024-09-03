@@ -14,7 +14,7 @@ namespace cheat {
 		bool setup();
 		bool run();
 
-		static DWORD WINAPI ren(LPVOID lpParameter);
+		static DWORD __stdcall ren(LPVOID lpParameter);
 
 		// Return a static cs2_internal object
 		static cs2_internal& get_instance();

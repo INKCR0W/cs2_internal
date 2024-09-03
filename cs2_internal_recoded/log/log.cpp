@@ -17,7 +17,7 @@
 #include "../core/core.hpp"
 // used: wstring2string
 #include "../utils/crt_string.hpp"
-
+// used: windows api
 #include "../windows_api/win_api.hpp"
 
 namespace log_system {
@@ -56,23 +56,23 @@ namespace log_system {
 		// if (::AllocConsole() != TRUE)
 		// 	return false;
 
-		if (console_handle = ::CreateFileW(L"CONOUT$", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); console_handle == INVALID_HANDLE_VALUE)
+		if (console_handle = winapi.fn_CreateFileW(L"CONOUT$", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); console_handle == INVALID_HANDLE_VALUE)
 			return false;
 
-		if (::SetConsoleTitleW(console_title) != TRUE)
+		if (winapi.fn_SetConsoleTitleW(console_title) != TRUE)
 			return false;
 
 		return true;
 	}
 
 	void log_class::detach_console() const {
-		::CloseHandle(console_handle);
+		winapi.fn_CloseHandle(console_handle);
 
-		if (::FreeConsole() != TRUE)
+		if (winapi.fn_FreeConsole() != TRUE)
 			return;
 
-		if (const HWND console_window = ::GetConsoleWindow(); console_window != nullptr)
-			::PostMessageW(console_window, WM_CLOSE, 0U, 0L);
+		if (const HWND console_window = winapi.fn_GetConsoleWindow(); console_window != nullptr)
+			winapi.fn_PostMessageW(console_window, WM_CLOSE, 0U, 0L);
 	}
 
 	const bool log_class::open_file() {
@@ -102,7 +102,7 @@ namespace log_system {
 		ss << log_path << "\\log_" << std::put_time(std::localtime(&in_time_t), "%Y%m%d_%H%M%S") << ".txt";
 		std::string new_log_file = ss.str();
 
-		if (file_handle = ::CreateFile(new_log_file.c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr); file_handle == INVALID_HANDLE_VALUE)
+		if (file_handle = winapi.fn_CreateFileA(new_log_file.c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr); file_handle == INVALID_HANDLE_VALUE)
 			return false;
 
 		std::vector<std::filesystem::path> logFiles;
@@ -118,13 +118,13 @@ namespace log_system {
 			logFiles.pop_back();
 		}
 
-		::WriteFile(file_handle, "\xEF\xBB\xBF", 3UL, nullptr, nullptr);
+		winapi.fn_WriteFile(file_handle, "\xEF\xBB\xBF", 3UL, nullptr, nullptr);
 
 		return true;
 	}
 
 	void log_class::close_file() const {
-		::CloseHandle(file_handle);
+		winapi.fn_CloseHandle(file_handle);
 	}
 
 	void log_class::write_message(const std::string message) {
@@ -174,12 +174,12 @@ namespace log_system {
 		std::string result_string = curr_time + level + message;
 
 #ifdef _LOG_CONSOLE
-		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(level_color));
-		::WriteConsoleA(console_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
+		winapi.fn_SetConsoleTextAttribute(console_handle, static_cast<WORD>(level_color));
+		winapi.fn_WriteConsoleA(console_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
 #endif
 
 #ifdef _LOG_FILE
-		::WriteFile(file_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
+		winapi.fn_WriteFile(file_handle, result_string.c_str(), static_cast<DWORD>(result_string.length()), nullptr, nullptr);
 #endif
 	}
 
@@ -213,7 +213,7 @@ namespace log_system {
 	log_class& log_class::operator<<(const color_t color) {
 		current_log_color = color.clr;
 #ifdef _LOG_CONSOLE
-		::SetConsoleTextAttribute(console_handle, static_cast<WORD>(color.clr));
+		winapi.fn_SetConsoleTextAttribute(console_handle, static_cast<WORD>(color.clr));
 #endif
 		return *this;
 	}

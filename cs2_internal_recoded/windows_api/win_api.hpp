@@ -21,6 +21,7 @@ namespace windows_api{
 	enum function_hash : hash_t {
 		AllocConsole =				FNV1A("AllocConsole"),
 		CreateFileW =				FNV1A("CreateFileW"),
+		CreateFileA =				FNV1A("CreateFileA"),
 		SetConsoleTitleW =			FNV1A("SetConsoleTitleW"),
 		CloseHandle =				FNV1A("CloseHandle"),
 		FreeConsole =				FNV1A("FreeConsole"),
@@ -43,6 +44,7 @@ namespace windows_api{
 
 		BOOL fn_AllocConsole();
 		HANDLE fn_CreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+		HANDLE fn_CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
 		BOOL fn_SetConsoleTitleW(LPCWSTR lpConsoleTitle);
 		BOOL fn_CloseHandle(HANDLE hObject);
 		BOOL fn_FreeConsole();
@@ -58,6 +60,7 @@ namespace windows_api{
 	private:
 		using FN_AllocConsole = BOOL(WINAPI*)();
 		using FN_CreateFileW = HANDLE(WINAPI*)(LPCWSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
+		using FN_CreateFileA = HANDLE(WINAPI*)(LPCSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
 		using FN_SetConsoleTitleW = BOOL(WINAPI*)(LPCWSTR);
 		using FN_CloseHandle = BOOL(WINAPI*)(HANDLE);
 		using FN_FreeConsole = BOOL(WINAPI*)();
