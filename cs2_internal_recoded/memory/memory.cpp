@@ -14,6 +14,12 @@
 #include "../utils/pe64.hpp"
 
 namespace memory {
+	bool memory_class::setup() {
+		current_process = reinterpret_cast<HANDLE>(-1);
+
+		return true;
+	}
+
 	void* memory_class::get_module_base_handle(const char* module_name) {
 		const _PEB* pPEB = reinterpret_cast<_PEB*>(__readgsqword(0x60));
 

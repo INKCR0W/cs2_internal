@@ -1,15 +1,15 @@
 #include "cheat.hpp"
 
-#include <iostream>
-#include <Windows.h>
-#include <string>
+// used: this_thread::sleep_for
 #include <thread>
 
-#include "../utils/fnv1a.hpp"
+// used: xorstr_
 #include "../utils/xorstr.hpp"
+// used: mem
 #include "../memory/memory.hpp"
+// used: windows api
 #include "../windows_api/win_api.hpp"
-
+// used: modules
 #include "../game/game_modules.hpp"
 
 
@@ -22,6 +22,10 @@ namespace cheat {
 			return false;
 		}
 
+		if (!memory::mem.setup()) {
+			return false;
+		}
+
 		if (logger.setup()) {
 			logger << set_level(log_level_flags::LOG_INFO) << xorstr_("The log system initialization is complete") << set_level() << endl;
 		}
@@ -29,20 +33,16 @@ namespace cheat {
 			return false;
 		}
 
-		logger << xorstr_("kernel32.dll: ") << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle(modules::kernel32_dll)) << endl;
-		logger << xorstr_("client.dll: ") << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle(xorstr_("client.dll"))) << endl;
-
 		return true;
 	}
 
 
 	DWORD __stdcall cs2_internal::ren(LPVOID lpParameter)
 	{
-		log_system::logger << xorstr_("running") << log_system::endl;
-
 		cs2_internal* pThis = static_cast<cs2_internal*>(lpParameter);
 
 		while (true) {
+			log_system::logger << xorstr_("running") << log_system::endl;
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 
@@ -53,12 +53,8 @@ namespace cheat {
 		// TODO
 		Sleep(1000);
 
-		DWORD thread_id = 0;
-
-		if (CreateThread(NULL, 0, &cs2_internal::ren, this, 0, &thread_id) == NULL)
+		if (windows_api::winapi.fn_CreateThread(NULL, 0, &cs2_internal::ren, this, 0, NULL) == NULL)
 			return false;
-
-		log_system::logger << "Thread created, thread id : " << thread_id << log_system::endl;
 
 		return true;
 	}
