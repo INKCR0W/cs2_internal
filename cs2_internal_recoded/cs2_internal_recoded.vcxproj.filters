@@ -128,6 +128,9 @@
     <ClInclude Include="windows_api\win_api.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="game\vtable.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />
