@@ -32,6 +32,8 @@ namespace windows_api{
 		WriteConsoleA =				FNV1A("WriteConsoleA"),
 		DisableThreadLibraryCalls =	FNV1A("DisableThreadLibraryCalls"),
 		CreateThread =				FNV1A("CreateThread"),
+		ReadProcessMemory =			FNV1A("ReadProcessMemory"),
+		WriteProcessMemory =		FNV1A("WriteProcessMemory"),
 	};
 
 
@@ -55,6 +57,8 @@ namespace windows_api{
 		BOOL fn_WriteConsoleA(HANDLE hConsoleOutput, const VOID* lpBuffer, DWORD nNumberOfCharsToWrite, LPDWORD lpNumberOfCharsWritten, LPVOID lpReserved);
 		BOOL fn_DisableThreadLibraryCalls(HMODULE hModule);
 		HANDLE fn_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId);
+		BOOL fn_ReadProcessMemory(HANDLE  hProcess, LPCVOID lpBaseAddress, LPVOID  lpBuffer, SIZE_T  nSize, SIZE_T* lpNumberOfBytesRead);
+		BOOL fn_WriteProcessMemory(HANDLE  hProcess, LPVOID lpBaseAddress, LPCVOID  lpBuffer, SIZE_T  nSize, SIZE_T* lpNumberOfBytesRead);
 
 
 	private:
@@ -71,6 +75,8 @@ namespace windows_api{
 		using FN_WriteConsoleA = BOOL(WINAPI*)(HANDLE, const VOID*, DWORD, LPDWORD, LPVOID);
 		using FN_DisableThreadLibraryCalls = BOOL(WINAPI*)(HMODULE);
 		using FN_CreateThread = HANDLE(WINAPI*)(LPSECURITY_ATTRIBUTES, SIZE_T, LPTHREAD_START_ROUTINE, LPVOID, DWORD, LPDWORD);
+		using FN_ReadProcessMemory = BOOL(WINAPI*)(HANDLE, LPCVOID, LPVOID, SIZE_T, SIZE_T*);
+		using FN_WriteProcessMemory = BOOL(WINAPI*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*);
 
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;

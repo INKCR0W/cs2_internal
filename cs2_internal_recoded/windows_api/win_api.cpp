@@ -8,45 +8,19 @@
 #include "../memory/memory.hpp"
 // used: xorstr_
 #include "../utils/xorstr.hpp"
-// used: 
-#include "../utils/fnv1a.hpp"
+// used: modules
+#include "../game/game_modules.hpp"
 
 namespace windows_api{
 	using memory::mem;
 
 	const bool win_api::setup() {
-		kernel32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(xorstr_("kernel32.dll")));
-		user32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(xorstr_("user32.dll")));
+		kernel32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::kernel32_dll));
+		user32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::user32_dll));
 
 		if (kernel32_dll == nullptr || user32_dll == nullptr)
 			return false;
         
-        //func_info = {
-        //    {xorstr_("AllocConsole"), kernel32_dll},
-        //    {xorstr_("CreateFileW"), kernel32_dll},
-        //    {xorstr_("SetConsoleTitleW"), kernel32_dll},
-        //    {xorstr_("CloseHandle"), kernel32_dll},
-        //    {xorstr_("FreeConsole"), kernel32_dll},
-        //    {xorstr_("GetConsoleWindow"), kernel32_dll},
-        //    {xorstr_("PostMessageW"), user32_dll},
-        //    {xorstr_("WriteFile"), kernel32_dll},
-        //    {xorstr_("SetConsoleTextAttribute"), kernel32_dll},
-        //    {xorstr_("WriteConsoleA"), kernel32_dll},
-        //    {xorstr_("FreeLibrary"), kernel32_dll}
-        //};
-
-        //for (auto& [func_name, module_name] : func_info) {
-        //    FARPROC funcPtr = GetProcAddress(module_name, func_name.c_str());
-
-        //    if (!funcPtr) {
-        //        throw std::runtime_error(xorstr_("Failed to get module handle : ") + func_name);
-        //        return false;
-        //    }
-
-        //    func_ptr[func_name] = funcPtr;
-        //}
-
-        //inited = true;
         return true;
 	}
 
@@ -218,5 +192,31 @@ namespace windows_api{
             func_ptr[hash] = funcPtr;
         }
         return reinterpret_cast<FN_CreateThread>(func_ptr[hash])(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId);
+    }
+
+    BOOL win_api::fn_ReadProcessMemory(HANDLE hProcess, LPCVOID lpBaseAddress, LPVOID lpBuffer, SIZE_T nSize, SIZE_T* lpNumberOfBytesRead) {
+        hash_t hash = function_hash::ReadProcessMemory;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("ReadProcessMemory"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : ReadProcessMemory"));
+                return false;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_ReadProcessMemory>(func_ptr[hash])(hProcess, lpBaseAddress, lpBuffer, nSize, lpNumberOfBytesRead);
+    }
+
+    BOOL win_api::fn_WriteProcessMemory(HANDLE hProcess, LPVOID lpBaseAddress, LPCVOID lpBuffer, SIZE_T nSize, SIZE_T* lpNumberOfBytesWritten) {
+        hash_t hash = function_hash::WriteProcessMemory;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("WriteProcessMemory"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : WriteProcessMemory"));
+                return false;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_WriteProcessMemory>(func_ptr[hash])(hProcess, lpBaseAddress, lpBuffer, nSize, lpNumberOfBytesWritten);
     }
 }

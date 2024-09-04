@@ -10,6 +10,8 @@
 #include "../memory/memory.hpp"
 #include "../windows_api/win_api.hpp"
 
+#include "../game/game_modules.hpp"
+
 
 namespace cheat {
 	bool cs2_internal::setup() {
@@ -27,8 +29,8 @@ namespace cheat {
 			return false;
 		}
 
-		logger << "kernal_32.dll: " << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle("kernel32.dll")) << endl;
-		logger << "client.dll: " << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle("client.dll")) << endl;
+		logger << xorstr_("kernel32.dll: ") << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle(modules::kernel32_dll)) << endl;
+		logger << xorstr_("client.dll: ") << reinterpret_cast<uint64_t>(::memory::mem.get_module_base_handle(xorstr_("client.dll"))) << endl;
 
 		return true;
 	}
@@ -36,11 +38,14 @@ namespace cheat {
 
 	DWORD __stdcall cs2_internal::ren(LPVOID lpParameter)
 	{
+		log_system::logger << xorstr_("running") << log_system::endl;
+
 		cs2_internal* pThis = static_cast<cs2_internal*>(lpParameter);
+
 		while (true) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-			log_system::logger << "running" << log_system::endl;
 		}
+
 		return 0;
 	}
 
