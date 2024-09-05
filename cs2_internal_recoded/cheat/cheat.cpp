@@ -53,19 +53,12 @@ namespace cheat {
 			return false;
 		}
 
-		//if (interfaces::setup()) {
-		//	logger << xorstr_("Interfaces initialization complete") << endl;
-		//}
-		//else {
-		//	return false;
-		//}
-
-		//if (inputsystem::setup()) {
-		//	logger << xorstr_("Inputsystem initialization complete") << endl;
-		//}
-		//else {
-		//	return false;
-		//}
+		if (inputsystem::setup()) {
+			logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Inputsystem initialization complete") << set_level() << endl;
+		}
+		else {
+			return false;
+		}
 
 		logger << set_level();
 
