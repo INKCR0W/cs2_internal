@@ -34,6 +34,7 @@ namespace windows_api{
 		CreateThread =				FNV1A("CreateThread"),
 		ReadProcessMemory =			FNV1A("ReadProcessMemory"),
 		WriteProcessMemory =		FNV1A("WriteProcessMemory"),
+		CallWindowProcW =			FNV1A("CallWindowProcW"),
 	};
 
 
@@ -59,6 +60,7 @@ namespace windows_api{
 		HANDLE fn_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId);
 		BOOL fn_ReadProcessMemory(HANDLE  hProcess, LPCVOID lpBaseAddress, LPVOID  lpBuffer, SIZE_T  nSize, SIZE_T* lpNumberOfBytesRead);
 		BOOL fn_WriteProcessMemory(HANDLE  hProcess, LPVOID lpBaseAddress, LPCVOID  lpBuffer, SIZE_T  nSize, SIZE_T* lpNumberOfBytesRead);
+		LRESULT fn_CallWindowProcW(WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 
 	private:
@@ -77,6 +79,7 @@ namespace windows_api{
 		using FN_CreateThread = HANDLE(WINAPI*)(LPSECURITY_ATTRIBUTES, SIZE_T, LPTHREAD_START_ROUTINE, LPVOID, DWORD, LPDWORD);
 		using FN_ReadProcessMemory = BOOL(WINAPI*)(HANDLE, LPCVOID, LPVOID, SIZE_T, SIZE_T*);
 		using FN_WriteProcessMemory = BOOL(WINAPI*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*);
+		using FN_CallWindowProcW = LRESULT (WINAPI*) (WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;

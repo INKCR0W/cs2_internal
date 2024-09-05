@@ -1,9 +1,18 @@
 #pragma once
 
+// used: cstdint
+#include <cstdint>
 // used: pe64
 #include "../utils/pe64.hpp"
 // used: windows api
 #include "../windows_api/win_api.hpp"
+
+#define CS_CONCATENATE(LEFT, RIGHT) LEFT##RIGHT
+
+#define MEM_PAD(SIZE)										\
+private:												\
+	char CS_CONCATENATE(pad_0, __COUNTER__)[SIZE]; \
+public:
 
 namespace memory {
 	using namespace windows_api;
@@ -22,6 +31,17 @@ namespace memory {
 
 		void* get_module_base_handle(const char* module_name);
 		const uint64_t get_module_base_size(const char* module_name);
+		void* get_export_address(const void* hModuleBase, const char* szProcedureName);
+
+		[[nodiscard]] std::uint8_t* resolve_relative_address(std::uint8_t* nAddressBytes, std::uint32_t nRVAOffset, std::uint32_t nRIPOffset);
+
+		/// get pointer to function of virtual-function table
+		/// @returns: pointer to virtual function
+		template <typename T = void*>
+		[[nodiscard]] __forceinline T get_VFunc(const void* thisptr, std::size_t nIndex)
+		{
+			return (*static_cast<T* const*>(thisptr))[nIndex];
+		}
 
 		const uintptr_t find_pattern(const char* module_name, const char* pattern);
 

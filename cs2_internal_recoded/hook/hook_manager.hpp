@@ -5,7 +5,7 @@
 // used: [ext] minhook
 // @credits: https://github.com/TsudaKageyu/minhook
 #include "../third_party/minhook/include/MinHook.h"
-#pragma comment(lib, "../third_party/minhook/lib/libMinHook.x64.lib")
+#pragma comment(lib, "libMinHook.x64.lib")
 
 namespace hook {
 	template <typename T>
@@ -18,7 +18,7 @@ namespace hook {
 		/// <returns>
 		/// true if hook has been successfully created, false otherwise
 		/// </returns>
-		bool Create(void* pFunction, void* pDetour)
+		bool create(void* pFunction, void* pDetour)
 		{
 			if (pFunction == nullptr || pDetour == nullptr)
 				return false;
@@ -32,7 +32,7 @@ namespace hook {
 				return false;
 			}
 
-			if (!Replace())
+			if (!replace())
 				return false;
 
 			return true;
@@ -44,7 +44,7 @@ namespace hook {
 		/// <returns>
 		/// true if hook has been successfully applied, false otherwise
 		/// </returns>
-		bool Replace()
+		bool replace()
 		{
 			// check is hook has been created
 			if (pBaseFn == nullptr)
@@ -71,10 +71,10 @@ namespace hook {
 		/// <returns>
 		/// true if hook has been successfully removed, false otherwise
 		/// </returns>
-		bool Remove()
+		bool remove()
 		{
 			// restore it at first
-			if (!Restore())
+			if (!restore())
 				return false;
 
 			if (const MH_STATUS status = MH_RemoveHook(pBaseFn); status != MH_OK)
@@ -92,7 +92,7 @@ namespace hook {
 		/// <returns>
 		/// true if hook has been successfully restored, false otherwise
 		/// </returns>
-		bool Restore()
+		bool restore()
 		{
 			// check that function is hooked
 			if (!bIsHooked)
@@ -112,7 +112,7 @@ namespace hook {
 		/// <returns>
 		/// original, unwrapped function that would be called without the hook
 		/// </returns>
-		__forceinline T GetOriginal()
+		__forceinline T get_original()
 		{
 			return reinterpret_cast<T>(pOriginalFn);
 		}
@@ -120,7 +120,7 @@ namespace hook {
 		/// <returns>
 		/// true if hook is applied at the time, false otherwise
 		/// </returns>
-		__forceinline bool IsHooked() const
+		__forceinline bool is_hooked() const
 		{
 			return bIsHooked;
 		}

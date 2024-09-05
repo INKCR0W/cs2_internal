@@ -26,7 +26,7 @@ namespace memory {
 	const _LDR_DATA_TABLE_ENTRY* memory_class::find_module(const char* module_name) {
 		const _PEB* pPEB = reinterpret_cast<_PEB*>(__readgsqword(0x60));
 
-		std::wstring module_name_w = ::crt::crt.string2wstring(module_name);
+		std::wstring module_name_w = crt::crt.string2wstring(module_name);
 		std::wstring base_dll_name = {};
 
 		std::ranges::transform(module_name_w, module_name_w.begin(), ::tolower);
@@ -39,7 +39,7 @@ namespace memory {
 			const _LDR_DATA_TABLE_ENTRY* pEntry = CONTAINING_RECORD(pListEntry, _LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
 			base_dll_name = pEntry->BaseDllName.Buffer;
 			std::ranges::transform(base_dll_name, base_dll_name.begin(), ::tolower);
-			if (pEntry->FullDllName.Buffer != nullptr && ::crt::crt.string_compare(base_dll_name.c_str(), module_name_w.c_str()) == 0)
+			if (pEntry->FullDllName.Buffer != nullptr && crt::crt.string_compare(base_dll_name.c_str(), module_name_w.c_str()) == 0)
 			{
 				return pEntry;
 			}
@@ -126,5 +126,72 @@ namespace memory {
 		return static_cast<char>(isdigit(in) ? (in - '0') : (in - 'A' + 10));
 	}
 
+
+
+	void* memory_class::get_export_address(const void* hModuleBase, const char* szProcedureName)
+	{
+		const auto pBaseAddress = static_cast<const std::uint8_t*>(hModuleBase);
+
+		const auto pIDH = static_cast<const IMAGE_DOS_HEADER*>(hModuleBase);
+		if (pIDH->e_magic != IMAGE_DOS_SIGNATURE)
+			return nullptr;
+
+		const auto pINH = reinterpret_cast<const IMAGE_NT_HEADERS64*>(pBaseAddress + pIDH->e_lfanew);
+		if (pINH->Signature != IMAGE_NT_SIGNATURE)
+			return nullptr;
+
+		const IMAGE_OPTIONAL_HEADER64* pIOH = &pINH->OptionalHeader;
+		const std::uintptr_t nExportDirectorySize = pIOH->DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].Size;
+		const std::uintptr_t uExportDirectoryAddress = pIOH->DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress;
+
+		if (nExportDirectorySize == 0U || uExportDirectoryAddress == 0U)
+		{
+			return nullptr;
+		}
+
+		const auto pIED = reinterpret_cast<const IMAGE_EXPORT_DIRECTORY*>(pBaseAddress + uExportDirectoryAddress);
+		const auto pNamesRVA = reinterpret_cast<const std::uint32_t*>(pBaseAddress + pIED->AddressOfNames);
+		const auto pNameOrdinalsRVA = reinterpret_cast<const std::uint16_t*>(pBaseAddress + pIED->AddressOfNameOrdinals);
+		const auto pFunctionsRVA = reinterpret_cast<const std::uint32_t*>(pBaseAddress + pIED->AddressOfFunctions);
+
+		// Perform binary search to find the export by name
+		std::size_t nRight = pIED->NumberOfNames, nLeft = 0U;
+		while (nRight != nLeft)
+		{
+			// Avoid INT_MAX/2 overflow
+			const std::size_t uMiddle = nLeft + ((nRight - nLeft) >> 1U);
+			const int iResult = crt::crt.string_compare(szProcedureName, reinterpret_cast<const char*>(pBaseAddress + pNamesRVA[uMiddle]));
+
+			if (iResult == 0)
+			{
+				const std::uint32_t uFunctionRVA = pFunctionsRVA[pNameOrdinalsRVA[uMiddle]];
+
+				// Check if it's a forwarded export
+				if (uFunctionRVA >= uExportDirectoryAddress && uFunctionRVA - uExportDirectoryAddress < nExportDirectorySize)
+				{
+					// Forwarded exports are not supported
+					break;
+				}
+
+				return const_cast<std::uint8_t*>(pBaseAddress) + uFunctionRVA;
+			}
+
+			if (iResult > 0)
+				nLeft = uMiddle + 1;
+			else
+				nRight = uMiddle;
+		}
+
+		// Export not found
+		return nullptr;
+	}
+
+	std::uint8_t* memory_class::resolve_relative_address(std::uint8_t* nAddressBytes, std::uint32_t nRVAOffset, std::uint32_t nRIPOffset)
+	{
+		std::uint32_t nRVA = *reinterpret_cast<std::uint32_t*>(nAddressBytes + nRVAOffset);
+		std::uint64_t nRIP = reinterpret_cast<std::uint64_t>(nAddressBytes) + nRIPOffset;
+
+		return reinterpret_cast<std::uint8_t*>(nRVA + nRIP);
+	}
 
 }

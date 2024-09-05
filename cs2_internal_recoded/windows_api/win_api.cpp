@@ -219,4 +219,17 @@ namespace windows_api{
         }
         return reinterpret_cast<FN_WriteProcessMemory>(func_ptr[hash])(hProcess, lpBaseAddress, lpBuffer, nSize, lpNumberOfBytesWritten);
     }
+
+    LRESULT win_api::fn_CallWindowProcW(WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+        hash_t hash = function_hash::CallWindowProcW;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(user32_dll, xorstr_("CallWindowProcW"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : CallWindowProcW"));
+                return 0;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_CallWindowProcW>(func_ptr[hash])(lpPrevWndFunc, hWnd, Msg, wParam, lParam);
+    }
 }

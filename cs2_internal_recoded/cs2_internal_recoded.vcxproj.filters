@@ -48,6 +48,15 @@
     <ClCompile Include="windows_api\win_api.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="core\hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="core\interfaces.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\inputsystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -129,6 +138,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="game\vtable.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core\hooks.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core\interfaces.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iinputsystem.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iswapchaindx11.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core\common.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\inputsystem.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
