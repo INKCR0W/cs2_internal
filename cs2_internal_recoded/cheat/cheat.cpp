@@ -18,10 +18,6 @@ namespace cheat {
 		using namespace log_system;
 		using namespace utils;
 
-		if (!windows_api::winapi.setup()) {
-			return false;
-		}
-
 		if (!memory::mem.setup()) {
 			return false;
 		}
@@ -39,12 +35,14 @@ namespace cheat {
 
 	DWORD __stdcall cs2_internal::ren(LPVOID lpParameter)
 	{
+		using log_system::logger;
+		using log_system::endl;
+
 		cs2_internal* pThis = static_cast<cs2_internal*>(lpParameter);
 
-		log_system::logger << "create_move (48 8B C4 4C 89 48 20 55) : " << memory::mem.find_pattern(modules::client_dll, "48 8B C4 4C 89 48 20 55") << log_system::endl;
+		logger << "create_move (48 8B C4 4C 89 48 20 55) : " << memory::mem.find_pattern(modules::client_dll, "48 8B C4 4C 89 48 20 55") << endl;
 
 		while (true) {
-			log_system::logger << xorstr_("running") << log_system::endl;
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 
