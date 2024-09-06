@@ -146,7 +146,7 @@ namespace log_system {
 			{
 			case log_level_flags::LOG_INFO:
 				level = " [INFO] ";
-				level_color = LOG_COLOR_FORE_WHITE;
+				level_color = LOG_COLOR_FORE_GREEN;
 				break;
 			case log_level_flags::LOG_WARNING:
 				level = " [WARNING] ";

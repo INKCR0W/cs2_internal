@@ -13,7 +13,8 @@
 #include <cwctype>
 // used: string_compare wstring2string
 #include "../utils/crt_string.hpp"
-
+// used: windows api
+#include "../windows_api/win_api.hpp"
 
 
 namespace memory {
@@ -118,6 +119,19 @@ namespace memory {
 				return i;
 
 		return 0;
+	}
+
+	void* memory_class::heap_alloc(const std::size_t nSize) {
+		const HANDLE hHeap = windows_api::winapi.fn_GetProcessHeap();
+		return windows_api::winapi.fn_HeapAlloc(hHeap, 0UL, nSize);
+	}
+
+	void memory_class::heap_free(void* memory) {
+		if (memory != nullptr)
+		{
+			const HANDLE hHeap = windows_api::winapi.fn_GetProcessHeap();
+			windows_api::winapi.fn_HeapFree(hHeap, 0UL, memory);
+		}
 	}
 
 

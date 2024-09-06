@@ -5,6 +5,9 @@
 #include "../core/common.hpp"
 #include "../core/hooks.hpp"
 
+// used: windows api
+#include "../windows_api/win_api.hpp"
+
 namespace inputsystem {
 	using namespace log_system;
 
@@ -17,7 +20,7 @@ namespace inputsystem {
 		}
 
 		// change window message handle to our
-		old_WndProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(hook::WndProc)));
+		old_WndProc = reinterpret_cast<WNDPROC>(windows_api::winapi.fn_SetWindowLongPtrW(hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(hook::WndProc)));
 		if (old_WndProc == nullptr)
 			return false;
 
@@ -28,7 +31,7 @@ namespace inputsystem {
 	{
 		if (old_WndProc != nullptr)
 		{
-			SetWindowLongPtrW(hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(old_WndProc));
+			windows_api::winapi.fn_SetWindowLongPtrW(hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(old_WndProc));
 			old_WndProc = nullptr;
 		}
 	}

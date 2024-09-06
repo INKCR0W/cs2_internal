@@ -94,22 +94,22 @@ void interfaces::create_render_target() {
 	inputsystem::hWindow = sd.OutputWindow;
 
 	ID3D11Texture2D* pBackBuffer = nullptr;
-	if (swap_chain->pDXGISwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer)) < 0)
+	if (SUCCEEDED(swap_chain->pDXGISwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer))))
 	{
 		if (pBackBuffer)
 		{
 			D3D11_RENDER_TARGET_VIEW_DESC desc{};
 			desc.Format = static_cast<DXGI_FORMAT>(GetCorrectDXGIFormat(sd.BufferDesc.Format));
 			desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-			if (device->CreateRenderTargetView(pBackBuffer, &desc, &render_target_view) < 0)
+			if (FAILED(device->CreateRenderTargetView(pBackBuffer, &desc, &render_target_view)))
 			{
 				logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("failed to create render target view with D3D11_RTV_DIMENSION_TEXTURE2D...") << set_level() << endl;;
 				desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
-				if (device->CreateRenderTargetView(pBackBuffer, &desc, &render_target_view) < 0)
+				if (FAILED(device->CreateRenderTargetView(pBackBuffer, &desc, &render_target_view)))
 				{
 					logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("Failed to create render target view with D3D11_RTV_DIMENSION_TEXTURE2D...") << set_level() << endl;;
-					logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Retrying...") << set_level() << endl;
-					if (device->CreateRenderTargetView(pBackBuffer, NULL, &render_target_view) < 0)
+					logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("Retrying...") << set_level() << endl;
+					if (FAILED(device->CreateRenderTargetView(pBackBuffer, NULL, &render_target_view)))
 					{
 						logger << set_level(log_level_flags::LOG_ERROR) << xorstr_("Failed to create render target view") << set_level() << endl;
 						ASSERT(false);
@@ -155,6 +155,8 @@ const bool interfaces::setup() {
 #ifdef _DEBUG
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("InputSystem found: ") << reinterpret_cast<uintptr_t>(&input_system) << set_level() << endl;
 #endif
+
+	create_render_target();
 
 	return success;
 }

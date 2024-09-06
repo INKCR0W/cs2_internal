@@ -160,6 +160,7 @@
     <ClCompile Include="core\hooks.cpp" />
     <ClCompile Include="log\log.cpp" />
     <ClCompile Include="memory\memory.cpp" />
+    <ClCompile Include="render\render.cpp" />
     <ClCompile Include="third_party\imgui\imgui.cpp" />
     <ClCompile Include="third_party\imgui\imgui_draw.cpp" />
     <ClCompile Include="third_party\imgui\imgui_impl_dx11.cpp" />
@@ -182,6 +183,8 @@
     <ClInclude Include="offset\client_dll.hpp" />
     <ClInclude Include="offset\offset.hpp" />
     <ClInclude Include="offset\offsets.hpp" />
+    <ClInclude Include="render\font.hpp" />
+    <ClInclude Include="render\render.hpp" />
     <ClInclude Include="sdk\interfaces\iinputsystem.hpp" />
     <ClInclude Include="sdk\interfaces\iswapchaindx11.hpp" />
     <ClInclude Include="third_party\imgui\imconfig.h" />

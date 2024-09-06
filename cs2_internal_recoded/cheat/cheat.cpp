@@ -17,6 +17,8 @@
 #include "../core/hooks.hpp"
 // used: inputsystem
 #include "../utils/inputsystem.hpp"
+// used: render
+#include "../render/render.hpp"
 
 namespace cheat {
 	cs2_internal::~cs2_internal() {
@@ -60,7 +62,14 @@ namespace cheat {
 			return false;
 		}
 
-		logger << set_level();
+		if (render::draw.setup(inputsystem::hWindow, interfaces::device, interfaces::device_context)) {
+			logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Render initialization complete") << set_level() << endl;
+		}
+		else {
+			return false;
+		}
+
+
 
 		return true;
 	}
@@ -72,8 +81,6 @@ namespace cheat {
 		using log_system::endl;
 
 		cs2_internal* pThis = static_cast<cs2_internal*>(lpParameter);
-
-		logger << "create_move (48 8B C4 4C 89 48 20 55) : " << memory::mem.find_pattern(modules::client_dll, "48 8B C4 4C 89 48 20 55") << endl;
 
 		while (true) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));

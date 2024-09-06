@@ -45,6 +45,9 @@ namespace memory {
 
 		const uintptr_t find_pattern(const char* module_name, const char* pattern);
 
+		void* heap_alloc(const std::size_t nSize);
+		void heap_free(void* pMemory);
+
 		template <typename T>
 		T read_memory(const std::uintptr_t addr);
 

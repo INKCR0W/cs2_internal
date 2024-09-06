@@ -57,6 +57,9 @@
     <ClCompile Include="utils\inputsystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="render\render.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -156,6 +159,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="utils\inputsystem.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="render\font.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

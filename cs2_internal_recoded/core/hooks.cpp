@@ -14,6 +14,8 @@
 
 #include "../utils/inputsystem.hpp"
 
+#include "../render/render.hpp"
+
 #include "../third_party/imgui/imgui.h"
 #include "../third_party/imgui/imgui_impl_dx11.h"
 #include "../third_party/imgui/imgui_impl_win32.h"
@@ -54,14 +56,14 @@ namespace hook {
 	{
 		const auto oPresent = hk_Present.get_original();
 
-		// recreate it if it's not valid
 		if (interfaces::render_target_view == nullptr)
 			interfaces::create_render_target();
 
-		// set our render target
-		if (interfaces::render_target_view != nullptr)
+		if (interfaces::render_target_view != nullptr) {
 			interfaces::device_context->OMSetRenderTargets(1, &interfaces::render_target_view, nullptr);
+		}
 
+		render::draw.run();
 
 		return oPresent(interfaces::swap_chain->pDXGISwapChain, uSyncInterval, uFlags);
 	}

@@ -232,4 +232,58 @@ namespace windows_api{
         }
         return reinterpret_cast<FN_CallWindowProcW>(func_ptr[hash])(lpPrevWndFunc, hWnd, Msg, wParam, lParam);
     }
+
+    HANDLE win_api::fn_GetProcessHeap() {
+        hash_t hash = function_hash::GetProcessHeap;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("GetProcessHeap"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : GetProcessHeap"));
+                return NULL;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_GetProcessHeap>(func_ptr[hash])();
+    }
+
+    LPVOID win_api::fn_HeapAlloc(HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes) {
+        hash_t hash = function_hash::HeapAlloc;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("HeapAlloc"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : HeapAlloc"));
+                return NULL;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_HeapAlloc>(func_ptr[hash])(hHeap, dwFlags, dwBytes);
+    }
+
+    BOOL win_api::fn_HeapFree(HANDLE hHeap, DWORD dwFlags, LPVOID lpMem) {
+        hash_t hash = function_hash::HeapFree;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("HeapFree"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : HeapFree"));
+                return FALSE;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_HeapFree>(func_ptr[hash])(hHeap, dwFlags, lpMem);
+    }
+
+
+    LONG_PTR win_api::fn_SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong) {
+        hash_t hash = function_hash::SetWindowLongPtrW;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(user32_dll, xorstr_("SetWindowLongPtrW"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : SetWindowLongPtrW"));
+                return 0;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+
+        return reinterpret_cast<FN_SetWindowLongPtrW>(func_ptr[hash])(hWnd, nIndex, dwNewLong);
+    }
 }
