@@ -16,7 +16,7 @@
 // used: hooks
 #include "../core/hooks.hpp"
 // used: inputsystem
-#include "../utils/inputsystem.hpp"
+#include "../core/inputsystem.hpp"
 // used: render
 #include "../render/render.hpp"
 

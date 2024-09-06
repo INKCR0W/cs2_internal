@@ -19,7 +19,6 @@ namespace inputsystem {
 			ASSERT(false);
 		}
 
-		// change window message handle to our
 		old_WndProc = reinterpret_cast<WNDPROC>(windows_api::winapi.fn_SetWindowLongPtrW(hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(hook::WndProc)));
 		if (old_WndProc == nullptr)
 			return false;

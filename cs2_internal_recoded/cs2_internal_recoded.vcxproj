@@ -169,7 +169,7 @@
     <ClCompile Include="third_party\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="third_party\imgui\imgui_tables.cpp" />
     <ClCompile Include="third_party\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="utils\inputsystem.cpp" />
+    <ClCompile Include="core\inputsystem.cpp" />
     <ClCompile Include="windows_api\win_api.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,7 +200,7 @@
     <ClInclude Include="third_party\imgui\imstb_truetype.h" />
     <ClInclude Include="third_party\minhook\include\MinHook.h" />
     <ClInclude Include="hook\hook_manager.hpp" />
-    <ClInclude Include="utils\inputsystem.hpp" />
+    <ClInclude Include="core\inputsystem.hpp" />
     <ClInclude Include="utils\pe64.hpp" />
     <ClInclude Include="utils\xorstr.hpp" />
     <ClInclude Include="utils\crt_string.hpp" />

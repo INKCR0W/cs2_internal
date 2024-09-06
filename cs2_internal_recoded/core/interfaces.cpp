@@ -14,10 +14,8 @@
 #include "../utils/crt_string.hpp"
 // used: game modules
 #include "../game/game_modules.hpp"
-
-#include "../utils/inputsystem.hpp"
-
-
+// used: hWindow
+#include "inputsystem.hpp"
 
 using InstantiateInterfaceFn_t = void* (*)();
 

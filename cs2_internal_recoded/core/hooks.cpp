@@ -11,11 +11,13 @@
 #include "../log/log.hpp"
 // used: windows api
 #include "../windows_api/win_api.hpp"
-
-#include "../utils/inputsystem.hpp"
-
+// used: old_WndProc
+#include "../core/inputsystem.hpp"
+// used: draw.run
 #include "../render/render.hpp"
-
+// used: game modules
+#include "../game/game_modules.hpp"
+// used: imgui
 #include "../third_party/imgui/imgui.h"
 #include "../third_party/imgui/imgui_impl_dx11.h"
 #include "../third_party/imgui/imgui_impl_win32.h"
@@ -39,7 +41,6 @@ namespace hook {
 		if (!hk_IsRelativeMouseMode.create(memory::mem.get_VFunc(interfaces::input_system, vtable::INPUTSYSTEM::ISRELATIVEMOUSEMODE), reinterpret_cast<void*>(&IsRelativeMouseMode)))
 			return false;
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"IsRelativeMouseMode\" hook has been created") << set_level() << endl;
-
 
 		return true;
 	}

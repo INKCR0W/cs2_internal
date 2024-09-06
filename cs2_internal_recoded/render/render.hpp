@@ -12,6 +12,7 @@
 
 
 namespace render {
+	inline float ar = 0.f;
 	class draw_class {
 	public:
 		draw_class() = default;
@@ -29,8 +30,8 @@ namespace render {
 
 		void Helpmarker(const char* Text, ImVec4 Color);
 
-		ImFont* font_a;
-		ImFont* font_b;
+		ImFont* font_a = nullptr;
+		ImFont* font_b = nullptr;
 
 		bool initialized = false;
 

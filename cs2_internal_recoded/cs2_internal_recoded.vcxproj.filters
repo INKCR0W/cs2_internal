@@ -54,7 +54,7 @@
     <ClCompile Include="core\interfaces.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="utils\inputsystem.cpp">
+    <ClCompile Include="core\inputsystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="render\render.cpp">
@@ -161,7 +161,7 @@
     <ClInclude Include="core\common.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="utils\inputsystem.hpp">
+    <ClInclude Include="core\inputsystem.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="render\render.hpp">

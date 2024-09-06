@@ -233,8 +233,6 @@ namespace render{
                 ImGui::TextColored(Color[ImGuiCol_Button], "ImGui Tool \u9B08");
                 ImGui::PopFont();
 
-
-
                 ImGui::SetCursorPos({ 430.0f,65.0f });
 
                 ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Panel ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -342,6 +340,16 @@ namespace render{
 
                 ImGui::Checkbox("复选框-1", &CheckBox_1);
                 ImGui::Checkbox("复选框-2", &CheckBox_2);
+
+                static bool selected[3] = { false, false, false };  // 用于存储每个选项的状态
+
+                if (ImGui::BeginCombo("Select options", "Multiple choices")) {
+                    ImGui::Selectable("Option 1", &selected[0], ImGuiSelectableFlags_DontClosePopups);
+                    ImGui::Selectable("Option 2", &selected[1], ImGuiSelectableFlags_DontClosePopups);
+                    ImGui::Selectable("Option 3", &selected[2], ImGuiSelectableFlags_DontClosePopups);
+                    ImGui::EndCombo();
+                }
+
                 break;
             }
             ImGui::EndChild();

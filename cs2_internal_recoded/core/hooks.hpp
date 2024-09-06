@@ -5,6 +5,8 @@
 // used: hook system
 #include "../hook/hook_manager.hpp"
 
+#include "../memory/memory.hpp"
+
 namespace hook {
 	const bool setup();
 	void destroy();
