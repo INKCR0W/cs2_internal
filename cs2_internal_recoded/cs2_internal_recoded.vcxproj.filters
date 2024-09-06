@@ -60,6 +60,9 @@
     <ClCompile Include="render\render.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_stdlib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -165,6 +168,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="render\font.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imgui_stdlib.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

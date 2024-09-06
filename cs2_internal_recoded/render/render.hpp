@@ -2,10 +2,13 @@
 
 #include <d3d11.h>
 
+#include <string>
+
 // used: imgui
 #include "../third_party/imgui/imgui.h"
 #include "../third_party/imgui/imgui_impl_dx11.h"
 #include "../third_party/imgui/imgui_impl_win32.h"
+#include "../third_party/imgui/imgui_stdlib.h"
 
 
 namespace render {
@@ -24,7 +27,10 @@ namespace render {
 		void new_frame();
 		void render();
 
+		void Helpmarker(const char* Text, ImVec4 Color);
+
 		ImFont* font_a;
+		ImFont* font_b;
 
 		bool initialized = false;
 
