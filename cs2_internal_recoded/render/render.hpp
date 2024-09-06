@@ -24,14 +24,16 @@ namespace render {
 		const bool setup(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 		void run();
 
-	private:
-		void new_frame();
-		void render();
+		bool on_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		void Helpmarker(const char* Text, ImVec4 Color);
+		void help_marker(const char* Text, ImVec4 Color);
 
 		ImFont* font_a = nullptr;
 		ImFont* font_b = nullptr;
+
+	private:
+		void new_frame();
+		void render();
 
 		bool initialized = false;
 

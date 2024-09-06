@@ -13,6 +13,8 @@
 #include "../windows_api/win_api.hpp"
 // used: old_WndProc
 #include "../core/inputsystem.hpp"
+// used: main_active
+#include "../render/menu.hpp"
 // used: draw.run
 #include "../render/render.hpp"
 // used: game modules
@@ -70,7 +72,7 @@ namespace hook {
 	}
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-		if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		if (render::draw.on_WndProc(hWnd, uMsg, wParam, lParam))
 			return 1L;
 
 		return windows_api::winapi.fn_CallWindowProcW(inputsystem::old_WndProc, hWnd, uMsg, wParam, lParam);
@@ -80,9 +82,10 @@ namespace hook {
 	{
 		const auto oIsRelativeMouseMode = hk_IsRelativeMouseMode.get_original();
 
+		menu::menu.main_active = bActive;
 
-		//if (MENU::bMainWindowOpened)
-		//	return oIsRelativeMouseMode(pThisptr, false);
+		if (menu::menu.menu_opened)
+			return oIsRelativeMouseMode(pThisptr, false);
 
 		return oIsRelativeMouseMode(pThisptr, bActive);
 	}

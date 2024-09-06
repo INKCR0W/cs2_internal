@@ -16,6 +16,8 @@
 #include "../game/game_modules.hpp"
 // used: hWindow
 #include "inputsystem.hpp"
+// used: screen_width screen_height
+#include "../render/menu.hpp"
 
 using InstantiateInterfaceFn_t = void* (*)();
 
@@ -90,6 +92,8 @@ void interfaces::create_render_target() {
 	swap_chain->pDXGISwapChain->GetDesc(&sd);
 
 	inputsystem::hWindow = sd.OutputWindow;
+	menu::menu.screen_width = static_cast<float>(sd.BufferDesc.Width);
+	menu::menu.screen_height = static_cast<float>(sd.BufferDesc.Height);
 
 	ID3D11Texture2D* pBackBuffer = nullptr;
 	if (SUCCEEDED(swap_chain->pDXGISwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer))))
