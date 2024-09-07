@@ -43,7 +43,7 @@ static const CInterfaceRegister* get_register_list(const char* wszModuleName)
 
 	if (pCreateInterface == nullptr)
 	{
-		logger << set_level(log_level_flags::LOG_ERROR) << xorstr_("failed to get \"CreateInterface\" address") << set_level() << endl;
+		logger << set_level(log_level_flags::LOG_ERROR) << xorstr_("Failed to get \"CreateInterface\" address") << set_level() << endl;
 		return nullptr;
 	}
 
