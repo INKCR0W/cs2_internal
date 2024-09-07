@@ -15,11 +15,22 @@
 #include "../utils/crt_string.hpp"
 // used: windows api
 #include "../windows_api/win_api.hpp"
+// used: client_dll
+#include "../game/game_modules.hpp"
+// used: logsystem
+#include "../log/log.hpp"
 
 
 namespace memory {
 	bool memory_class::setup() {
 		current_process = reinterpret_cast<HANDLE>(-1);
+
+		client_dll_addr = reinterpret_cast<std::uintptr_t>(get_module_base_handle(modules::client_dll));
+		if (client_dll_addr == 0) {
+			using namespace log_system;
+			logger << set_level(log_level_flags::LOG_ERROR) << "Failed to find client.dll, wait until the game is fully loaded before injecting." << set_level() << endl;
+			return false;
+		}
 
 		return true;
 	}

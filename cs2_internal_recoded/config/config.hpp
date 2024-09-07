@@ -24,6 +24,10 @@ namespace config {
 		unsigned int menu_key = 0x2D;
 #pragma endregion
 
+#pragma region vars
+		bool skeleton_on = false;
+#pragma endregion
+
 	private:
 
 	};

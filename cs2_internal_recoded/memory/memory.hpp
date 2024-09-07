@@ -7,11 +7,12 @@
 // used: windows api
 #include "../windows_api/win_api.hpp"
 
-#define CS_CONCATENATE(LEFT, RIGHT) LEFT##RIGHT
+#define CONCATENATE_IMPL(LEFT,RIGHT) LEFT##RIGHT
+#define CONCATENATE(LEFT,RIGHT) CONCATENATE_IMPL(LEFT,RIGHT)
 
 #define MEM_PAD(SIZE)										\
 private:												\
-	char CS_CONCATENATE(pad_0, __COUNTER__)[SIZE]; \
+	char CONCATENATE(pad_0,__COUNTER__)[SIZE]; \
 public:
 
 namespace memory {
@@ -87,6 +88,8 @@ namespace memory {
 	bool memory_class::read_memory_size(const std::uintptr_t addr, const T* value, size_t size) {
 		return winapi.fn_ReadProcessMemory(current_process, reinterpret_cast<LPCVOID>(addr), &value, size, 0);
 	}
+
+	inline std::uintptr_t client_dll_addr = {};
 
 	inline memory_class mem;
 }

@@ -75,6 +75,18 @@
     <ClCompile Include="utils\math.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="sdk\datatypes\vector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\datatypes\qangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cheat\features\esp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cheat\features\entity_var.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -210,6 +222,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="utils\crt.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\matrix.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\vector.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\qangle.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cheat\features\esp.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cheat\features\entity_var.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

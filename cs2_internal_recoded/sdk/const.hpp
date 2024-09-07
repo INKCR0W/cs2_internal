@@ -2,6 +2,10 @@
 
 // used: uint16_t
 #include <cstdint>
+// used: vector
+#include <vector>
+// used: Vector_t
+#include "datatypes/vector.hpp"
 
 // @source: master/game/shared/cstrike15/gametypes.h
 #pragma region valve_gametypes
@@ -285,4 +289,37 @@ enum weapon_type : std::uint32_t
 	WEAPONTYPE_SHIELD = 17,
 	WEAPONTYPE_ZONE_REPULSOR = 18,
 	WEAPONTYPE_UNKNOWN = 19
+};
+
+enum bones : int {
+	head = 6,
+	neck = 5,
+	chest = 4,
+	shoulderRight = 8,
+	shoulderLeft = 13,
+	elbowRight = 9,
+	elbowLeft = 14,
+	handRight = 11,
+	handLeft = 16,
+	crotch = 0,
+	kneeRight = 23,
+	kneeLeft = 26,
+	ankleRight = 24,
+	ankleLeft = 27,
+};
+
+inline namespace bone_groups {
+	inline std::vector<int> mid = { bones::head,bones::neck,bones::chest,bones::crotch };
+	inline std::vector<int> left_arm = { bones::neck,bones::shoulderLeft,bones::elbowLeft,bones::handLeft };
+	inline std::vector<int> right_arm = { bones::neck,bones::shoulderRight,bones::elbowRight,bones::handRight };
+	inline std::vector<int> left_leg = { bones::crotch,bones::kneeLeft,bones::ankleLeft };
+	inline std::vector<int> right_leg = { bones::crotch,bones::kneeRight,bones::ankleRight };
+	inline std::vector<std::vector<int>> all_groups = { mid, left_arm, right_arm, left_leg, right_leg };
+};
+
+struct BoneJointData
+{
+	Vector_t Pos;
+	float Scale;
+	char pad[0x10];
 };

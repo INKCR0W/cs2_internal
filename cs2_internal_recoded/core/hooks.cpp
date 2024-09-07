@@ -24,6 +24,9 @@
 #include "../third_party/imgui/imgui_impl_dx11.h"
 #include "../third_party/imgui/imgui_impl_win32.h"
 
+// used: update_entitys
+#include "../cheat/features/entity_var.hpp"
+
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 namespace hook {
@@ -40,14 +43,21 @@ namespace hook {
 			return false;
 
 #ifdef _DEBUG
-		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"Present\" hook has been created") << set_level() << endl;
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"Present\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_Present.get_original()) << set_level() << endl;
 #endif
+
+		if (!hk_CreateMove.create(memory::mem.get_VFunc(interfaces::input_system, vtable::CLIENT::CREATEMOVE), reinterpret_cast<void*>(&CreateMove)))
+			return false;
+
+#ifdef _DEBUG
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"CreateMove\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_CreateMove.get_original()) << set_level() << endl;
+#endif // _DEBUG
 
 		if (!hk_IsRelativeMouseMode.create(memory::mem.get_VFunc(interfaces::input_system, vtable::INPUTSYSTEM::ISRELATIVEMOUSEMODE), reinterpret_cast<void*>(&IsRelativeMouseMode)))
 			return false;
 
 #ifdef _DEBUG
-		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"IsRelativeMouseMode\" hook has been created") << set_level() << endl;
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"IsRelativeMouseMode\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_IsRelativeMouseMode.get_original()) << set_level() << endl;
 #endif
 
 		return true;
@@ -82,6 +92,13 @@ namespace hook {
 			return 1L;
 
 		return windows_api::winapi.fn_CallWindowProcW(inputsystem::old_WndProc, hWnd, uMsg, wParam, lParam);
+	}
+
+	bool __fastcall CreateMove(void* pInput, int nSlot, bool bActive)
+	{
+		features::update_entitys();
+
+		return hk_CreateMove.get_original()(pInput, nSlot, bActive);
 	}
 
 	void* IsRelativeMouseMode(void* pThisptr, bool bActive)

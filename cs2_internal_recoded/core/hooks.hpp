@@ -14,9 +14,11 @@ namespace hook {
 	HRESULT WINAPI Present(IDXGISwapChain* pSwapChain, UINT uSyncInterval, UINT uFlags);
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+	bool __fastcall CreateMove(void* pInput, int nSlot, bool bActive);
 	void* IsRelativeMouseMode(void* pThisptr, bool bActive);
 
 
 	inline hook_object<decltype(&Present)> hk_Present = {};
+	inline hook_object<decltype(&CreateMove)> hk_CreateMove = {};
 	inline hook_object<decltype(&IsRelativeMouseMode)> hk_IsRelativeMouseMode = {};
 }

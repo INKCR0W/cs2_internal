@@ -13,6 +13,8 @@
 // used: log system
 #include "../log/log.hpp"
 
+#include "../config/config.hpp"
+
 namespace menu {
     using namespace render;
 
@@ -278,6 +280,8 @@ namespace menu {
                     ImGui::Selectable("Option 3", &selected[2], ImGuiSelectableFlags_DontClosePopups);
                     ImGui::EndCombo();
                 }
+
+                ImGui::Checkbox("骨骼透视", &config::cfg.skeleton_on);
 
                 break;
             }

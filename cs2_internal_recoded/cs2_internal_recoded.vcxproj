@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cheat\cheat.cpp" />
+    <ClCompile Include="cheat\features\entity_var.cpp" />
+    <ClCompile Include="cheat\features\esp.cpp" />
     <ClCompile Include="config\config.cpp" />
     <ClCompile Include="core\interfaces.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -164,6 +166,8 @@
     <ClCompile Include="memory\memory.cpp" />
     <ClCompile Include="render\menu.cpp" />
     <ClCompile Include="render\render.cpp" />
+    <ClCompile Include="sdk\datatypes\qangle.cpp" />
+    <ClCompile Include="sdk\datatypes\vector.cpp" />
     <ClCompile Include="sdk\entity.cpp" />
     <ClCompile Include="third_party\imgui\imgui.cpp" />
     <ClCompile Include="third_party\imgui\imgui_draw.cpp" />
@@ -178,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat\cheat.hpp" />
+    <ClInclude Include="cheat\features\entity_var.hpp" />
+    <ClInclude Include="cheat\features\esp.hpp" />
     <ClInclude Include="config\config.hpp" />
     <ClInclude Include="core\common.hpp" />
     <ClInclude Include="core\core.hpp" />
@@ -195,6 +201,9 @@
     <ClInclude Include="render\menu.hpp" />
     <ClInclude Include="render\render.hpp" />
     <ClInclude Include="sdk\const.hpp" />
+    <ClInclude Include="sdk\datatypes\matrix.hpp" />
+    <ClInclude Include="sdk\datatypes\qangle.hpp" />
+    <ClInclude Include="sdk\datatypes\vector.hpp" />
     <ClInclude Include="sdk\entity.hpp" />
     <ClInclude Include="sdk\entity_handle.hpp" />
     <ClInclude Include="sdk\interfaces\iengineclient.hpp" />

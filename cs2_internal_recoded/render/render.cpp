@@ -12,7 +12,9 @@
 #include "../core/inputsystem.hpp"
 // used: hk_IsRelativeMouseMode
 #include "../core/hooks.hpp"
-
+// used: draw_skeleton
+#include "../cheat/features/esp.hpp"
+// used: menu_key skeleton_on
 #include "../config/config.hpp"
 // used: ImGui_ImplWin32_WndProcHandler
 #include "../third_party/imgui/imgui.h"
@@ -101,6 +103,7 @@ namespace render{
 		new_frame();
 
 		menu::menu.run();
+		features::draw_skeleton();
 
 		render();
 	}
