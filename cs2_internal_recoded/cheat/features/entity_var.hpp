@@ -9,12 +9,12 @@
 
 namespace features {
 	namespace vars {
-		entity::CCSPlayerController* local_player_controller = nullptr;
-		std::vector<entity::CCSPlayerController*> player_list = {};
+		inline entity::CCSPlayerController* local_player_controller = nullptr;
+		inline std::vector<entity::CCSPlayerController*> player_list = {};
 
-		uintptr_t entity_list_address = {};
+		inline uintptr_t entity_list_address = {};
 
-		ViewMatrix_t view_matrix = {};
+		inline ViewMatrix_t view_matrix = {};
 	}
 
 	void update_entitys();

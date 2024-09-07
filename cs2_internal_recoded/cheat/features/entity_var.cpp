@@ -5,13 +5,16 @@
 // used: client_dll_addr
 #include "../../memory/memory.hpp"
 
+
 namespace features {
 	void update_entitys()
 	{
 		using namespace memory;
 		using namespace cs2_dumper;
 
-		vars::local_player_controller = mem.read_memory<entity::CCSPlayerController*>(client_dll_addr + offsets::client_dll::dwLocalPlayerController);
+		if (vars::local_player_controller = mem.read_memory<entity::CCSPlayerController*>(client_dll_addr + offsets::client_dll::dwLocalPlayerController); vars::local_player_controller == nullptr) {
+			return;
+		}
 
 		vars::entity_list_address = mem.read_memory<uintptr_t>(client_dll_addr + offsets::client_dll::dwEntityList);
 

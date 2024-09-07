@@ -46,12 +46,12 @@ namespace hook {
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"Present\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_Present.get_original()) << set_level() << endl;
 #endif
 
-		if (!hk_CreateMove.create(memory::mem.get_VFunc(interfaces::input_system, vtable::CLIENT::CREATEMOVE), reinterpret_cast<void*>(&CreateMove)))
-			return false;
-
-#ifdef _DEBUG
-		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"CreateMove\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_CreateMove.get_original()) << set_level() << endl;
-#endif // _DEBUG
+//		if (!hk_CreateMove.create(reinterpret_cast<void*>(memory::mem.find_pattern(modules::client_dll, "48 8B C4 4C 89 48 20 55")), reinterpret_cast<void*>(&CreateMove)))
+//			return false;
+//
+//#ifdef _DEBUG
+//		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"CreateMove\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_CreateMove.get_original()) << set_level() << endl;
+//#endif // _DEBUG
 
 		if (!hk_IsRelativeMouseMode.create(memory::mem.get_VFunc(interfaces::input_system, vtable::INPUTSYSTEM::ISRELATIVEMOUSEMODE), reinterpret_cast<void*>(&IsRelativeMouseMode)))
 			return false;
@@ -82,6 +82,8 @@ namespace hook {
 			interfaces::device_context->OMSetRenderTargets(1, &interfaces::render_target_view, nullptr);
 		}
 
+		features::update_entitys();
+
 		render::draw.run();
 
 		return oPresent(interfaces::swap_chain->pDXGISwapChain, uSyncInterval, uFlags);
@@ -96,7 +98,8 @@ namespace hook {
 
 	bool __fastcall CreateMove(void* pInput, int nSlot, bool bActive)
 	{
-		features::update_entitys();
+		// log_system::logger << "ccc" << log_system::endl;
+		// features::update_entitys();
 
 		return hk_CreateMove.get_original()(pInput, nSlot, bActive);
 	}

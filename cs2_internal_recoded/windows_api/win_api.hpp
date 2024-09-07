@@ -39,6 +39,7 @@ namespace windows_api{
 		HeapAlloc =					FNV1A("HeapAlloc"),
 		HeapFree =					FNV1A("HeapFree"),
 		SetWindowLongPtrW =			FNV1A("SetWindowLongPtrW"),
+		ShellExecuteA =				FNV1A("ShellExecuteA"),
 	};
 
 
@@ -69,8 +70,8 @@ namespace windows_api{
 		LPVOID fn_HeapAlloc(HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes);
 		BOOL fn_HeapFree(HANDLE hHeap, DWORD dwFlags, LPVOID lpMem);
 		LONG_PTR fn_SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
-
-
+		HINSTANCE fn_ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
+		 
 
 	private:
 		using FN_AllocConsole = BOOL(WINAPI*)();
@@ -93,9 +94,11 @@ namespace windows_api{
 		using FN_HeapAlloc = LPVOID(WINAPI*) (HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes);
 		using FN_HeapFree = BOOL(WINAPI*) (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem);
 		using FN_SetWindowLongPtrW = LONG_PTR(WINAPI*)(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
+		using FN_ShellExecuteA = HINSTANCE(WINAPI*)(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
 
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;
+		HMODULE shell32_dll = nullptr;
 
 		std::unordered_map<uint32_t, void*> func_ptr = {};
 	};

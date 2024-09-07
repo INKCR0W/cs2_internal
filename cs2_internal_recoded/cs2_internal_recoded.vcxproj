@@ -166,6 +166,7 @@
     <ClCompile Include="memory\memory.cpp" />
     <ClCompile Include="render\menu.cpp" />
     <ClCompile Include="render\render.cpp" />
+    <ClCompile Include="sdk\datatypes\matrix.cpp" />
     <ClCompile Include="sdk\datatypes\qangle.cpp" />
     <ClCompile Include="sdk\datatypes\vector.cpp" />
     <ClCompile Include="sdk\entity.cpp" />

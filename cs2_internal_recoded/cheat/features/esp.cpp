@@ -14,7 +14,6 @@
 #include "../../third_party/imgui/imgui.h"
 
 
-
 namespace features {
 	Vector2D_t world_to_screen(ViewMatrix_t matrix, Vector_t position)
 	{
@@ -46,7 +45,7 @@ namespace features {
 			if (current_player_pawn->m_iTeamNum() == vars::local_player_controller->get_pawn(vars::entity_list_address)->m_iTeamNum())
 				continue;
 
-			if (*current_player_pawn->m_iHealth() <= 0 || *current_player->m_bPawnIsAlive() == false)
+			if (current_player_pawn->m_iHealth() <= 0 || current_player->m_bPawnIsAlive() == false)
 				continue;
 
 			Vector_t previous = {};
@@ -55,7 +54,7 @@ namespace features {
 			Vector2D_t current_screen_pos = {};
 			Vector2D_t previous_screen_pos = {};
 
-			auto game_scene_node = *current_player_pawn->m_pGameSceneNode();
+			auto game_scene_node = current_player_pawn->m_pGameSceneNode();
 			auto bones = game_scene_node->get_skeleton_instance()->pBoneCache;
 
 			for (std::vector<int> current_group : bone_groups::all_groups) {

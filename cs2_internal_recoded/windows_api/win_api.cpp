@@ -17,8 +17,9 @@ namespace windows_api{
 	const bool win_api::setup() {
 		kernel32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::kernel32_dll));
 		user32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::user32_dll));
+        shell32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::shell32_dll));
 
-		if (kernel32_dll == nullptr || user32_dll == nullptr)
+		if (kernel32_dll == nullptr || user32_dll == nullptr || shell32_dll == nullptr)
 			return false;
         
         return true;
@@ -285,5 +286,19 @@ namespace windows_api{
         }
 
         return reinterpret_cast<FN_SetWindowLongPtrW>(func_ptr[hash])(hWnd, nIndex, dwNewLong);
+    }
+    HINSTANCE win_api::fn_ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
+    {
+        hash_t hash = function_hash::ShellExecuteA;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(shell32_dll, xorstr_("ShellExecuteA"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : ShellExecuteA"));
+                return 0;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+
+        return reinterpret_cast<FN_ShellExecuteA>(func_ptr[hash])(hwnd, lpOperation, lpFile, lpParameters, lpDirectory, nShowCmd);
     }
 }

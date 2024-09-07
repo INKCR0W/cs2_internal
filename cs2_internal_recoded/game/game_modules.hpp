@@ -21,4 +21,5 @@ namespace modules {
 	inline auto material_system2_dll = xorstr("materialsystem2.dll");
 	inline auto matchmaking_dll = xorstr("matchmaking.dll");
 	inline auto resourcesystem_dll = xorstr("resourcesystem.dll");
+	inline auto shell32_dll = xorstr("Shell32.dll");
 }

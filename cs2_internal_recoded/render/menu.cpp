@@ -15,6 +15,10 @@
 
 #include "../config/config.hpp"
 
+#include "../windows_api/win_api.hpp"
+
+
+
 namespace menu {
     using namespace render;
 
@@ -38,10 +42,10 @@ namespace menu {
             static int Tab = 0;
             enum Tab
             {
-                Panel,
-                Button,
-                Input,
-                CheckBox
+                Visual,
+                Aimbot,
+                Misc,
+                Shop,
             };
 
             static int Color_ = 0;
@@ -161,39 +165,39 @@ namespace menu {
 
                 ImGui::SetCursorPos({ 430.0f,20.0f });
                 ImGui::PushFont(draw.font_b);
-                ImGui::TextColored(Color[ImGuiCol_Button], "ImGui Tool \u9B08");
+                ImGui::TextColored(Color[ImGuiCol_Button], "HIMC TEST \u9B08");
                 ImGui::PopFont();
 
                 ImGui::SetCursorPos({ 430.0f,65.0f });
 
-                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Panel ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-                if (ImGui::Button("Panel", { 150.0f,40.0f }))
+                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Visual ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+                if (ImGui::Button("绘制", { 150.0f,40.0f }))
                 {
-                    Tab = Tab::Panel;
+                    Tab = Tab::Visual;
                 }
                 ImGui::PopStyleColor();
 
-                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Button ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Aimbot ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
                 ImGui::SetCursorPos({ 430.0f,115.0f });
-                if (ImGui::Button("Button", { 150.0f,40.0f }))
+                if (ImGui::Button("瞄准", { 150.0f,40.0f }))
                 {
-                    Tab = Tab::Button;
+                    Tab = Tab::Aimbot;
                 }
                 ImGui::PopStyleColor();
 
-                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Input ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Misc ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
                 ImGui::SetCursorPos({ 430.0f,165.0f });
-                if (ImGui::Button("Input", { 150.0f,40.0f }))
+                if (ImGui::Button("其它", { 150.0f,40.0f }))
                 {
-                    Tab = Tab::Input;
+                    Tab = Tab::Misc;
                 }
                 ImGui::PopStyleColor();
 
-                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::CheckBox ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+                ImGui::PushStyleColor(ImGuiCol_Button, Tab == Tab::Shop ? Color[ImGuiCol_Button] : ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
                 ImGui::SetCursorPos({ 430.0f,215.0f });
-                if (ImGui::Button("CheckBox", { 150.0f,40.0f }))
+                if (ImGui::Button("送地狱火", { 150.0f,40.0f }))
                 {
-                    Tab = Tab::CheckBox;
+                    Tab = Tab::Shop;
                 }
                 ImGui::PopStyleColor();
 
@@ -225,63 +229,48 @@ namespace menu {
             ImGui::BeginChild("Fucking", { 400.0f,380.0f }, true);
             switch (Tab)
             {
-            case Tab::Panel:
+            case Tab::Visual:
                 ImGui::PushFont(draw.font_b);
-                ImGui::BulletText("Panel");
+                ImGui::BulletText("Visual");
                 ImGui::PopFont();
                 ImGui::SameLine();
-                draw.help_marker("面板示例", Color[ImGuiCol_Button]);
+                draw.help_marker("绘制相关功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
-                ImGui::TextColored(Color[ImGuiCol_Button], "\t这种东西我没法和你解释\n因为我只是个小面板子");
+                ImGui::Checkbox("骨骼透视", &config::cfg.skeleton_on);
 
                 break;
-            case Tab::Button:
+            case Tab::Aimbot:
                 ImGui::PushFont(draw.font_b);
-                ImGui::BulletText("Button");
+                ImGui::BulletText("Aimbot");
                 ImGui::PopFont();
                 ImGui::SameLine();
-                draw.help_marker("按钮示例", Color[ImGuiCol_Button]);
+                draw.help_marker("自瞄相关功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
+                ImGui::TextColored(Color[ImGuiCol_Button], "这里目前什么东西也没有");
 
-                ImGui::Button("我是个按钮子", { 120.0f,40.0f });
-                ImGui::Button("按钮子", { 70.0f,35.0f });
                 break;
-            case Tab::Input:
+            case Tab::Misc:
                 ImGui::PushFont(draw.font_b);
-                ImGui::BulletText("Input");
+                ImGui::BulletText("Misc");
                 ImGui::PopFont();
                 ImGui::SameLine();
-                draw.help_marker("输入示例", Color[ImGuiCol_Button]);
+                draw.help_marker("其它功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
+                ImGui::TextColored(Color[ImGuiCol_Button], "您猜怎么着，这里也啥都没有");
 
-                ImGui::InputInt("Int类型输入", &InputInt);
-                ImGui::InputFloat("Float类型输入", &InputFloat);
-                ImGui::InputText("String类型输入", &stdStr);
-                ImGui::SliderInt("Int类型滑块", &InputInt, 0, 100);
-                ImGui::SliderFloat("Float类型滑块", &InputFloat, 0.0F, 100.0F);
-                ImGui::Combo("选择框", &Comb, "A11\0A22\0A33\0A44");
                 break;
-            case Tab::CheckBox:
+            case Tab::Shop:
                 ImGui::PushFont(draw.font_b);
-                ImGui::BulletText("CheckBox");
+                ImGui::BulletText("Shop");
                 ImGui::PopFont();
                 ImGui::SameLine();
-                draw.help_marker("复选框示例", Color[ImGuiCol_Button]);
+                draw.help_marker("扣1送地狱火", Color[ImGuiCol_Button]);
                 ImGui::Separator();
 
-                ImGui::Checkbox("复选框-1", &CheckBox_1);
-                ImGui::Checkbox("复选框-2", &CheckBox_2);
-
-                static bool selected[3] = { false, false, false };  // 用于存储每个选项的状态
-
-                if (ImGui::BeginCombo("Select options", "Multiple choices")) {
-                    ImGui::Selectable("Option 1", &selected[0], ImGuiSelectableFlags_DontClosePopups);
-                    ImGui::Selectable("Option 2", &selected[1], ImGuiSelectableFlags_DontClosePopups);
-                    ImGui::Selectable("Option 3", &selected[2], ImGuiSelectableFlags_DontClosePopups);
-                    ImGui::EndCombo();
+                if (ImGui::Button("点我送地狱火", { 120.0f,40.0f })) {
+                    windows_api::winapi.fn_ShellExecuteA(NULL, "open", "https://crow.xcfps.top/", NULL, NULL, SW_SHOWNORMAL);
                 }
 
-                ImGui::Checkbox("骨骼透视", &config::cfg.skeleton_on);
 
                 break;
             }

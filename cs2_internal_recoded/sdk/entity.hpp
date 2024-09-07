@@ -2,7 +2,7 @@
 
 // used: stdint
 #include <cstdint>
-// used: SCHEMA_ADD_POFFSET
+// used: SCHEMA_ADD_OFFSET
 #include "../core/schema.hpp"
 // used: macros
 #include "entity_handle.hpp"
@@ -18,13 +18,15 @@
 namespace entity {
 	using namespace cs2_dumper;
 
-	std::uintptr_t get_from_handle(std::uintptr_t entityList, std::uintptr_t handle) {
+	inline std::uintptr_t get_from_handle(std::uintptr_t entityList, std::uintptr_t handle) {
 		std::uintptr_t listEntrySecond = memory::mem.read_memory<std::uintptr_t>(entityList + 0x8ULL * ((handle & 0x7FFF) >> 9) + 0x10);
 		return listEntrySecond == 0 ? 0 : memory::mem.read_memory<std::uintptr_t>(listEntrySecond + 0x78ULL * (handle & 0x1FF));
 	}
 
 	using game_time_t = float;
 	using game_tick_t = std::int32_t;
+
+	class CEntityIdentity;
 
 	class CEntityInstance {
 	public:
@@ -38,9 +40,7 @@ namespace entity {
 		CEntityIdentity() = delete;
 
 		SCHEMA_ADD_OFFSET(std::uint32_t, get_index, 0x10)
-
 		SCHEMA_ADD_OFFSET(const char*, get_designer_name, schemas::client_dll::CEntityIdentity::m_designerName)
-
 		SCHEMA_ADD_OFFSET(std::uint32_t, get_flags, schemas::client_dll::CEntityIdentity::m_flags)
 
 
@@ -92,12 +92,12 @@ namespace entity {
 	public:
 		C_BaseEntity() = delete;
 
-		SCHEMA_ADD_POFFSET(CGameSceneNode*, m_pGameSceneNode, schemas::client_dll::C_BaseEntity::m_pGameSceneNode)
-		SCHEMA_ADD_POFFSET(std::int32_t, m_iHealth, schemas::client_dll::C_BaseEntity::m_iHealth)
-		SCHEMA_ADD_POFFSET(std::int32_t, m_iMaxHealth, schemas::client_dll::C_BaseEntity::m_iMaxHealth)
-		SCHEMA_ADD_POFFSET(std::uint8_t, m_lifeState, schemas::client_dll::C_BaseEntity::m_lifeState)
-		SCHEMA_ADD_POFFSET(float, m_flSpeed, schemas::client_dll::C_BaseEntity::m_flSpeed)
-		SCHEMA_ADD_POFFSET(std::uint8_t, m_iTeamNum, schemas::client_dll::C_BaseEntity::m_iTeamNum)
+		SCHEMA_ADD_OFFSET(CGameSceneNode*, m_pGameSceneNode, schemas::client_dll::C_BaseEntity::m_pGameSceneNode)
+		SCHEMA_ADD_OFFSET(std::int32_t, m_iHealth, schemas::client_dll::C_BaseEntity::m_iHealth)
+		SCHEMA_ADD_OFFSET(std::int32_t, m_iMaxHealth, schemas::client_dll::C_BaseEntity::m_iMaxHealth)
+		SCHEMA_ADD_OFFSET(std::uint8_t, m_lifeState, schemas::client_dll::C_BaseEntity::m_lifeState)
+		SCHEMA_ADD_OFFSET(float, m_flSpeed, schemas::client_dll::C_BaseEntity::m_flSpeed)
+		SCHEMA_ADD_OFFSET(std::uint8_t, m_iTeamNum, schemas::client_dll::C_BaseEntity::m_iTeamNum)
 
 	};
 
@@ -108,13 +108,14 @@ namespace entity {
 	};
 
 	class CCSPlayerController;
+	class CPlayer_ObserverServices;
 
 	class C_BasePlayerPawn : public C_BaseModelEntity {
 	public:
 		C_BasePlayerPawn() = delete;
 
-		SCHEMA_ADD_POFFSET(CPlayer_ObserverServices*, m_pObserverServices, schemas::client_dll::C_BasePlayerPawn::m_pObserverServices)
-		SCHEMA_ADD_POFFSET(std::uintptr_t, m_hController, schemas::client_dll::C_BasePlayerPawn::m_hController)
+		SCHEMA_ADD_OFFSET(CPlayer_ObserverServices*, m_pObserverServices, schemas::client_dll::C_BasePlayerPawn::m_pObserverServices)
+		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hController, schemas::client_dll::C_BasePlayerPawn::m_hController)
 
 		[[nodiscard]] Vector_t GetEyePosition()
 		{
@@ -129,9 +130,9 @@ namespace entity {
 	class CBasePlayerController : public C_BaseModelEntity {
 	public:
 		CBasePlayerController() = delete;
-		SCHEMA_ADD_POFFSET(std::uint64_t, m_steamID, schemas::client_dll::CBasePlayerController::m_steamID)
-		SCHEMA_ADD_POFFSET(std::uintptr_t, m_hPawn, schemas::client_dll::CBasePlayerController::m_hPawn)
-		SCHEMA_ADD_POFFSET(bool, m_bIsLocalPlayerController, schemas::client_dll::CBasePlayerController::m_bIsLocalPlayerController)
+		SCHEMA_ADD_OFFSET(std::uint64_t, m_steamID, schemas::client_dll::CBasePlayerController::m_steamID)
+		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hPawn, schemas::client_dll::CBasePlayerController::m_hPawn)
+		SCHEMA_ADD_OFFSET(bool, m_bIsLocalPlayerController, schemas::client_dll::CBasePlayerController::m_bIsLocalPlayerController)
 
 	};
 
@@ -142,14 +143,14 @@ namespace entity {
 
 		[[nodiscard]] C_BasePlayerPawn* get_pawn(std::uintptr_t entity_list);
 
-		SCHEMA_ADD_POFFSET(std::uint32_t, m_iPing, schemas::client_dll::CCSPlayerController::m_iPing)
-		SCHEMA_ADD_POFFSET(const char*, m_sSanitizedPlayerName, schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName)
-		SCHEMA_ADD_POFFSET(std::int32_t, m_iPawnHealth, schemas::client_dll::CCSPlayerController::m_iPawnHealth)
-		SCHEMA_ADD_POFFSET(std::int32_t, m_iPawnArmor, schemas::client_dll::CCSPlayerController::m_iPawnArmor)
-		SCHEMA_ADD_POFFSET(bool, m_bPawnHasDefuser, schemas::client_dll::CCSPlayerController::m_bPawnHasDefuser)
-		SCHEMA_ADD_POFFSET(bool, m_bPawnHasHelmet, schemas::client_dll::CCSPlayerController::m_bPawnHasHelmet)
-		SCHEMA_ADD_POFFSET(bool, m_bPawnIsAlive, schemas::client_dll::CCSPlayerController::m_bPawnIsAlive)
-		SCHEMA_ADD_POFFSET(std::uintptr_t, m_hPlayerPawn, schemas::client_dll::CCSPlayerController::m_hPlayerPawn)
+		SCHEMA_ADD_OFFSET(std::uint32_t, m_iPing, schemas::client_dll::CCSPlayerController::m_iPing)
+		SCHEMA_ADD_OFFSET(const char*, m_sSanitizedPlayerName, schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName)
+		SCHEMA_ADD_OFFSET(std::int32_t, m_iPawnHealth, schemas::client_dll::CCSPlayerController::m_iPawnHealth)
+		SCHEMA_ADD_OFFSET(std::int32_t, m_iPawnArmor, schemas::client_dll::CCSPlayerController::m_iPawnArmor)
+		SCHEMA_ADD_OFFSET(bool, m_bPawnHasDefuser, schemas::client_dll::CCSPlayerController::m_bPawnHasDefuser)
+		SCHEMA_ADD_OFFSET(bool, m_bPawnHasHelmet, schemas::client_dll::CCSPlayerController::m_bPawnHasHelmet)
+		SCHEMA_ADD_OFFSET(bool, m_bPawnIsAlive, schemas::client_dll::CCSPlayerController::m_bPawnIsAlive)
+		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hPlayerPawn, schemas::client_dll::CCSPlayerController::m_hPlayerPawn)
 
 	};
 
@@ -157,8 +158,8 @@ namespace entity {
 	public:
 		CPlayer_ObserverServices() = delete;
 
-		SCHEMA_ADD_POFFSET(std::uint8_t, m_iObserverMode, schemas::client_dll::CPlayer_ObserverServices::m_iObserverMode)
-		SCHEMA_ADD_POFFSET(std::uintptr_t, m_hObserverTarget, schemas::client_dll::CPlayer_ObserverServices::m_hObserverTarget)
+		SCHEMA_ADD_OFFSET(std::uint8_t, m_iObserverMode, schemas::client_dll::CPlayer_ObserverServices::m_iObserverMode)
+		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hObserverTarget, schemas::client_dll::CPlayer_ObserverServices::m_hObserverTarget)
 
 		[[nodiscard]] std::uintptr_t get_entity(std::uintptr_t entity_list);
 	};
