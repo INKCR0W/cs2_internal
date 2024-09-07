@@ -4,8 +4,10 @@
 
 // used: xorstr_
 #include "../utils/xorstr.hpp"
-// used: iinputsystem
+// used: IInputSystem
 #include "../sdk/interfaces/iinputsystem.hpp"
+// used: IEngineClient
+#include "../sdk/interfaces/iengineclient.hpp"
 // used: ISwapChainDx11
 #include "../sdk/interfaces/iswapchaindx11.hpp"
 
@@ -30,7 +32,6 @@
 #define TICK_NEVER_THINK (-1)
 #pragma endregion
 
-
 namespace interfaces {
 	const bool setup();
 
@@ -43,4 +44,6 @@ namespace interfaces {
 	inline ID3D11RenderTargetView* render_target_view = nullptr;
 
 	inline IInputSystem* input_system = nullptr;
+	inline IEngineClient* engine = nullptr;
 };
+

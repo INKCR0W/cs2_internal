@@ -164,6 +164,7 @@
     <ClCompile Include="memory\memory.cpp" />
     <ClCompile Include="render\menu.cpp" />
     <ClCompile Include="render\render.cpp" />
+    <ClCompile Include="sdk\entity.cpp" />
     <ClCompile Include="third_party\imgui\imgui.cpp" />
     <ClCompile Include="third_party\imgui\imgui_draw.cpp" />
     <ClCompile Include="third_party\imgui\imgui_impl_dx11.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="third_party\imgui\imgui_tables.cpp" />
     <ClCompile Include="third_party\imgui\imgui_widgets.cpp" />
     <ClCompile Include="core\inputsystem.cpp" />
+    <ClCompile Include="utils\math.cpp" />
     <ClCompile Include="windows_api\win_api.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +182,7 @@
     <ClInclude Include="core\common.hpp" />
     <ClInclude Include="core\core.hpp" />
     <ClInclude Include="core\interfaces.hpp" />
+    <ClInclude Include="core\schema.hpp" />
     <ClInclude Include="game\game_modules.hpp" />
     <ClInclude Include="game\vtable.hpp" />
     <ClInclude Include="core\hooks.hpp" />
@@ -191,6 +194,10 @@
     <ClInclude Include="render\font.hpp" />
     <ClInclude Include="render\menu.hpp" />
     <ClInclude Include="render\render.hpp" />
+    <ClInclude Include="sdk\const.hpp" />
+    <ClInclude Include="sdk\entity.hpp" />
+    <ClInclude Include="sdk\entity_handle.hpp" />
+    <ClInclude Include="sdk\interfaces\iengineclient.hpp" />
     <ClInclude Include="sdk\interfaces\iinputsystem.hpp" />
     <ClInclude Include="sdk\interfaces\iswapchaindx11.hpp" />
     <ClInclude Include="third_party\imgui\imconfig.h" />
@@ -205,6 +212,8 @@
     <ClInclude Include="third_party\minhook\include\MinHook.h" />
     <ClInclude Include="hook\hook_manager.hpp" />
     <ClInclude Include="core\inputsystem.hpp" />
+    <ClInclude Include="utils\crt.hpp" />
+    <ClInclude Include="utils\math.hpp" />
     <ClInclude Include="utils\pe64.hpp" />
     <ClInclude Include="utils\xorstr.hpp" />
     <ClInclude Include="utils\crt_string.hpp" />

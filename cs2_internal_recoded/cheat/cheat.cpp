@@ -69,6 +69,7 @@ namespace cheat {
 			return false;
 		}
 
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Initialization done, game version: ") << interfaces::engine->GetProductVersionString() << set_level() << endl;
 
 
 		return true;

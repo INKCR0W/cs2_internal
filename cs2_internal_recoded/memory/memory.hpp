@@ -43,6 +43,13 @@ namespace memory {
 			return (*static_cast<T* const*>(thisptr))[nIndex];
 		}
 
+		template <typename T, std::size_t nIndex, class CBaseClass, typename... Args_t>
+		static __forceinline T call_VFunc(CBaseClass* thisptr, Args_t... argList)
+		{
+			using VirtualFn_t = T(__thiscall*)(const void*, decltype(argList)...);
+			return (*reinterpret_cast<VirtualFn_t* const*>(reinterpret_cast<std::uintptr_t>(thisptr)))[nIndex](thisptr, argList...);
+		}
+
 		const uintptr_t find_pattern(const char* module_name, const char* pattern);
 
 		void* heap_alloc(const std::size_t nSize);

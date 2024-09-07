@@ -167,8 +167,23 @@ namespace log_system {
 		else {
 			curr_time = "";
 
+			switch (current_log_level)
+			{
+			case log_level_flags::LOG_INFO:
+				level_color = LOG_COLOR_FORE_GREEN;
+				break;
+			case log_level_flags::LOG_WARNING:
+				level_color = LOG_COLOR_FORE_YELLOW;
+				break;
+			case log_level_flags::LOG_ERROR:
+				level_color = LOG_COLOR_FORE_RED;
+				break;
+			default:
+				level_color = current_log_color;
+				break;
+			}
+
 			level = "";
-			level_color = current_log_color;
 		}
 
 		std::string result_string = curr_time + level + message;

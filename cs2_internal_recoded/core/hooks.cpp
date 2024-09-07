@@ -38,11 +38,17 @@ namespace hook {
 
 		if (!hk_Present.create(memory::mem.get_VFunc(interfaces::swap_chain->pDXGISwapChain, vtable::D3D::PRESENT), reinterpret_cast<void*>(&Present)))
 			return false;
+
+#ifdef _DEBUG
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"Present\" hook has been created") << set_level() << endl;
+#endif
 
 		if (!hk_IsRelativeMouseMode.create(memory::mem.get_VFunc(interfaces::input_system, vtable::INPUTSYSTEM::ISRELATIVEMOUSEMODE), reinterpret_cast<void*>(&IsRelativeMouseMode)))
 			return false;
+
+#ifdef _DEBUG
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"IsRelativeMouseMode\" hook has been created") << set_level() << endl;
+#endif
 
 		return true;
 	}

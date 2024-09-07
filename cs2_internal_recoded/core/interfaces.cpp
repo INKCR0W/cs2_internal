@@ -21,6 +21,8 @@
 
 using InstantiateInterfaceFn_t = void* (*)();
 
+const char* GAME_VERSION = xorstr_("1.40.3.0");
+
 class CInterfaceRegister
 {
 public:
@@ -127,6 +129,17 @@ void interfaces::create_render_target() {
 const bool interfaces::setup() {
 	using namespace log_system;
 	bool success = true;
+
+	const auto pEngineRegisterList = get_register_list(modules::engine2_dll);
+	if (pEngineRegisterList == nullptr)
+		return false;
+
+	engine = capture<IEngineClient>(pEngineRegisterList, SOURCE2_ENGINE_TO_CLIENT);
+	success &= (engine != nullptr);
+
+	if (crt::crt.string_compare(engine->GetProductVersionString(), GAME_VERSION) != 0) {
+		logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("version mismatch! local CS2 version: ") << GAME_VERSION << xorstr_(", current CS2 version: ") << interfaces::engine->GetProductVersionString() << xorstr_(". something might not function as normal.") << set_level() << endl;
+	}
 
 	swap_chain = **reinterpret_cast<ISwapChainDx11***>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::rendersystem_dll, xorstr_("66 0F 7F 0D ? ? ? ? 66 0F 7F 05 ? ? ? ? 0F 1F 40"))), 0x4, 0x8));
 	success &= (swap_chain != nullptr);
