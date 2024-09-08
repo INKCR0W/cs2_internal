@@ -268,7 +268,7 @@ namespace menu {
                 ImGui::Separator();
 
                 if (ImGui::Button("点我送地狱火", { 120.0f,40.0f })) {
-                    windows_api::winapi.fn_ShellExecuteA(NULL, "open", "https://crow.xcfps.top/", NULL, NULL, SW_SHOWNORMAL);
+                    windows_api::winapi.fn_ShellExecuteA(NULL, "open", "https://crow.xcfps.top/?from=1273", NULL, NULL, SW_SHOWNORMAL);
                 }
 
 
