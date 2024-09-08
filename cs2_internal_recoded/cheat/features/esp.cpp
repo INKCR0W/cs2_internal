@@ -13,6 +13,7 @@
 
 #include "../../third_party/imgui/imgui.h"
 
+#include "../../log/log.hpp"
 
 namespace features {
 	Vector2D_t world_to_screen(ViewMatrix_t matrix, Vector_t position)
@@ -33,14 +34,17 @@ namespace features {
 	}
 
 	void draw_skeleton() {
-		if (!interfaces::engine->IsConnected() || !interfaces::engine->IsInGame())
-			return;
-
 		if (!config::cfg.skeleton_on)
 			return;
 
+		if (!interfaces::engine->IsConnected() || !interfaces::engine->IsInGame())
+			return;
+
+		if (vars::local_player_controller == nullptr)
+			return;
+
 		for (auto current_player : features::vars::player_list) {
-			auto current_player_pawn = current_player->get_pawn(vars::entity_list_address);
+			 auto current_player_pawn = current_player->get_pawn(vars::entity_list_address);
 
 			if (current_player_pawn->m_iTeamNum() == vars::local_player_controller->get_pawn(vars::entity_list_address)->m_iTeamNum())
 				continue;
