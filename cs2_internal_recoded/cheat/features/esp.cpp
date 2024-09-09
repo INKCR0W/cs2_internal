@@ -46,6 +46,9 @@ namespace features {
 		for (auto current_player : features::vars::player_list) {
 			 auto current_player_pawn = current_player->get_pawn(vars::entity_list_address);
 
+			 if (current_player_pawn == nullptr)
+				 continue;
+
 			if (current_player_pawn->m_iTeamNum() == vars::local_player_controller->get_pawn(vars::entity_list_address)->m_iTeamNum())
 				continue;
 

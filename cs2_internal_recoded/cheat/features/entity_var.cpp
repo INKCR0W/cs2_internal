@@ -12,7 +12,9 @@ namespace features {
 		using namespace memory;
 		using namespace cs2_dumper;
 
-		if (vars::local_player_controller = mem.read_memory<entity::CCSPlayerController*>(client_dll_addr + offsets::client_dll::dwLocalPlayerController); vars::local_player_controller == nullptr) {
+		vars::local_player_controller = mem.read_memory<entity::CCSPlayerController*>(client_dll_addr + offsets::client_dll::dwLocalPlayerController);
+
+		if (vars::local_player_controller == nullptr) {
 			return;
 		}
 

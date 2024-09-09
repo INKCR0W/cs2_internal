@@ -12,7 +12,7 @@ namespace menu {
 		float screen_width = 0.f;
 		float screen_height = 0.f;
 
-		bool menu_opened = false;
+		bool menu_opened = true;
 		bool main_active = false;
 	private:
 	};
