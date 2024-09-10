@@ -287,6 +287,7 @@ namespace windows_api{
 
         return reinterpret_cast<FN_SetWindowLongPtrW>(func_ptr[hash])(hWnd, nIndex, dwNewLong);
     }
+
     HINSTANCE win_api::fn_ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
     {
         hash_t hash = function_hash::ShellExecuteA;
@@ -300,5 +301,20 @@ namespace windows_api{
         }
 
         return reinterpret_cast<FN_ShellExecuteA>(func_ptr[hash])(hwnd, lpOperation, lpFile, lpParameters, lpDirectory, nShowCmd);
+    }
+
+    int win_api::fn_MessageBoxA(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType)
+    {
+        hash_t hash = function_hash::MessageBoxA;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(user32_dll, xorstr_("MessageBoxA"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : MessageBoxA"));
+                return 0;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+
+        return reinterpret_cast<FN_MessageBoxA>(func_ptr[hash])(hWnd, lpText, lpCaption, uType);
     }
 }

@@ -1,8 +1,5 @@
 #include "cheat.hpp"
 
-// used: this_thread::sleep_for
-#include <thread>
-
 // used: xorstr_
 #include "../utils/xorstr.hpp"
 // used: mem
@@ -78,24 +75,21 @@ namespace cheat {
 
 	DWORD __stdcall cs2_internal::ren(LPVOID lpParameter)
 	{
-		using log_system::logger;
-		using log_system::endl;
+		//using log_system::logger;
+		//using log_system::endl;
 
-		cs2_internal* pThis = static_cast<cs2_internal*>(lpParameter);
+		//cs2_internal* pThis = static_cast<cs2_internal*>(lpParameter);
 
-		while (true) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-		}
+		//while (true) {
+		//	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+		//}
 
 		return 0;
 	}
 
 	bool cs2_internal::run() {
-		// TODO
-		Sleep(1000);
-
-		if (windows_api::winapi.fn_CreateThread(NULL, 0, &cs2_internal::ren, this, 0, NULL) == NULL)
-			return false;
+		//if (windows_api::winapi.fn_CreateThread(NULL, 0, &cs2_internal::ren, this, 0, NULL) == NULL)
+		//	return false;
 
 		return true;
 	}

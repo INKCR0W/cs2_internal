@@ -40,6 +40,7 @@ namespace windows_api{
 		HeapFree =					FNV1A("HeapFree"),
 		SetWindowLongPtrW =			FNV1A("SetWindowLongPtrW"),
 		ShellExecuteA =				FNV1A("ShellExecuteA"),
+		MessageBoxA =				FNV1A("MessageBoxA"),
 	};
 
 
@@ -71,6 +72,7 @@ namespace windows_api{
 		BOOL fn_HeapFree(HANDLE hHeap, DWORD dwFlags, LPVOID lpMem);
 		LONG_PTR fn_SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
 		HINSTANCE fn_ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
+		int fn_MessageBoxA(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
 		 
 
 	private:
@@ -95,6 +97,7 @@ namespace windows_api{
 		using FN_HeapFree = BOOL(WINAPI*) (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem);
 		using FN_SetWindowLongPtrW = LONG_PTR(WINAPI*)(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
 		using FN_ShellExecuteA = HINSTANCE(WINAPI*)(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
+		using FN_MessageBoxA = int(WINAPI*)(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
 
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;
