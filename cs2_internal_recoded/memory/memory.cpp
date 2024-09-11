@@ -19,6 +19,8 @@
 #include "../game/game_modules.hpp"
 // used: logsystem
 #include "../log/log.hpp"
+// used: xorstr_
+#include "../utils/xorstr.hpp"
 
 
 namespace memory {
@@ -28,7 +30,7 @@ namespace memory {
 		client_dll_addr = reinterpret_cast<std::uintptr_t>(get_module_base_handle(modules::client_dll));
 		if (client_dll_addr == 0) {
 			using namespace log_system;
-			logger << set_level(log_level_flags::LOG_ERROR) << "Failed to find client.dll, wait until the game is fully loaded before injecting." << set_level() << endl;
+			logger << set_level(log_level_flags::LOG_ERROR) << xorstr_("Failed to find client.dll, wait until the game is fully loaded before injecting.") << set_level() << endl;
 			return false;
 		}
 

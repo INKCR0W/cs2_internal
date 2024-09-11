@@ -26,6 +26,7 @@ namespace config {
 
 #pragma region vars
 		bool skeleton_on = false;
+		bool spectator_list_on = false;
 #pragma endregion
 
 	private:

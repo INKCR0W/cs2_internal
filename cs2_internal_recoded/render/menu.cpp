@@ -156,7 +156,7 @@ namespace menu {
             }
 
 
-            ImGui::Begin("ImGui Tool", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);//开始绘制窗口
+            ImGui::Begin("HIMC", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);//开始绘制窗口
             ImGui::SetWindowSize({ 600.0f,400.0f });//设置窗口大小
 
 
@@ -237,6 +237,7 @@ namespace menu {
                 draw.help_marker("绘制相关功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
                 ImGui::Checkbox("骨骼透视", &config::cfg.skeleton_on);
+                ImGui::Checkbox("观战列表", &config::cfg.spectator_list_on);
 
                 break;
             case Tab::Aimbot:

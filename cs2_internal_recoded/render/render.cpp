@@ -104,6 +104,7 @@ namespace render{
 
 		menu::menu.run();
 		features::draw_skeleton();
+		features::draw_spectator_list();
 
 		render();
 	}

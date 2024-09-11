@@ -6,14 +6,16 @@
 #include "../../core/interfaces.hpp"
 // used: entity structs
 #include "../../sdk/entity.hpp"
-
+// used: consts
 #include "../../sdk/const.hpp"
-
+// used: vars
 #include "../../config/config.hpp"
-
+// used: screen_width
+#include "../../render/menu.hpp"
+// used: imgui api
 #include "../../third_party/imgui/imgui.h"
 
-#include "../../log/log.hpp"
+#undef max
 
 namespace features {
 	Vector2D_t world_to_screen(ViewMatrix_t matrix, Vector_t position)
@@ -44,12 +46,12 @@ namespace features {
 			return;
 
 		for (auto current_player : features::vars::player_list) {
-			 auto current_player_pawn = current_player->get_pawn(vars::entity_list_address);
+			 auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
 
 			 if (current_player_pawn == nullptr)
 				 continue;
 
-			if (current_player_pawn->m_iTeamNum() == vars::local_player_controller->get_pawn(vars::entity_list_address)->m_iTeamNum())
+			if (current_player_pawn->m_iTeamNum() == vars::observer->m_iTeamNum())
 				continue;
 
 			if (current_player_pawn->m_iHealth() <= 0 || current_player->m_bPawnIsAlive() == false)
@@ -82,6 +84,39 @@ namespace features {
 						ImGui::GetForegroundDrawList()->AddLine({previous_screen_pos.x, previous_screen_pos.y}, {current_screen_pos.x, current_screen_pos.y}, IM_COL32(255, 0, 0, 255), 1.2f);
 					previous = current;
 				}
+			}
+		}
+	}
+	void draw_spectator_list() {
+		if (!config::cfg.spectator_list_on)
+			return;
+
+		if (!interfaces::engine->IsConnected() || !interfaces::engine->IsInGame())
+			return;
+
+		if (vars::local_player_pawn == nullptr)
+			return;
+
+
+		auto draw_list = ImGui::GetForegroundDrawList();
+
+		float y_offset = 0;
+
+		for (auto current_player : features::vars::player_list) {
+			auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
+
+			if (current_player_pawn == nullptr)
+				continue;
+
+			auto current_obs = current_player_pawn->m_pObserverServices();
+			if (current_obs == nullptr)
+				continue;
+
+			if (current_obs->get_target_pawn(vars::entity_list_address) == vars::observer) {
+				const char* pawn_name_address = current_player->m_sSanitizedPlayerName();
+				const auto size = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFont()->FontSize, std::numeric_limits<float>::max(), 0.0f, pawn_name_address);
+				draw_list->AddText({ menu::menu.screen_width - size.x, y_offset }, IM_COL32(255, 255, 255, 255), pawn_name_address);
+				y_offset += 20;
 			}
 		}
 	}

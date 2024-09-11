@@ -127,6 +127,7 @@ namespace entity {
 		[[nodiscard]] CCSPlayerController* get_controller(std::uintptr_t entity_list);
 	};
 
+
 	class CBasePlayerController : public C_BaseModelEntity {
 	public:
 		CBasePlayerController() = delete;
@@ -141,7 +142,7 @@ namespace entity {
 	public:
 		CCSPlayerController() = delete;
 
-		[[nodiscard]] C_BasePlayerPawn* get_pawn(std::uintptr_t entity_list);
+		[[nodiscard]] C_BasePlayerPawn* get_base_pawn(std::uintptr_t entity_list);
 
 		SCHEMA_ADD_OFFSET(std::uint32_t, m_iPing, schemas::client_dll::CCSPlayerController::m_iPing)
 		SCHEMA_ADD_OFFSET(const char*, m_sSanitizedPlayerName, schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName)
@@ -158,10 +159,10 @@ namespace entity {
 	public:
 		CPlayer_ObserverServices() = delete;
 
+		[[nodiscard]] C_BaseEntity* get_target_pawn(std::uintptr_t entity_list);
+
 		SCHEMA_ADD_OFFSET(std::uint8_t, m_iObserverMode, schemas::client_dll::CPlayer_ObserverServices::m_iObserverMode)
 		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hObserverTarget, schemas::client_dll::CPlayer_ObserverServices::m_hObserverTarget)
-
-		[[nodiscard]] std::uintptr_t get_entity(std::uintptr_t entity_list);
 	};
 
 }
