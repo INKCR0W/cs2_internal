@@ -90,6 +90,9 @@
     <ClCompile Include="sdk\datatypes\matrix.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="core\core.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">

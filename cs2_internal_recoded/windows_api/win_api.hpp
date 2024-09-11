@@ -11,6 +11,8 @@
 #include <functional>
 // used: runtime_error
 #include <stdexcept>
+// used: HINTERNET
+#include <wininet.h>
 // used: hash_ct
 #include "../utils/fnv1a.hpp"
 
@@ -41,6 +43,10 @@ namespace windows_api{
 		SetWindowLongPtrW =			FNV1A("SetWindowLongPtrW"),
 		ShellExecuteA =				FNV1A("ShellExecuteA"),
 		MessageBoxA =				FNV1A("MessageBoxA"),
+		InternetOpenA =				FNV1A("InternetOpenA"),
+		InternetOpenUrlA =			FNV1A("InternetOpenUrlA"),
+		InternetReadFile =			FNV1A("InternetReadFile"),
+		InternetCloseHandle =		FNV1A("InternetCloseHandle"),
 	};
 
 
@@ -73,6 +79,10 @@ namespace windows_api{
 		LONG_PTR fn_SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
 		HINSTANCE fn_ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
 		int fn_MessageBoxA(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
+		HINTERNET fn_InternetOpenA(LPCSTR lpszAgent, DWORD dwAccessType, LPCSTR lpszProxy, LPCSTR lpszProxyBypass, DWORD dwFlags);
+		HINTERNET fn_InternetOpenUrlA(HINTERNET hInternet, LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext);
+		BOOL fn_InternetReadFile(void* hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead);
+		BOOL fn_InternetCloseHandle(void* hInternet);
 		 
 
 	private:
@@ -98,10 +108,15 @@ namespace windows_api{
 		using FN_SetWindowLongPtrW = LONG_PTR(WINAPI*)(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
 		using FN_ShellExecuteA = HINSTANCE(WINAPI*)(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
 		using FN_MessageBoxA = int(WINAPI*)(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
+		using FN_InternetOpenA = HINTERNET(WINAPI*)(LPCSTR lpszAgent, DWORD dwAccessType, LPCSTR lpszProxy, LPCSTR lpszProxyBypass, DWORD dwFlags);
+		using FN_InternetOpenUrlA = HINTERNET(WINAPI*)(HINTERNET hInternet, LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext);
+		using FN_InternetReadFile = BOOL(WINAPI*)(void* hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead);
+		using FN_InternetCloseHandle = BOOL(WINAPI*)(void* hInternet);
 
 		HMODULE kernel32_dll = nullptr;
 		HMODULE user32_dll = nullptr;
 		HMODULE shell32_dll = nullptr;
+		HMODULE wininet_dll = nullptr;
 
 		std::unordered_map<uint32_t, void*> func_ptr = {};
 	};

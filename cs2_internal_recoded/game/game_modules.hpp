@@ -22,4 +22,5 @@ namespace modules {
 	inline auto matchmaking_dll = xorstr("matchmaking.dll");
 	inline auto resourcesystem_dll = xorstr("resourcesystem.dll");
 	inline auto shell32_dll = xorstr("Shell32.dll");
+	inline auto wininet_dll = xorstr("wininet.dll");
 }

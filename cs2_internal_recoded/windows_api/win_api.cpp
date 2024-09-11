@@ -18,8 +18,9 @@ namespace windows_api{
 		kernel32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::kernel32_dll));
 		user32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::user32_dll));
         shell32_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::shell32_dll));
+        wininet_dll = reinterpret_cast<HMODULE>(mem.get_module_base_handle(modules::wininet_dll));
 
-		if (kernel32_dll == nullptr || user32_dll == nullptr || shell32_dll == nullptr)
+		if (kernel32_dll == nullptr || user32_dll == nullptr || shell32_dll == nullptr || wininet_dll == nullptr)
 			return false;
         
         return true;
@@ -316,5 +317,61 @@ namespace windows_api{
         }
 
         return reinterpret_cast<FN_MessageBoxA>(func_ptr[hash])(hWnd, lpText, lpCaption, uType);
+    }
+
+    HINTERNET win_api::fn_InternetOpenA(LPCSTR lpszAgent, DWORD dwAccessType, LPCSTR lpszProxy, LPCSTR lpszProxyBypass, DWORD dwFlags)
+    {
+        hash_t hash = function_hash::InternetOpenA;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetOpenA"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : InternetOpenA"));
+                return NULL;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_InternetOpenA>(func_ptr[hash])(lpszAgent, dwAccessType, lpszProxy, lpszProxyBypass, dwFlags);
+    }
+
+    HINTERNET win_api::fn_InternetOpenUrlA(HINTERNET hInternet, LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext)
+    {
+        hash_t hash = function_hash::InternetOpenUrlA;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetOpenUrlA"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : InternetOpenUrlA"));
+                return NULL;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_InternetOpenUrlA>(func_ptr[hash])(hInternet, lpszUrl, lpszHeaders, dwHeadersLength, dwFlags, dwContext);
+    }
+
+    BOOL win_api::fn_InternetReadFile(void* hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead)
+    {
+        hash_t hash = function_hash::InternetReadFile;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetReadFile"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : InternetReadFile"));
+                return FALSE;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_InternetReadFile>(func_ptr[hash])(hFile, lpBuffer, dwNumberOfBytesToRead, lpdwNumberOfBytesRead);
+    }
+
+    BOOL win_api::fn_InternetCloseHandle(void* hInternet)
+    {
+        hash_t hash = function_hash::InternetCloseHandle;
+        if (func_ptr.find(hash) == func_ptr.end()) {
+            void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetCloseHandle"));
+            if (!funcPtr) {
+                throw std::runtime_error(xorstr_("Failed to get module handle : InternetCloseHandle"));
+                return FALSE;
+            }
+            func_ptr[hash] = funcPtr;
+        }
+        return reinterpret_cast<FN_InternetCloseHandle>(func_ptr[hash])(hInternet);
     }
 }

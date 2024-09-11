@@ -16,6 +16,8 @@
 #include "../core/inputsystem.hpp"
 // used: render
 #include "../render/render.hpp"
+// used: get_himc_version
+#include "../core/core.hpp"
 
 namespace cheat {
 	cs2_internal::~cs2_internal() {
@@ -67,7 +69,7 @@ namespace cheat {
 		}
 
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Initialization done, game version: ") << interfaces::engine->GetProductVersionString() << set_level() << endl;
-
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("HIMC version: ") << core::get_himc_version() << set_level() << endl;
 
 		return true;
 	}
