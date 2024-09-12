@@ -11,6 +11,8 @@
 // used: modules
 #include "../game/game_modules.hpp"
 
+#include <string>
+
 namespace windows_api{
 	using memory::mem;
 
@@ -27,7 +29,7 @@ namespace windows_api{
 	}
 
     BOOL win_api::fn_AllocConsole() {
-        hash_t hash = function_hash::AllocConsole;
+        hash_t hash = function_hash::hAllocConsole;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("AllocConsole"));
             if (!funcPtr) {
@@ -41,7 +43,7 @@ namespace windows_api{
     }
 
     HANDLE win_api::fn_CreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
-        hash_t hash = function_hash::CreateFileW;
+        hash_t hash = function_hash::hCreateFileW;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("CreateFileW"));
             if (!funcPtr) {
@@ -54,7 +56,7 @@ namespace windows_api{
     }
 
     HANDLE win_api::fn_CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
-        hash_t hash = function_hash::CreateFileA;
+        hash_t hash = function_hash::hCreateFileA;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("CreateFileA"));
             if (!funcPtr) {
@@ -67,7 +69,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_SetConsoleTitleW(LPCWSTR lpConsoleTitle) {
-        hash_t hash = function_hash::SetConsoleTitleW;
+        hash_t hash = function_hash::hSetConsoleTitleW;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("SetConsoleTitleW"));
             if (!funcPtr) {
@@ -80,7 +82,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_CloseHandle(HANDLE hObject) {
-        hash_t hash = function_hash::CloseHandle;
+        hash_t hash = function_hash::hCloseHandle;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("CloseHandle"));
             if (!funcPtr) {
@@ -93,7 +95,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_FreeConsole() {
-        hash_t hash = function_hash::FreeConsole;
+        hash_t hash = function_hash::hFreeConsole;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("FreeConsole"));
             if (!funcPtr) {
@@ -106,7 +108,7 @@ namespace windows_api{
     }
 
     HWND win_api::fn_GetConsoleWindow() {
-        hash_t hash = function_hash::GetConsoleWindow;
+        hash_t hash = function_hash::hGetConsoleWindow;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("GetConsoleWindow"));
             if (!funcPtr) {
@@ -119,7 +121,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_PostMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-        hash_t hash = function_hash::PostMessageW;
+        hash_t hash = function_hash::hPostMessageW;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(user32_dll, xorstr_("PostMessageW"));
             if (!funcPtr) {
@@ -132,7 +134,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped) {
-        hash_t hash = function_hash::WriteFile;
+        hash_t hash = function_hash::hWriteFile;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("WriteFile"));
             if (!funcPtr) {
@@ -145,7 +147,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_SetConsoleTextAttribute(HANDLE hConsoleOutput, WORD wAttributes) {
-        hash_t hash = function_hash::SetConsoleTextAttribute;
+        hash_t hash = function_hash::hSetConsoleTextAttribute;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("SetConsoleTextAttribute"));
             if (!funcPtr) {
@@ -158,7 +160,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_WriteConsoleA(HANDLE hConsoleOutput, const VOID* lpBuffer, DWORD nNumberOfCharsToWrite, LPDWORD lpNumberOfCharsWritten, LPVOID lpReserved) {
-        hash_t hash = function_hash::WriteConsoleA;
+        hash_t hash = function_hash::hWriteConsoleA;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("WriteConsoleA"));
             if (!funcPtr) {
@@ -171,7 +173,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_DisableThreadLibraryCalls(HMODULE hModule) {
-        hash_t hash = function_hash::DisableThreadLibraryCalls;
+        hash_t hash = function_hash::hDisableThreadLibraryCalls;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("DisableThreadLibraryCalls"));
             if (!funcPtr) {
@@ -184,7 +186,7 @@ namespace windows_api{
     }
 
     HANDLE win_api::fn_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId) {
-        hash_t hash = function_hash::CreateThread;
+        hash_t hash = function_hash::hCreateThread;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("CreateThread"));
             if (!funcPtr) {
@@ -197,7 +199,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_ReadProcessMemory(HANDLE hProcess, LPCVOID lpBaseAddress, LPVOID lpBuffer, SIZE_T nSize, SIZE_T* lpNumberOfBytesRead) {
-        hash_t hash = function_hash::ReadProcessMemory;
+        hash_t hash = function_hash::hReadProcessMemory;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("ReadProcessMemory"));
             if (!funcPtr) {
@@ -210,7 +212,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_WriteProcessMemory(HANDLE hProcess, LPVOID lpBaseAddress, LPCVOID lpBuffer, SIZE_T nSize, SIZE_T* lpNumberOfBytesWritten) {
-        hash_t hash = function_hash::WriteProcessMemory;
+        hash_t hash = function_hash::hWriteProcessMemory;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("WriteProcessMemory"));
             if (!funcPtr) {
@@ -223,7 +225,7 @@ namespace windows_api{
     }
 
     LRESULT win_api::fn_CallWindowProcW(WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-        hash_t hash = function_hash::CallWindowProcW;
+        hash_t hash = function_hash::hCallWindowProcW;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(user32_dll, xorstr_("CallWindowProcW"));
             if (!funcPtr) {
@@ -236,7 +238,7 @@ namespace windows_api{
     }
 
     HANDLE win_api::fn_GetProcessHeap() {
-        hash_t hash = function_hash::GetProcessHeap;
+        hash_t hash = function_hash::hGetProcessHeap;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("GetProcessHeap"));
             if (!funcPtr) {
@@ -249,7 +251,7 @@ namespace windows_api{
     }
 
     LPVOID win_api::fn_HeapAlloc(HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes) {
-        hash_t hash = function_hash::HeapAlloc;
+        hash_t hash = function_hash::hHeapAlloc;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("HeapAlloc"));
             if (!funcPtr) {
@@ -262,7 +264,7 @@ namespace windows_api{
     }
 
     BOOL win_api::fn_HeapFree(HANDLE hHeap, DWORD dwFlags, LPVOID lpMem) {
-        hash_t hash = function_hash::HeapFree;
+        hash_t hash = function_hash::hHeapFree;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(kernel32_dll, xorstr_("HeapFree"));
             if (!funcPtr) {
@@ -276,7 +278,7 @@ namespace windows_api{
 
 
     LONG_PTR win_api::fn_SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong) {
-        hash_t hash = function_hash::SetWindowLongPtrW;
+        hash_t hash = function_hash::hSetWindowLongPtrW;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(user32_dll, xorstr_("SetWindowLongPtrW"));
             if (!funcPtr) {
@@ -291,7 +293,7 @@ namespace windows_api{
 
     HINSTANCE win_api::fn_ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
     {
-        hash_t hash = function_hash::ShellExecuteA;
+        hash_t hash = function_hash::hShellExecuteA;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(shell32_dll, xorstr_("ShellExecuteA"));
             if (!funcPtr) {
@@ -306,7 +308,7 @@ namespace windows_api{
 
     int win_api::fn_MessageBoxA(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType)
     {
-        hash_t hash = function_hash::MessageBoxA;
+        hash_t hash = function_hash::hMessageBoxA;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(user32_dll, xorstr_("MessageBoxA"));
             if (!funcPtr) {
@@ -321,7 +323,7 @@ namespace windows_api{
 
     HINTERNET win_api::fn_InternetOpenA(LPCSTR lpszAgent, DWORD dwAccessType, LPCSTR lpszProxy, LPCSTR lpszProxyBypass, DWORD dwFlags)
     {
-        hash_t hash = function_hash::InternetOpenA;
+        hash_t hash = function_hash::hInternetOpenA;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetOpenA"));
             if (!funcPtr) {
@@ -335,7 +337,7 @@ namespace windows_api{
 
     HINTERNET win_api::fn_InternetOpenUrlA(HINTERNET hInternet, LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext)
     {
-        hash_t hash = function_hash::InternetOpenUrlA;
+        hash_t hash = function_hash::hInternetOpenUrlA;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetOpenUrlA"));
             if (!funcPtr) {
@@ -349,7 +351,7 @@ namespace windows_api{
 
     BOOL win_api::fn_InternetReadFile(void* hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead)
     {
-        hash_t hash = function_hash::InternetReadFile;
+        hash_t hash = function_hash::hInternetReadFile;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetReadFile"));
             if (!funcPtr) {
@@ -363,7 +365,7 @@ namespace windows_api{
 
     BOOL win_api::fn_InternetCloseHandle(void* hInternet)
     {
-        hash_t hash = function_hash::InternetCloseHandle;
+        hash_t hash = function_hash::hInternetCloseHandle;
         if (func_ptr.find(hash) == func_ptr.end()) {
             void* funcPtr = GetProcAddress(wininet_dll, xorstr_("InternetCloseHandle"));
             if (!funcPtr) {

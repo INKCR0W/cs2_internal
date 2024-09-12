@@ -22,7 +22,6 @@
 // used: xorstr_
 #include "../utils/xorstr.hpp"
 
-
 namespace memory {
 	bool memory_class::setup() {
 		current_process = reinterpret_cast<HANDLE>(-1);
@@ -30,7 +29,7 @@ namespace memory {
 		client_dll_addr = reinterpret_cast<std::uintptr_t>(get_module_base_handle(modules::client_dll));
 		if (client_dll_addr == 0) {
 			using namespace log_system;
-			logger << set_level(log_level_flags::LOG_ERROR) << xorstr_("Failed to find client.dll, wait until the game is fully loaded before injecting.") << set_level() << endl;
+			windows_api::winapi.fn_MessageBoxA(NULL, xorstr_("Failed to find client.dll, wait until the game is fully loaded before injecting."), "ERROR", MB_OK | MB_ICONERROR);
 			return false;
 		}
 

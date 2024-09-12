@@ -17,6 +17,9 @@
 
 #include "../windows_api/win_api.hpp"
 
+#include "../core/interfaces.hpp"
+#include "../sdk/interfaces/ienginecvar.hpp"
+
 
 
 namespace menu {
@@ -257,7 +260,9 @@ namespace menu {
                 ImGui::SameLine();
                 draw.help_marker("其它功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
-                ImGui::TextColored(Color[ImGuiCol_Button], "您猜怎么着，这里也啥都没有");
+                if (ImGui::Button("解锁隐藏CVAR", { 150.0f,40.0f })) {
+                    interfaces::cvar->unlock_hidden_CVars();
+                }
 
                 break;
             case Tab::Shop:

@@ -19,6 +19,8 @@
 #include "../render/render.hpp"
 // used: game modules
 #include "../game/game_modules.hpp"
+// used ISwapChainDx11
+#include "../sdk/interfaces/iswapchaindx11.hpp"
 // used: imgui
 #include "../third_party/imgui/imgui.h"
 #include "../third_party/imgui/imgui_impl_dx11.h"

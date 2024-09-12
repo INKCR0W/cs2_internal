@@ -15,6 +15,9 @@
 // used: imgui api
 #include "../../third_party/imgui/imgui.h"
 
+#include "../../sdk/interfaces/ienginecvar.hpp"
+#include "../../core/convars.hpp"
+
 #undef max
 
 namespace features {
@@ -46,12 +49,12 @@ namespace features {
 			return;
 
 		for (auto current_player : features::vars::player_list) {
-			 auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
-
-			 if (current_player_pawn == nullptr)
+			auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
+			
+			if (current_player_pawn == nullptr || current_player_pawn == vars::local_player_pawn)
 				 continue;
 
-			if (current_player_pawn->m_iTeamNum() == vars::observer->m_iTeamNum())
+			if (current_player_pawn->m_iTeamNum() == vars::observer->m_iTeamNum() && memory::mem.read_memory<bool>(reinterpret_cast<uintptr_t>(&convar::mp_teammates_are_enemies->value.i1)))
 				continue;
 
 			if (current_player_pawn->m_iHealth() <= 0 || current_player->m_bPawnIsAlive() == false)

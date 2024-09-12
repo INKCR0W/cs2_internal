@@ -19,6 +19,8 @@
 // used: screen_width screen_height
 #include "../render/menu.hpp"
 
+#include "../sdk/interfaces/iswapchaindx11.hpp"
+
 using InstantiateInterfaceFn_t = void* (*)();
 
 const char* GAME_VERSION = "1.40.3.0";
@@ -36,6 +38,7 @@ static const CInterfaceRegister* get_register_list(const char* wszModuleName)
 	using namespace log_system;
 
 	void* hModule = memory::mem.get_module_base_handle(wszModuleName);
+
 	if (hModule == nullptr)
 		return nullptr;
 
@@ -130,17 +133,55 @@ const bool interfaces::setup() {
 	using namespace log_system;
 	bool success = true;
 
-	const auto pEngineRegisterList = get_register_list(modules::engine2_dll);
+	const auto pTier0Handle = memory::mem.get_module_base_handle(modules::tier0_dll);
+	if (pTier0Handle == nullptr)
+		return false;
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("tier0_dll found: ") << reinterpret_cast<uintptr_t>(pTier0Handle) << set_level() << endl;
+#endif
+
+	mem_alloc = *reinterpret_cast<IMemAlloc**>(memory::mem.get_export_address(pTier0Handle, xorstr_("g_pMemAlloc")));
+	success &= (mem_alloc != nullptr);
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("g_pMemAlloc found: ") << reinterpret_cast<uintptr_t>(mem_alloc) << set_level() << endl;
+#endif
+
+	auto pEngineRegisterList = get_register_list(modules::engine2_dll);
 	if (pEngineRegisterList == nullptr)
 		return false;
 
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("EngineRegisterList found: ") << reinterpret_cast<uintptr_t>(pEngineRegisterList) << set_level() << endl;
+#endif
+
 	engine = capture<IEngineClient>(pEngineRegisterList, SOURCE2_ENGINE_TO_CLIENT);
 	success &= (engine != nullptr);
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("EngineClient found: ") << reinterpret_cast<uintptr_t>(engine) << set_level() << endl;
+#endif
 
 	if (crt::crt.string_compare(engine->GetProductVersionString(), GAME_VERSION) != 0) {
 		logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("Game version mismatch! local CS2 version: ") << GAME_VERSION << xorstr_(", current CS2 version: ") << interfaces::engine->GetProductVersionString() << xorstr_(". Something might not function as normal.") << set_level() << endl;
 		windows_api::winapi.fn_MessageBoxA(NULL, xorstr_("Game version mismatch!\nSomething might not function as normal.\nUse on your own risk!!!!!!"), xorstr_("WARNING"), MB_OK | MB_ICONWARNING);
 	}
+
+	auto pTier0RegisterList = get_register_list(modules::tier0_dll);
+	if (pTier0RegisterList == nullptr)
+		return false;
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Tier0RegisterList found: ") << reinterpret_cast<uintptr_t>(pTier0RegisterList) << set_level() << endl;
+#endif
+
+	cvar = capture<IEngineCVar>(pTier0RegisterList, ENGINE_CVAR);
+	success &= (cvar != nullptr);
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("EngineCvar found: ") << reinterpret_cast<uintptr_t>(cvar) << set_level() << endl;
+#endif
 
 	swap_chain = **reinterpret_cast<ISwapChainDx11***>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::rendersystem_dll, xorstr_("66 0F 7F 0D ? ? ? ? 66 0F 7F 05 ? ? ? ? 0F 1F 40"))), 0x4, 0x8));
 	success &= (swap_chain != nullptr);
@@ -164,6 +205,10 @@ const bool interfaces::setup() {
 	const auto pInputSystemRegisterList = get_register_list(modules::inputsystem_dll);
 	if (pInputSystemRegisterList == nullptr)
 		return false;
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("InputSystemRegisterList found: ") << reinterpret_cast<uintptr_t>(pInputSystemRegisterList) << set_level() << endl;
+#endif
 
 	input_system = capture<IInputSystem>(pInputSystemRegisterList, INPUT_SYSTEM_VERSION);
 	success = (input_system != nullptr);

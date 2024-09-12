@@ -93,6 +93,9 @@
     <ClCompile Include="core\core.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="core\convars.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -243,6 +246,27 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="cheat\features\entity_var.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ienginecvar.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\color.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utllinkedlist.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlmemory.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlfixedmemory.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\imemalloc.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core\convars.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -164,6 +164,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClCompile Include="cheat\features\entity_var.cpp" />
     <ClCompile Include="cheat\features\esp.cpp" />
     <ClCompile Include="config\config.cpp" />
+    <ClCompile Include="core\convars.cpp" />
     <ClCompile Include="core\core.cpp" />
     <ClCompile Include="core\interfaces.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -193,6 +194,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="cheat\features\esp.hpp" />
     <ClInclude Include="config\config.hpp" />
     <ClInclude Include="core\common.hpp" />
+    <ClInclude Include="core\convars.hpp" />
     <ClInclude Include="core\core.hpp" />
     <ClInclude Include="core\interfaces.hpp" />
     <ClInclude Include="core\schema.hpp" />
@@ -208,13 +210,19 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="render\menu.hpp" />
     <ClInclude Include="render\render.hpp" />
     <ClInclude Include="sdk\const.hpp" />
+    <ClInclude Include="sdk\datatypes\color.hpp" />
     <ClInclude Include="sdk\datatypes\matrix.hpp" />
     <ClInclude Include="sdk\datatypes\qangle.hpp" />
+    <ClInclude Include="sdk\datatypes\utlfixedmemory.hpp" />
+    <ClInclude Include="sdk\datatypes\utllinkedlist.hpp" />
+    <ClInclude Include="sdk\datatypes\utlmemory.hpp" />
     <ClInclude Include="sdk\datatypes\vector.hpp" />
     <ClInclude Include="sdk\entity.hpp" />
     <ClInclude Include="sdk\entity_handle.hpp" />
     <ClInclude Include="sdk\interfaces\iengineclient.hpp" />
+    <ClInclude Include="sdk\interfaces\ienginecvar.hpp" />
     <ClInclude Include="sdk\interfaces\iinputsystem.hpp" />
+    <ClInclude Include="sdk\interfaces\imemalloc.hpp" />
     <ClInclude Include="sdk\interfaces\iswapchaindx11.hpp" />
     <ClInclude Include="third_party\imgui\imconfig.h" />
     <ClInclude Include="third_party\imgui\imgui.h" />

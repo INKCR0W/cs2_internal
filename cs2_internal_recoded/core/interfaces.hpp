@@ -4,12 +4,16 @@
 
 // used: xorstr_
 #include "../utils/xorstr.hpp"
-// used: IInputSystem
-#include "../sdk/interfaces/iinputsystem.hpp"
+//// used: IInputSystem
+//#include "../sdk/interfaces/iinputsystem.hpp"
 // used: IEngineClient
 #include "../sdk/interfaces/iengineclient.hpp"
-// used: ISwapChainDx11
-#include "../sdk/interfaces/iswapchaindx11.hpp"
+//// used: ISwapChainDx11
+//#include "../sdk/interfaces/iswapchaindx11.hpp"
+//// used: IMemAlloc
+//#include "../sdk/interfaces/imemalloc.hpp"
+//// used: IEngineCVar
+//#include "../sdk/interfaces/ienginecvar.hpp"
 
 #pragma region sdk_definitons
 #define GAME_RESOURCE_SERVICE_CLIENT xorstr_("GameResourceServiceClientV00")
@@ -32,11 +36,24 @@
 #define TICK_NEVER_THINK (-1)
 #pragma endregion
 
+
+class IMemAlloc;
+class ISwapChainDx11;
+
+class IInputSystem;
+class IEngineClient;
+class IEngineCVar;
+
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+struct ID3D11RenderTargetView;
+
 namespace interfaces {
 	const bool setup();
 
 	void create_render_target();
 
+	inline IMemAlloc* mem_alloc = nullptr;
 	inline ISwapChainDx11* swap_chain = nullptr;
 
 	inline ID3D11Device* device = nullptr;
@@ -45,5 +62,6 @@ namespace interfaces {
 
 	inline IInputSystem* input_system = nullptr;
 	inline IEngineClient* engine = nullptr;
+	inline IEngineCVar* cvar = nullptr;
 };
 

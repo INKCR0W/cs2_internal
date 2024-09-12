@@ -43,4 +43,20 @@ namespace crt {
 
 		return pDestination;
 	}
+
+	// indicate that an object may be "moved from", i.e. allowing the efficient transfer of resources to another object, alternative of 'std::move'
+	template <class T>
+	[[nodiscard]] __forceinline constexpr std::remove_reference_t<T>&& move(T&& argument) noexcept
+	{
+		return static_cast<std::remove_reference_t<T>&&>(argument);
+	}
+
+	/// swap value of @a'left' to @a'right' and @a'right' to @a'left', alternative of 'std::swap'
+	template <typename T> requires (std::is_move_constructible_v<T>&& std::is_move_assignable_v<T>)
+	__forceinline constexpr void swap(T& left, T& right) noexcept(std::is_nothrow_move_constructible_v<T>&& std::is_nothrow_move_assignable_v<T>)
+	{
+		T temporary = move(left);
+		left = move(right);
+		right = move(temporary);
+	}
 }
