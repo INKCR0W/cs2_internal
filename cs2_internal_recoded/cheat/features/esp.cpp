@@ -18,6 +18,8 @@
 #include "../../sdk/interfaces/ienginecvar.hpp"
 #include "../../core/convars.hpp"
 
+#include <string>
+
 #undef max
 
 namespace features {
@@ -48,13 +50,24 @@ namespace features {
 		if (vars::local_player_controller == nullptr)
 			return;
 
+		//std::uint32_t game_type = memory::mem.read_memory<uint32_t>(reinterpret_cast<uintptr_t>(convar::game_type + 0x40));
+		//std::uint32_t game_mode = memory::mem.read_memory<uint32_t>(reinterpret_cast<uintptr_t>(convar::game_mode + 0x40));
+
+		//ImGui::GetForegroundDrawList()->AddText({ 500, 500 }, IM_COL32(255, 0, 0, 255), ("game_type: " + std::to_string(game_type)).c_str());
+		//ImGui::GetForegroundDrawList()->AddText({ 500, 520 }, IM_COL32(255, 0, 0, 255), ("game_mode: " + std::to_string(game_mode)).c_str());
+
 		for (auto current_player : features::vars::player_list) {
 			auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
 			
-			if (current_player_pawn == nullptr || current_player_pawn == vars::local_player_pawn)
+			if (current_player_pawn == nullptr || current_player_pawn == vars::observer)
 				 continue;
 
-			if (current_player_pawn->m_iTeamNum() == vars::observer->m_iTeamNum() && memory::mem.read_memory<bool>(reinterpret_cast<uintptr_t>(&convar::mp_teammates_are_enemies->value.i1)))
+			bool is_teammate = current_player_pawn->m_iTeamNum() == vars::observer->m_iTeamNum();
+
+			// casual
+			//if (game_type == GAMETYPE_CLASSIC && game_mode == GAMEMODE_CLASSIC_CASUAL && is_teammate)
+			//	continue;
+			if (is_teammate)
 				continue;
 
 			if (current_player_pawn->m_iHealth() <= 0 || current_player->m_bPawnIsAlive() == false)

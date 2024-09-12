@@ -128,6 +128,31 @@ namespace entity {
 	};
 
 
+	class C_CSPlayerPawnBase : public C_BasePlayerPawn
+	{
+	public:
+		C_CSPlayerPawnBase() = delete;
+
+		SCHEMA_ADD_OFFSET(float, m_flFlashMaxAlpha, schemas::client_dll::C_CSPlayerPawnBase::m_flFlashMaxAlpha)
+		SCHEMA_ADD_OFFSET(float, m_flFlashDuration, schemas::client_dll::C_CSPlayerPawnBase::m_flFlashDuration)
+		SCHEMA_ADD_OFFSET(Vector_t, m_vLastSmokeOverlayColor, schemas::client_dll::C_CSPlayerPawnBase::m_vLastSmokeOverlayColor)
+	};
+
+	class C_CSPlayerPawn : public C_CSPlayerPawnBase
+	{
+	public:
+		C_CSPlayerPawn() = delete;
+
+
+		SCHEMA_ADD_OFFSET(bool, m_bIsScoped, schemas::client_dll::C_CSPlayerPawn::m_bIsScoped)
+		SCHEMA_ADD_OFFSET(bool, m_bIsDefusing, schemas::client_dll::C_CSPlayerPawn::m_bIsDefusing)
+		SCHEMA_ADD_OFFSET(bool, m_bIsGrabbingHostage, schemas::client_dll::C_CSPlayerPawn::m_bIsGrabbingHostage)
+		SCHEMA_ADD_OFFSET(bool, m_bWaitForNoAttack, schemas::client_dll::C_CSPlayerPawn::m_bWaitForNoAttack)
+		SCHEMA_ADD_OFFSET(int, m_iShotsFired, schemas::client_dll::C_CSPlayerPawn::m_iShotsFired)
+		SCHEMA_ADD_OFFSET(std::int32_t, m_ArmorValue, schemas::client_dll::C_CSPlayerPawn::m_ArmorValue)
+	};
+
+
 	class CBasePlayerController : public C_BaseModelEntity {
 	public:
 		CBasePlayerController() = delete;
