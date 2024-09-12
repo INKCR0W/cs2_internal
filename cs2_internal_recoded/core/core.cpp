@@ -26,7 +26,7 @@ namespace core {
 		std::string result;
 		void* hInternet = windows_api::winapi.fn_InternetOpenA("VersionCheck", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
 		if (hInternet) {
-			void* hConnect = windows_api::winapi.fn_InternetOpenUrlA(hInternet, xorstr_("http://ver.crow.pub"), NULL, 0, INTERNET_FLAG_RELOAD, 0);
+			void* hConnect = windows_api::winapi.fn_InternetOpenUrlA(hInternet, xorstr_("https://himc.crow.pub/?command=version"), NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_SECURE, 0);
 			if (hConnect) {
 				char buffer[1024];
 				DWORD bytesRead;

@@ -1,4 +1,4 @@
-﻿const char* VERSION = "1.0.2";
+﻿const char* VERSION = "1.0.3";
 
 #include <iostream>
 
@@ -28,7 +28,7 @@ bool __stdcall DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
     std::string lastest_version = core::get_himc_version();
     if (crt::crt.string_compare(lastest_version.c_str(), VERSION) != 0) {
         winapi.fn_MessageBoxA(NULL, (xorstr_("A new version: ") + lastest_version + xorstr_(" is available.")).c_str(), xorstr_("ERROR"), MB_OK | MB_ICONERROR);
-        windows_api::winapi.fn_ShellExecuteA(NULL, xorstr_("open"), xorstr_("https://www.crow.pub/down"), NULL, NULL, SW_SHOWNORMAL);
+        windows_api::winapi.fn_ShellExecuteA(NULL, xorstr_("open"), xorstr_("https://himc.crow.pub/?command=download"), NULL, NULL, SW_SHOWNORMAL);
         exit(0);
     }
 
