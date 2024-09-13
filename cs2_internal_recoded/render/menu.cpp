@@ -250,7 +250,13 @@ namespace menu {
                 ImGui::SameLine();
                 draw.help_marker("自瞄相关功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
-                ImGui::TextColored(Color[ImGuiCol_Button], "这里目前什么东西也没有");
+                ImGui::Checkbox("辅助压枪", &config::cfg.rcs_on);
+                if (config::cfg.rcs_on) {
+                    ImGui::Spacing();
+                    ImGui::Spacing();
+                    ImGui::SliderFloat("横向压枪", &config::cfg.rcs_y, 0.0f, 5.0f, "%.2f");
+                    ImGui::SliderFloat("纵向压枪", &config::cfg.rcs_x, 0.0f, 5.0f, "%.2f");
+                }
 
                 break;
             case Tab::Misc:

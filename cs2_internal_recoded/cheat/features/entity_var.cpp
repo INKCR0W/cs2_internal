@@ -21,15 +21,15 @@ namespace features {
 		if (vars::entity_list_address == NULL)
 			return;
 
-		vars::local_player_pawn = vars::local_player_controller->get_base_pawn(vars::entity_list_address);
-		if (vars::local_player_pawn == nullptr) {
+		vars::local_player_base_pawn = vars::local_player_controller->get_base_pawn(vars::entity_list_address);
+		if (vars::local_player_base_pawn == nullptr) {
 			return;
 		}
 
-		auto obs = vars::local_player_pawn->m_pObserverServices();
+		auto obs = vars::local_player_base_pawn->m_pObserverServices();
 
 		if (obs == nullptr) {
-			vars::observer = vars::local_player_pawn;
+			vars::observer = vars::local_player_base_pawn;
 		}
 		else {
 			vars::observer = obs->get_target_pawn(vars::entity_list_address);

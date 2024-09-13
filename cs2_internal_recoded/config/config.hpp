@@ -27,6 +27,9 @@ namespace config {
 #pragma region vars
 		bool skeleton_on = false;
 		bool spectator_list_on = false;
+		bool rcs_on = false;
+		float rcs_x = 2.40f;
+		float rcs_y = 2.55f;
 #pragma endregion
 
 	private:

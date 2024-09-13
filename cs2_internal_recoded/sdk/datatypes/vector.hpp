@@ -21,6 +21,13 @@ struct Vector2D_t
 		return (this->x == 0.0f && this->y == 0.0f);
 	}
 
+	constexpr Vector2D_t& operator-=(const Vector2D_t& flSubtract)
+	{
+		this->x -= flSubtract.x;
+		this->y -= flSubtract.y;
+		return *this;
+	}
+
 	float x = 0.0f, y = 0.0f;
 };
 

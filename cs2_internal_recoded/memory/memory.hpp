@@ -81,7 +81,7 @@ namespace memory {
 
 	template <typename T>
 	bool memory_class::write_memory(const std::uintptr_t addr, const T& value) {
-		return winapi.fn_WriteProcessMemory(current_process, reinterpret_cast<LPCVOID>(addr), &value, sizeof(value), 0);
+		return winapi.fn_WriteProcessMemory(current_process, reinterpret_cast<LPVOID>(addr), &value, sizeof(value), 0);
 	}
 
 	template <typename T>

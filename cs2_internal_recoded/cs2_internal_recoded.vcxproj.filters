@@ -96,6 +96,9 @@
     <ClCompile Include="core\convars.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="cheat\features\aimbot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -267,6 +270,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="core\convars.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cheat\features\aimbot.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

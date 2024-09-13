@@ -15,5 +15,8 @@ namespace entity {
 	C_BasePlayerPawn* CCSPlayerController::get_base_pawn(std::uintptr_t entity_list) {
 		return reinterpret_cast<C_BasePlayerPawn*>(get_from_handle(entity_list, m_hPawn()));
 	}
+	C_CSPlayerPawn* CCSPlayerController::get_pawn(std::uintptr_t entity_list) {
+		return reinterpret_cast<C_CSPlayerPawn*>(get_from_handle(entity_list, m_hPlayerPawn()));
+	}
 }
 

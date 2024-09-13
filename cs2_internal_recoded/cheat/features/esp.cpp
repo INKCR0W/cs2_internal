@@ -15,9 +15,6 @@
 // used: imgui api
 #include "../../third_party/imgui/imgui.h"
 
-#include "../../sdk/interfaces/ienginecvar.hpp"
-#include "../../core/convars.hpp"
-
 #include <string>
 
 #undef max
@@ -110,7 +107,7 @@ namespace features {
 		if (!interfaces::engine->IsConnected() || !interfaces::engine->IsInGame())
 			return;
 
-		if (vars::local_player_pawn == nullptr)
+		if (vars::local_player_base_pawn == nullptr)
 			return;
 
 

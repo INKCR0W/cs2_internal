@@ -323,3 +323,10 @@ struct BoneJointData
 	float Scale;
 	char pad[0x10];
 };
+
+struct C_UTL_VECTOR
+{
+	int count;
+	int pad;
+	QAngle_t* data;
+};

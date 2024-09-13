@@ -12,6 +12,8 @@
 #include "../memory/memory.hpp"
 // used: Matrix2x4_t
 #include "../sdk/datatypes/matrix.hpp"
+// used: C_UTL_VECTOR
+#include "../sdk/const.hpp"
 
 
 
@@ -144,6 +146,7 @@ namespace entity {
 		C_CSPlayerPawn() = delete;
 
 
+		SCHEMA_ADD_OFFSET(C_UTL_VECTOR, m_aimPunchCache, schemas::client_dll::C_CSPlayerPawn::m_aimPunchCache)
 		SCHEMA_ADD_OFFSET(bool, m_bIsScoped, schemas::client_dll::C_CSPlayerPawn::m_bIsScoped)
 		SCHEMA_ADD_OFFSET(bool, m_bIsDefusing, schemas::client_dll::C_CSPlayerPawn::m_bIsDefusing)
 		SCHEMA_ADD_OFFSET(bool, m_bIsGrabbingHostage, schemas::client_dll::C_CSPlayerPawn::m_bIsGrabbingHostage)
@@ -168,6 +171,8 @@ namespace entity {
 		CCSPlayerController() = delete;
 
 		[[nodiscard]] C_BasePlayerPawn* get_base_pawn(std::uintptr_t entity_list);
+		[[nodiscard]] C_CSPlayerPawn* get_pawn(std::uintptr_t entity_list);
+
 
 		SCHEMA_ADD_OFFSET(std::uint32_t, m_iPing, schemas::client_dll::CCSPlayerController::m_iPing)
 		SCHEMA_ADD_OFFSET(const char*, m_sSanitizedPlayerName, schemas::client_dll::CCSPlayerController::m_sSanitizedPlayerName)

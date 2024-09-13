@@ -14,6 +14,8 @@
 #include "../core/hooks.hpp"
 // used: draw_skeleton
 #include "../cheat/features/esp.hpp"
+
+#include "../cheat/features/aimbot.hpp"
 // used: menu_key skeleton_on
 #include "../config/config.hpp"
 // used: ImGui_ImplWin32_WndProcHandler
@@ -105,6 +107,7 @@ namespace render{
 		menu::menu.run();
 		features::draw_skeleton();
 		features::draw_spectator_list();
+		features::rcs();
 
 		render();
 	}
