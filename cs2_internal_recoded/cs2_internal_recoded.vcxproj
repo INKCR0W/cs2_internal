@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -215,12 +216,14 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="sdk\datatypes\color.hpp" />
     <ClInclude Include="sdk\datatypes\matrix.hpp" />
     <ClInclude Include="sdk\datatypes\qangle.hpp" />
+    <ClInclude Include="sdk\datatypes\usercmd.hpp" />
     <ClInclude Include="sdk\datatypes\utlfixedmemory.hpp" />
     <ClInclude Include="sdk\datatypes\utllinkedlist.hpp" />
     <ClInclude Include="sdk\datatypes\utlmemory.hpp" />
     <ClInclude Include="sdk\datatypes\vector.hpp" />
     <ClInclude Include="sdk\entity.hpp" />
     <ClInclude Include="sdk\entity_handle.hpp" />
+    <ClInclude Include="sdk\interfaces\csgoinput.hpp" />
     <ClInclude Include="sdk\interfaces\iengineclient.hpp" />
     <ClInclude Include="sdk\interfaces\ienginecvar.hpp" />
     <ClInclude Include="sdk\interfaces\iinputsystem.hpp" />
@@ -241,6 +244,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="utils\crt.hpp" />
     <ClInclude Include="utils\math.hpp" />
     <ClInclude Include="utils\pe64.hpp" />
+    <ClInclude Include="utils\return_address.hpp" />
     <ClInclude Include="utils\xorstr.hpp" />
     <ClInclude Include="utils\crt_string.hpp" />
     <ClInclude Include="utils\ct_constants.hpp" />
@@ -252,7 +256,13 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <MASM Include="utils\spoofer_stub.asm">
+      <FileType>Document</FileType>
+    </MASM>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>

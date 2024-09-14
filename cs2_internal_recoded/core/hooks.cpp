@@ -28,6 +28,7 @@
 
 // used: update_entitys
 #include "../cheat/features/entity_var.hpp"
+#include "../utils/return_address.hpp"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
@@ -48,12 +49,13 @@ namespace hook {
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"Present\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_Present.get_original()) << set_level() << endl;
 #endif
 
-//		if (!hk_CreateMove.create(reinterpret_cast<void*>(memory::mem.find_pattern(modules::client_dll, "48 8B C4 4C 89 48 20 55")), reinterpret_cast<void*>(&CreateMove)))
-//			return false;
-//
-//#ifdef _DEBUG
-//		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"CreateMove\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_CreateMove.get_original()) << set_level() << endl;
-//#endif // _DEBUG
+		// @ida: #STR: cl: CreateMove clamped invalid attack history index %d in frame history to -1. Was %d, frame history size %d.\n
+		if (!hk_CreateMove.create(memory::mem.get_VFunc(interfaces::input, vtable::CLIENT::CREATEMOVE), reinterpret_cast<void*>(&CreateMove)))
+			return false;
+
+#ifdef _DEBUG
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"CreateMove\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_CreateMove.get_original()) << set_level() << endl;
+#endif
 
 		if (!hk_IsRelativeMouseMode.create(memory::mem.get_VFunc(interfaces::input_system, vtable::INPUTSYSTEM::ISRELATIVEMOUSEMODE), reinterpret_cast<void*>(&IsRelativeMouseMode)))
 			return false;
@@ -100,10 +102,14 @@ namespace hook {
 
 	bool __fastcall CreateMove(void* pInput, int nSlot, bool bActive)
 	{
-		// log_system::logger << "ccc" << log_system::endl;
+		static void* return_address = reinterpret_cast<PVOID>(memory::mem.find_pattern(modules::client_dll, "FF 27"));
+
+		const bool result = FakeReturnAddress(return_address, hk_CreateMove.get_original(), pInput, nSlot, bActive);
+
+		log_system::logger << "ccc" << log_system::endl;
 		// features::update_entitys();
 
-		return hk_CreateMove.get_original()(pInput, nSlot, bActive);
+		return result;
 	}
 
 	void* IsRelativeMouseMode(void* pThisptr, bool bActive)

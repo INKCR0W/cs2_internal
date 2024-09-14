@@ -275,8 +275,22 @@
     <ClInclude Include="cheat\features\aimbot.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\datatypes\usercmd.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\csgoinput.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\return_address.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="utils\spoofer_stub.asm">
+      <Filter>源文件</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

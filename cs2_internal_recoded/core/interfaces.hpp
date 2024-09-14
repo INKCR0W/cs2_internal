@@ -38,6 +38,7 @@
 
 
 class IMemAlloc;
+class CCSGOInput;
 class ISwapChainDx11;
 
 class IInputSystem;
@@ -54,6 +55,7 @@ namespace interfaces {
 	void create_render_target();
 
 	inline IMemAlloc* mem_alloc = nullptr;
+	inline CCSGOInput* input = nullptr;
 	inline ISwapChainDx11* swap_chain = nullptr;
 
 	inline ID3D11Device* device = nullptr;

@@ -217,6 +217,13 @@ const bool interfaces::setup() {
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("InputSystem found: ") << reinterpret_cast<uintptr_t>(&input_system) << set_level() << endl;
 #endif
 
+	input = *reinterpret_cast<CCSGOInput**>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::client_dll, xorstr_("48 8B 0D ? ? ? ? E8 ? ? ? ? 8B BE 84 12 00 00"))), 0x3, 0x7));
+	success &= (input != nullptr);
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("CSGOInput found: ") << reinterpret_cast<uintptr_t>(&input) << set_level() << endl;
+#endif
+
 	create_render_target();
 
 	return success;
