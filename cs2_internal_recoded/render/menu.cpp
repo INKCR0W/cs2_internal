@@ -257,6 +257,7 @@ namespace menu {
                     ImGui::SliderFloat("横向压枪", &config::cfg.rcs_y, 0.0f, 5.0f, "%.2f");
                     ImGui::SliderFloat("纵向压枪", &config::cfg.rcs_x, 0.0f, 5.0f, "%.2f");
                 }
+                ImGui::Checkbox("静默自瞄", &config::cfg.silent_aim_on);
 
                 break;
             case Tab::Misc:

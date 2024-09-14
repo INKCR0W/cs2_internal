@@ -16,15 +16,44 @@
 
 #include "../../third_party/imgui/imgui.h"
 
+#include "../../utils/math.hpp"
+
+inline QAngle_t CalculateAngleScalar(const Vector_t& src, const Vector_t& dst)
+{
+    Vector_t OppPos;
+
+    OppPos = dst - src;
+    float distance = sqrt(pow(OppPos.x, 2) + pow(OppPos.y, 2));
+
+    float yaw = 0;
+    float pitch = 0;
+
+    yaw = atan2(OppPos.y, OppPos.x) * 180 / math::_PI;
+    pitch = -atan2(OppPos.z, distance) * 180 / math::_PI;
+
+    if (yaw < -180)
+        yaw += 360;
+    else if (yaw > 180)
+        yaw -= 360;
+
+    if (pitch < -89)
+        pitch = -89;
+    else if (pitch > 89)
+        pitch = 89;
+
+    return { pitch, yaw, 0 };
+}
+
 namespace features {
-	void rcs() {
+	void rcs(CCSGOInput* Input) {
 		if (!config::cfg.rcs_on)
 			return;
 
 		auto local_pawn = vars::local_player_controller->get_pawn(vars::entity_list_address);
 
-		static std::uintptr_t view_angle_addr = memory::client_dll_addr + cs2_dumper::offsets::client_dll::dwViewAngles;
-		QAngle_t current_view_angle = memory::mem.read_memory<QAngle_t>(view_angle_addr);
+		// static std::uintptr_t view_angle_addr = memory::client_dll_addr + cs2_dumper::offsets::client_dll::dwViewAngles;
+		// QAngle_t current_view_angle = memory::mem.read_memory<QAngle_t>(view_angle_addr);
+        QAngle_t current_view_angle = Input->GetViewAngles();
 
 		C_UTL_VECTOR punch_punch_cache = local_pawn->m_aimPunchCache();
 
@@ -51,7 +80,8 @@ namespace features {
             TargetAngles.Normalize();
             TargetAngles.Clamp();
 
-			memory::mem.write_memory<QAngle_t>(view_angle_addr, TargetAngles);
+			// memory::mem.write_memory<QAngle_t>(view_angle_addr, TargetAngles);
+            Input->SetViewAngle(TargetAngles);
 
 			previous_punch_angle = *current_punch_angle;
         }
@@ -60,4 +90,42 @@ namespace features {
 			previous_punch_angle = { 0.0f, 0.0f, 0.0f };
         }
 	}
+
+    void silent_aim(CUserCmd* pCmd)
+    {
+        if (!config::cfg.silent_aim_on)
+            return;
+
+        if (vars::local_player_base_pawn == nullptr)
+            return;
+
+        float ClosestDistance = FLT_MAX;
+        entity::CCSPlayerController* ClosestEntity = nullptr;
+
+        for (auto& current_player : features::vars::player_list) {
+            if (current_player == vars::local_player_controller || !current_player->m_bPawnIsAlive())
+                continue;
+
+            float DistanceToLocal = vars::local_player_base_pawn->m_vOldOrigin().DistTo(current_player->get_base_pawn(vars::entity_list_address)->m_vOldOrigin());
+
+            if (DistanceToLocal < ClosestDistance)
+            {
+                ClosestDistance = DistanceToLocal;
+                ClosestEntity = current_player;
+            }
+        }
+
+        if (ClosestEntity != nullptr)
+        {
+            QAngle_t TargetAngles = CalculateAngleScalar(vars::local_player_base_pawn->get_eye_position(), ClosestEntity->get_base_pawn(vars::entity_list_address)->m_pGameSceneNode()->get_skeleton_instance()->pBoneCache->GetOrigin(6));
+            // QAngle_t TargetAngles = CalculateAngleScalar(vars::local_player_base_pawn->m_vOldOrigin(), ClosestEntity->get_base_pawn(vars::entity_list_address)->m_pGameSceneNode()->get_skeleton_instance()->pBoneCache->GetOrigin(6));
+            //TargetAngles.Normalize();
+            //TargetAngles.Clamp();
+            QAngle_t PunchAngle = vars::local_player_controller->get_pawn(vars::entity_list_address)->m_aimPunchAngle();
+            TargetAngles.x -= PunchAngle.x * 2.0f;
+            TargetAngles.y -= PunchAngle.y * 2.0f;
+
+            pCmd->SetSubTickAngle(TargetAngles);
+        }
+    }
 }

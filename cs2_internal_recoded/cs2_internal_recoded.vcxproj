@@ -229,6 +229,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="sdk\interfaces\iinputsystem.hpp" />
     <ClInclude Include="sdk\interfaces\imemalloc.hpp" />
     <ClInclude Include="sdk\interfaces\iswapchaindx11.hpp" />
+    <ClInclude Include="sdk\interfaces\tracing.hpp" />
     <ClInclude Include="third_party\imgui\imconfig.h" />
     <ClInclude Include="third_party\imgui\imgui.h" />
     <ClInclude Include="third_party\imgui\imgui_impl_dx11.h" />

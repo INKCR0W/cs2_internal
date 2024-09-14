@@ -30,6 +30,7 @@ namespace config {
 		bool rcs_on = false;
 		float rcs_x = 2.40f;
 		float rcs_y = 2.55f;
+		bool silent_aim_on = false;
 #pragma endregion
 
 	private:

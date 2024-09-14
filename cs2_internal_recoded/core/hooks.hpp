@@ -7,14 +7,18 @@
 
 #include "../memory/memory.hpp"
 
+#include "../sdk/interfaces/csgoinput.hpp"
+
 namespace hook {
 	const bool setup();
 	void destroy();
 
+	inline void* return_address = nullptr;
+
 	HRESULT WINAPI Present(IDXGISwapChain* pSwapChain, UINT uSyncInterval, UINT uFlags);
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	bool __fastcall CreateMove(void* pInput, int nSlot, bool bActive);
+	bool __fastcall CreateMove(CCSGOInput* pInput, int nSlot, bool bActive);
 	void* IsRelativeMouseMode(void* pThisptr, bool bActive);
 
 

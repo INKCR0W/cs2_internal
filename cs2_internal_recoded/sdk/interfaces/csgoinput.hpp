@@ -3,6 +3,8 @@
 
 #include "../../game/game_modules.hpp"
 
+#include "../../utils/xorstr.hpp"
+
 #define MULTIPLAYER_BACKUP 150
 
 class CTinyMoveStepData
@@ -68,7 +70,7 @@ public:
 	void SetViewAngle(QAngle_t& angView)
 	{
 		using fnSetViewAngle = std::int64_t(__fastcall*)(void*, std::int32_t, QAngle_t&);
-		static auto oSetViewAngle = reinterpret_cast<fnSetViewAngle>(memory::mem.find_pattern(modules::client_dll, "85 D2 75 3F 48"));
+		static auto oSetViewAngle = reinterpret_cast<fnSetViewAngle>(memory::mem.find_pattern(modules::client_dll, xorstr_("85 D2 75 3F 48")));
 
 		oSetViewAngle(this, 0, std::ref(angView));
 	}
@@ -76,7 +78,7 @@ public:
 	QAngle_t GetViewAngles()
 	{
 		using fnGetViewAngles = std::int64_t(__fastcall*)(CCSGOInput*, std::int32_t);
-		static auto oGetViewAngles = reinterpret_cast<fnGetViewAngles>(memory::mem.find_pattern(modules::client_dll, "4C 8B C1 85 D2 74 08 48 8D 05 ? ? ? ? C3"));
+		static auto oGetViewAngles = reinterpret_cast<fnGetViewAngles>(memory::mem.find_pattern(modules::client_dll, xorstr("4C 8B C1 85 D2 74 08 48 8D 05 ? ? ? ? C3")));
 
 		return *reinterpret_cast<QAngle_t*>(oGetViewAngles(this, 0));
 	}

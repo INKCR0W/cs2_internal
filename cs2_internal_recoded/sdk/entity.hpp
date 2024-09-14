@@ -10,6 +10,8 @@
 #include "../offset/offset.hpp"
 // used: call_VFunc
 #include "../memory/memory.hpp"
+// used: QAngle
+#include "../sdk/datatypes/qangle.hpp"
 // used: Matrix2x4_t
 #include "../sdk/datatypes/matrix.hpp"
 // used: C_UTL_VECTOR
@@ -107,6 +109,7 @@ namespace entity {
 	class C_BaseModelEntity : public C_BaseEntity {
 	public:
 		C_BaseModelEntity() = delete;
+		SCHEMA_ADD_OFFSET(Vector_t, m_vecViewOffset, schemas::client_dll::C_BaseModelEntity::m_vecViewOffset)
 	};
 
 	class CCSPlayerController;
@@ -117,9 +120,10 @@ namespace entity {
 		C_BasePlayerPawn() = delete;
 
 		SCHEMA_ADD_OFFSET(CPlayer_ObserverServices*, m_pObserverServices, schemas::client_dll::C_BasePlayerPawn::m_pObserverServices)
+		SCHEMA_ADD_OFFSET(Vector_t, m_vOldOrigin, schemas::client_dll::C_BasePlayerPawn::m_vOldOrigin)
 		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hController, schemas::client_dll::C_BasePlayerPawn::m_hController)
 
-		[[nodiscard]] Vector_t GetEyePosition()
+		[[nodiscard]] Vector_t get_eye_position()
 		{
 			Vector_t vecEyePosition = Vector_t(0.0f, 0.0f, 0.0f);
 			memory::mem.call_VFunc<void, 166U>(this, &vecEyePosition);
@@ -135,6 +139,8 @@ namespace entity {
 	public:
 		C_CSPlayerPawnBase() = delete;
 
+
+		SCHEMA_ADD_OFFSET(Vector_t, m_vecLastClipCameraPos, schemas::client_dll::C_CSPlayerPawnBase::m_vecLastClipCameraPos)
 		SCHEMA_ADD_OFFSET(float, m_flFlashMaxAlpha, schemas::client_dll::C_CSPlayerPawnBase::m_flFlashMaxAlpha)
 		SCHEMA_ADD_OFFSET(float, m_flFlashDuration, schemas::client_dll::C_CSPlayerPawnBase::m_flFlashDuration)
 		SCHEMA_ADD_OFFSET(Vector_t, m_vLastSmokeOverlayColor, schemas::client_dll::C_CSPlayerPawnBase::m_vLastSmokeOverlayColor)
@@ -146,6 +152,7 @@ namespace entity {
 		C_CSPlayerPawn() = delete;
 
 
+		SCHEMA_ADD_OFFSET(QAngle_t, m_aimPunchAngle, schemas::client_dll::C_CSPlayerPawn::m_aimPunchAngle)
 		SCHEMA_ADD_OFFSET(C_UTL_VECTOR, m_aimPunchCache, schemas::client_dll::C_CSPlayerPawn::m_aimPunchCache)
 		SCHEMA_ADD_OFFSET(bool, m_bIsScoped, schemas::client_dll::C_CSPlayerPawn::m_bIsScoped)
 		SCHEMA_ADD_OFFSET(bool, m_bIsDefusing, schemas::client_dll::C_CSPlayerPawn::m_bIsDefusing)

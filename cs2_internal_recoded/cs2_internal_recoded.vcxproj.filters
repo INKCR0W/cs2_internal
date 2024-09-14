@@ -284,6 +284,9 @@
     <ClInclude Include="utils\return_address.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\interfaces\tracing.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="third_party\minhook\lib\libMinHook.x64.lib" />

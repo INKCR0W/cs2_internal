@@ -53,7 +53,7 @@ namespace features {
 		//ImGui::GetForegroundDrawList()->AddText({ 500, 500 }, IM_COL32(255, 0, 0, 255), ("game_type: " + std::to_string(game_type)).c_str());
 		//ImGui::GetForegroundDrawList()->AddText({ 500, 520 }, IM_COL32(255, 0, 0, 255), ("game_mode: " + std::to_string(game_mode)).c_str());
 
-		for (auto current_player : features::vars::player_list) {
+		for (auto& current_player : features::vars::player_list) {
 			auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
 			
 			if (current_player_pawn == nullptr || current_player_pawn == vars::observer)
@@ -100,6 +100,7 @@ namespace features {
 			}
 		}
 	}
+
 	void draw_spectator_list() {
 		if (!config::cfg.spectator_list_on)
 			return;
@@ -115,7 +116,7 @@ namespace features {
 
 		float y_offset = 0;
 
-		for (auto current_player : features::vars::player_list) {
+		for (auto& current_player : features::vars::player_list) {
 			auto current_player_pawn = current_player->get_base_pawn(vars::entity_list_address);
 
 			if (current_player_pawn == nullptr)

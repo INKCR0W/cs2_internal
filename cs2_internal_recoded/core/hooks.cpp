@@ -28,13 +28,22 @@
 
 // used: update_entitys
 #include "../cheat/features/entity_var.hpp"
+#include "../cheat/features/aimbot.hpp"
 #include "../utils/return_address.hpp"
+#include "../cheat/features/entity_var.hpp"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 namespace hook {
 	const bool setup() {
 		using namespace log_system;
+
+		return_address = reinterpret_cast<PVOID>(memory::mem.find_pattern(modules::client_dll, "FF 27"));
+
+#ifdef _DEBUG
+		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Return address has been got: ") << reinterpret_cast<std::uintptr_t>(return_address) << set_level() << endl;
+#endif
+
 
 		if (MH_Initialize() != MH_OK)
 		{
@@ -86,8 +95,6 @@ namespace hook {
 			interfaces::device_context->OMSetRenderTargets(1, &interfaces::render_target_view, nullptr);
 		}
 
-		features::update_entitys();
-
 		render::draw.run();
 
 		return oPresent(interfaces::swap_chain->pDXGISwapChain, uSyncInterval, uFlags);
@@ -100,14 +107,16 @@ namespace hook {
 		return windows_api::winapi.fn_CallWindowProcW(inputsystem::old_WndProc, hWnd, uMsg, wParam, lParam);
 	}
 
-	bool __fastcall CreateMove(void* pInput, int nSlot, bool bActive)
+	bool __fastcall CreateMove(CCSGOInput* pInput, int nSlot, bool bActive)
 	{
-		static void* return_address = reinterpret_cast<PVOID>(memory::mem.find_pattern(modules::client_dll, "FF 27"));
-
 		const bool result = FakeReturnAddress(return_address, hk_CreateMove.get_original(), pInput, nSlot, bActive);
 
-		log_system::logger << "ccc" << log_system::endl;
-		// features::update_entitys();
+		features::update_entitys();
+		
+		if (features::vars::local_player_controller->m_bPawnIsAlive() && features::vars::local_player_base_pawn->m_iHealth() > 0) {
+			features::silent_aim(pInput->GetUserCmd());
+			features::rcs(pInput);
+		}
 
 		return result;
 	}
