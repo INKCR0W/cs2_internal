@@ -163,6 +163,13 @@ const bool interfaces::setup() {
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("EngineClient found: ") << reinterpret_cast<uintptr_t>(engine) << set_level() << endl;
 #endif
 
+	trace = *reinterpret_cast<Tracing**>(memory::mem.get_absolute_address(memory::mem.find_pattern(modules::client_dll, xorstr_("4C 8B 3D ? ? ? ? 24 C9 0C 49 66 0F 7F 45 ?")), 0x3));
+	success &= (trace != nullptr);
+
+#ifdef _DEBUG
+	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Trace found: ") << reinterpret_cast<uintptr_t>(trace) << set_level() << endl;
+#endif
+
 	if (crt::crt.string_compare(engine->GetProductVersionString(), GAME_VERSION) != 0) {
 		logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("Game version mismatch! local CS2 version: ") << GAME_VERSION << xorstr_(", current CS2 version: ") << interfaces::engine->GetProductVersionString() << xorstr_(". Something might not function as normal.") << set_level() << endl;
 		windows_api::winapi.fn_MessageBoxA(NULL, xorstr_("Game version mismatch!\nSomething might not function as normal.\nUse on your own risk!!!!!!"), xorstr_("WARNING"), MB_OK | MB_ICONWARNING);

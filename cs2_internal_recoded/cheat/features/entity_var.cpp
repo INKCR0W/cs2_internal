@@ -26,6 +26,11 @@ namespace features {
 			return;
 		}
 
+		vars::local_player_pawn = vars::local_player_controller->get_pawn(vars::entity_list_address);
+		if (vars::local_player_pawn == nullptr) {
+			return;
+		}
+
 		auto obs = vars::local_player_base_pawn->m_pObserverServices();
 
 		if (obs == nullptr) {

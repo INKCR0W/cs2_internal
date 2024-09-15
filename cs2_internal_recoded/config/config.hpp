@@ -31,6 +31,8 @@ namespace config {
 		float rcs_x = 2.40f;
 		float rcs_y = 2.55f;
 		bool silent_aim_on = false;
+		bool draw_dilent_aim_fov = false;
+		float silent_aim_fov = 30.f;
 #pragma endregion
 
 	private:

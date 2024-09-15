@@ -28,6 +28,13 @@ struct Vector2D_t
 		return *this;
 	}
 
+	float DistanceTo(const Vector2D_t& other) const
+	{
+		float dx = x - other.x;
+		float dy = y - other.y;
+		return sqrt(dx * dx + dy * dy);
+	}
+
 	float x = 0.0f, y = 0.0f;
 };
 

@@ -6,6 +6,6 @@
 #include "../../sdk/interfaces/csgoinput.hpp"
 
 namespace features {
-	void rcs(CCSGOInput* Input);
+	void rcs();
 	void silent_aim(CUserCmd* pCmd);
 }

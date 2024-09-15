@@ -44,6 +44,7 @@ class ISwapChainDx11;
 class IInputSystem;
 class IEngineClient;
 class IEngineCVar;
+class Tracing;
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;
@@ -55,6 +56,7 @@ namespace interfaces {
 	void create_render_target();
 
 	inline IMemAlloc* mem_alloc = nullptr;
+	inline Tracing* trace = nullptr;
 	inline CCSGOInput* input = nullptr;
 	inline ISwapChainDx11* swap_chain = nullptr;
 

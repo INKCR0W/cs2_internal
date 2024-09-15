@@ -240,6 +240,8 @@ namespace menu {
                 draw.help_marker("绘制相关功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
                 ImGui::Checkbox("骨骼透视", &config::cfg.skeleton_on);
+                ImGui::Spacing();
+                ImGui::Spacing();
                 ImGui::Checkbox("观战列表", &config::cfg.spectator_list_on);
 
                 break;
@@ -251,13 +253,21 @@ namespace menu {
                 draw.help_marker("自瞄相关功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
                 ImGui::Checkbox("辅助压枪", &config::cfg.rcs_on);
+                ImGui::SameLine();
+                draw.help_marker("似乎无法正常工作，酌情开启", Color[ImGuiCol_Button]);
                 if (config::cfg.rcs_on) {
-                    ImGui::Spacing();
-                    ImGui::Spacing();
                     ImGui::SliderFloat("横向压枪", &config::cfg.rcs_y, 0.0f, 5.0f, "%.2f");
                     ImGui::SliderFloat("纵向压枪", &config::cfg.rcs_x, 0.0f, 5.0f, "%.2f");
                 }
+                ImGui::Spacing();
+                ImGui::Spacing();
                 ImGui::Checkbox("静默自瞄", &config::cfg.silent_aim_on);
+                ImGui::SameLine();
+                draw.help_marker("有较大封号风险！后果自负", Color[ImGuiCol_Button]);
+                if (config::cfg.silent_aim_on) {
+                    ImGui::Checkbox("绘制自瞄范围", &config::cfg.draw_dilent_aim_fov);
+                    ImGui::SliderFloat("自瞄范围", &config::cfg.silent_aim_fov, 5.0f, 500.0f, "%.2f");
+                }
 
                 break;
             case Tab::Misc:

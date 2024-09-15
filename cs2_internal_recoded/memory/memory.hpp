@@ -36,6 +36,12 @@ namespace memory {
 
 		[[nodiscard]] std::uint8_t* resolve_relative_address(std::uint8_t* nAddressBytes, std::uint32_t nRVAOffset, std::uint32_t nRIPOffset);
 
+		template <typename T = uintptr_t>
+		T get_absolute_address(T pRelativeAddress, int nPreOffset = 0x0, int nPostOffset = 0x0) {
+			std::int32_t relativeOffset = *reinterpret_cast<std::int32_t*>(reinterpret_cast<std::uint8_t*>(pRelativeAddress) + nPreOffset);
+			return pRelativeAddress + relativeOffset + sizeof(std::int32_t) + nPreOffset + nPostOffset;
+		}
+
 		/// get pointer to function of virtual-function table
 		/// @returns: pointer to virtual function
 		template <typename T = void*>

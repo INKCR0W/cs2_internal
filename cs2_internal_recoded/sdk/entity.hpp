@@ -152,6 +152,8 @@ namespace entity {
 		C_CSPlayerPawn() = delete;
 
 
+		bool eye_visible(C_CSPlayerPawn* other);
+
 		SCHEMA_ADD_OFFSET(QAngle_t, m_aimPunchAngle, schemas::client_dll::C_CSPlayerPawn::m_aimPunchAngle)
 		SCHEMA_ADD_OFFSET(C_UTL_VECTOR, m_aimPunchCache, schemas::client_dll::C_CSPlayerPawn::m_aimPunchCache)
 		SCHEMA_ADD_OFFSET(bool, m_bIsScoped, schemas::client_dll::C_CSPlayerPawn::m_bIsScoped)

@@ -14,29 +14,16 @@
 #include "../../render/menu.hpp"
 // used: imgui api
 #include "../../third_party/imgui/imgui.h"
+// used: world_to_screen
+#include "utils.hpp"
+
+#include "../../utils/math.hpp"
 
 #include <string>
 
 #undef max
 
 namespace features {
-	Vector2D_t world_to_screen(ViewMatrix_t matrix, Vector_t position)
-	{
-		float View = 0.f;
-		float SightX = menu::menu.screen_width / 2.f;
-		float SightY = menu::menu.screen_height / 2.f;
-
-		View = matrix[3][0] * position.x + matrix[3][1] * position.y + matrix[3][2] * position.z + matrix[3][3];
-
-		if (View <= 0.01)
-			return { -1.0f, -1.0f };
-
-		float final_x = SightX + (matrix[0][0] * position.x + matrix[0][1] * position.y + matrix[0][2] * position.z + matrix[0][3]) / View * SightX;
-		float final_y = SightY - (matrix[1][0] * position.x + matrix[1][1] * position.y + matrix[1][2] * position.z + matrix[1][3]) / View * SightY;
-
-		return { final_x, final_y };
-	}
-
 	void draw_skeleton() {
 		if (!config::cfg.skeleton_on)
 			return;
@@ -133,5 +120,16 @@ namespace features {
 				y_offset += 20;
 			}
 		}
+	}
+
+	void draw_silent_aim_fov() {
+		if (!config::cfg.silent_aim_on || !config::cfg.draw_dilent_aim_fov)
+			return;
+
+		if (!interfaces::engine->IsConnected() || !interfaces::engine->IsInGame())
+			return;
+
+
+		ImGui::GetForegroundDrawList()->AddCircle({menu::menu.screen_width / 2.f, menu::menu.screen_height / 2.f}, config::cfg.silent_aim_fov, IM_COL32(255, 0, 0, 255), 0, 0.3f);
 	}
 }

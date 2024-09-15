@@ -165,6 +165,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClCompile Include="cheat\features\aimbot.cpp" />
     <ClCompile Include="cheat\features\entity_var.cpp" />
     <ClCompile Include="cheat\features\esp.cpp" />
+    <ClCompile Include="cheat\features\utils.cpp" />
     <ClCompile Include="config\config.cpp" />
     <ClCompile Include="core\convars.cpp" />
     <ClCompile Include="core\core.cpp" />
@@ -195,6 +196,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="cheat\features\aimbot.hpp" />
     <ClInclude Include="cheat\features\entity_var.hpp" />
     <ClInclude Include="cheat\features\esp.hpp" />
+    <ClInclude Include="cheat\features\utils.hpp" />
     <ClInclude Include="config\config.hpp" />
     <ClInclude Include="core\common.hpp" />
     <ClInclude Include="core\convars.hpp" />

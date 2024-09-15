@@ -112,10 +112,10 @@ namespace hook {
 		const bool result = FakeReturnAddress(return_address, hk_CreateMove.get_original(), pInput, nSlot, bActive);
 
 		features::update_entitys();
+		features::vars::input = pInput;
 		
 		if (features::vars::local_player_controller->m_bPawnIsAlive() && features::vars::local_player_base_pawn->m_iHealth() > 0) {
 			features::silent_aim(pInput->GetUserCmd());
-			features::rcs(pInput);
 		}
 
 		return result;
