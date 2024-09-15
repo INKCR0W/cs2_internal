@@ -29,8 +29,10 @@
 // used: update_entitys
 #include "../cheat/features/entity_var.hpp"
 #include "../cheat/features/aimbot.hpp"
+#include "../cheat/features/movement.hpp"
 #include "../utils/return_address.hpp"
 #include "../cheat/features/entity_var.hpp"
+#include "../offset/offsets.hpp"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
@@ -112,10 +114,15 @@ namespace hook {
 		const bool result = FakeReturnAddress(return_address, hk_CreateMove.get_original(), pInput, nSlot, bActive);
 
 		features::update_entitys();
+
+		memory::mem.write_memory<std::int32_t>(reinterpret_cast<uintptr_t>(features::vars::local_player_controller + cs2_dumper::schemas::client_dll::CCSPlayerController::m_iMusicKitID), 25);
+
 		features::vars::input = pInput;
 		
 		if (features::vars::local_player_controller->m_bPawnIsAlive() && features::vars::local_player_base_pawn->m_iHealth() > 0) {
 			features::silent_aim(pInput->GetUserCmd());
+			//features::bhop(pInput->GetUserCmd());
+			//features::strafe(pInput);
 		}
 
 		return result;

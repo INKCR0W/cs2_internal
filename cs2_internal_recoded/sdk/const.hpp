@@ -101,6 +101,32 @@ enum flags : int
 	FL_UNBLOCKABLE_BY_PLAYER = (1 << 31)
 };
 
+enum input_bit_mask_t : uint64_t
+{
+	in_none = 0x0,
+	in_all = 0xffffffffffffffff,
+	in_attack = 0x1,
+	in_jump = 0x2,
+	in_duck = 0x4,
+	in_forward = 0x8,
+	in_back = 0x10,
+	in_use = 0x20,
+	in_turnleft = 0x80,
+	in_turnright = 0x100,
+	in_moveleft = 0x200,
+	in_moveright = 0x400,
+	in_attack2 = 0x800,
+	in_reload = 0x2000,
+	in_speed = 0x10000,
+	in_joyautosprint = 0x20000,
+	in_first_mod_specific_bit = 0x100000000,
+	in_useorreload = 0x100000000,
+	in_score = 0x200000000,
+	in_zoom = 0x400000000,
+	in_look_at_weapon = 0x800000000,
+}; // enum class input_bit_mask_t : uint64_t
+
+
 enum eflags : int
 {
 	EFL_KILLME = (1 << 0),

@@ -102,6 +102,10 @@ namespace entity {
 		SCHEMA_ADD_OFFSET(std::uint8_t, m_lifeState, schemas::client_dll::C_BaseEntity::m_lifeState)
 		SCHEMA_ADD_OFFSET(float, m_flSpeed, schemas::client_dll::C_BaseEntity::m_flSpeed)
 		SCHEMA_ADD_OFFSET(std::uint8_t, m_iTeamNum, schemas::client_dll::C_BaseEntity::m_iTeamNum)
+		SCHEMA_ADD_OFFSET(std::uint32_t, m_fFlags, schemas::client_dll::C_BaseEntity::m_fFlags)
+		SCHEMA_ADD_OFFSET(Vector_t, m_vecAbsVelocity, schemas::client_dll::C_BaseEntity::m_vecAbsVelocity)
+		SCHEMA_ADD_OFFSET(move_type, m_MoveType, schemas::client_dll::C_BaseEntity::m_MoveType)
+		SCHEMA_ADD_OFFSET(float, m_flWaterLevel, schemas::client_dll::C_BaseEntity::m_flWaterLevel)
 
 	};
 
@@ -191,6 +195,7 @@ namespace entity {
 		SCHEMA_ADD_OFFSET(bool, m_bPawnHasHelmet, schemas::client_dll::CCSPlayerController::m_bPawnHasHelmet)
 		SCHEMA_ADD_OFFSET(bool, m_bPawnIsAlive, schemas::client_dll::CCSPlayerController::m_bPawnIsAlive)
 		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hPlayerPawn, schemas::client_dll::CCSPlayerController::m_hPlayerPawn)
+		SCHEMA_ADD_OFFSET(std::int32_t, m_iMusicKitID, schemas::client_dll::CCSPlayerController::m_iMusicKitID)
 
 	};
 

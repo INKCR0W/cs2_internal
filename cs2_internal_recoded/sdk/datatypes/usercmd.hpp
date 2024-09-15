@@ -244,7 +244,7 @@ struct CInButtonState
 {
 public:
 	MEM_PAD(0x8) // 0x0 VTABLE
-		std::uint64_t nValue; // 0x8
+	std::uint64_t nValue; // 0x8
 	std::uint64_t nValueChanged; // 0x10
 	std::uint64_t nValueScroll; // 0x18
 };
