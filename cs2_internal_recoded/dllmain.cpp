@@ -1,4 +1,4 @@
-﻿const char* VERSION = "1.0.7";
+﻿const char* VERSION = "1.0.9";
 
 #include <iostream>
 

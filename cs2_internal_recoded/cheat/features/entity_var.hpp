@@ -16,6 +16,7 @@ namespace features {
 		inline CUserCmd* cmd = nullptr;
 		inline CCSGOInput* input = nullptr;
 		inline std::vector<entity::CCSPlayerController*> player_list = {};
+		inline bool canhit = false;
 
 		inline uintptr_t entity_list_address = {};
 

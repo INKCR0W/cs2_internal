@@ -105,6 +105,9 @@
     <ClCompile Include="cheat\features\movement.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="cheat\features\triggerbot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\random.hpp">
@@ -297,6 +300,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="cheat\features\movement.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cheat\features\triggerbot.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

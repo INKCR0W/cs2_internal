@@ -30,6 +30,7 @@
 #include "../cheat/features/entity_var.hpp"
 #include "../cheat/features/aimbot.hpp"
 #include "../cheat/features/movement.hpp"
+#include "../cheat/features/triggerbot.hpp"
 #include "../utils/return_address.hpp"
 #include "../cheat/features/entity_var.hpp"
 #include "../offset/offsets.hpp"
@@ -115,14 +116,18 @@ namespace hook {
 
 		features::update_entitys();
 
-		memory::mem.write_memory<std::int32_t>(reinterpret_cast<uintptr_t>(features::vars::local_player_controller + cs2_dumper::schemas::client_dll::CCSPlayerController::m_iMusicKitID), 25);
+		// memory::mem.write_memory<std::int32_t>(reinterpret_cast<uintptr_t>(features::vars::local_player_controller + cs2_dumper::schemas::client_dll::CCSPlayerController::m_iMusicKitID), 25);
 
 		features::vars::input = pInput;
+		// features::vars::canhit = false;
+
 		
 		if (features::vars::local_player_controller->m_bPawnIsAlive() && features::vars::local_player_base_pawn->m_iHealth() > 0) {
 			features::silent_aim(pInput->GetUserCmd());
-			//features::bhop(pInput->GetUserCmd());
-			//features::strafe(pInput);
+			// features::autostop(pInput->GetUserCmd());
+			// features::trigger(pInput->GetUserCmd());
+			features::bhop(pInput->GetUserCmd());
+			features::strafe(pInput);
 		}
 
 		return result;

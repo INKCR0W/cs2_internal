@@ -268,7 +268,6 @@ namespace menu {
                     ImGui::Checkbox("绘制自瞄范围", &config::cfg.draw_dilent_aim_fov);
                     ImGui::SliderFloat("自瞄范围", &config::cfg.silent_aim_fov, 5.0f, 500.0f, "%.2f");
                 }
-
                 break;
             case Tab::Misc:
                 ImGui::PushFont(draw.font_b);
@@ -277,6 +276,19 @@ namespace menu {
                 ImGui::SameLine();
                 draw.help_marker("其它功能", Color[ImGuiCol_Button]);
                 ImGui::Separator();
+                ImGui::Checkbox("自动连跳", &config::cfg.bhop_on);
+                ImGui::Checkbox("空中加速", &config::cfg.strafe_on);
+                ImGui::SameLine();
+                draw.help_marker("效果不好，勉强能动", Color[ImGuiCol_Button]);
+                //if (config::cfg.strafe_on) {
+                //    ImGui::SliderFloat("转向平滑", &config::cfg.strafe_smooth, 0.0f, 100.0f, "%.2f");
+                //    ImGui::Combo("加速模式", &config::cfg.strafe_mode, "键盘输入\0视角朝向");
+                //}
+
+                ImGui::Spacing();
+                ImGui::Spacing();
+                ImGui::Spacing();
+
                 if (ImGui::Button("解锁隐藏CVAR", { 150.0f,40.0f })) {
                     interfaces::cvar->unlock_hidden_CVars();
                 }

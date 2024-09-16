@@ -59,6 +59,9 @@ namespace features {
         if (!interfaces::engine->IsConnected() || !interfaces::engine->IsInGame())
             return;
 
+        if (!features::vars::local_player_controller->m_bPawnIsAlive() && features::vars::local_player_base_pawn->m_iHealth() <= 0)
+            return;
+
 		// static std::uintptr_t view_angle_addr = memory::client_dll_addr + cs2_dumper::offsets::client_dll::dwViewAngles;
 		// QAngle_t current_view_angle = memory::mem.read_memory<QAngle_t>(view_angle_addr);
         QAngle_t current_view_angle = vars::input->GetViewAngles();
@@ -101,14 +104,12 @@ namespace features {
 
     void silent_aim(CUserCmd* pCmd)
     {
+        vars::canhit = false;
+
         if (!config::cfg.silent_aim_on)
             return;
 
-        if (vars::local_player_base_pawn == nullptr)
-            return;
-
         float ClosestDistance = FLT_MAX;
-        float closest_screen_distance = FLT_MAX;
         entity::CCSPlayerController* ClosestEntity = nullptr;
 
         for (auto& current_player : features::vars::player_list) {
@@ -128,7 +129,7 @@ namespace features {
 
             float current_dis = screen_point.DistanceTo({ menu::menu.screen_width / 2, menu::menu.screen_height / 2 });
             
-            if (current_dis > config::cfg.silent_aim_fov || current_dis > closest_screen_distance)
+            if (current_dis > config::cfg.silent_aim_fov)
                 continue;
 
             float DistanceToLocal = vars::local_player_base_pawn->m_vOldOrigin().DistTo(current_player->get_base_pawn(vars::entity_list_address)->m_vOldOrigin());
@@ -136,7 +137,6 @@ namespace features {
             if (DistanceToLocal < ClosestDistance)
             {
                 ClosestDistance = DistanceToLocal;
-                closest_screen_distance = current_dis;
                 ClosestEntity = current_player;
             }
         }
@@ -144,11 +144,12 @@ namespace features {
 
         if (ClosestEntity != nullptr)
         {
+            vars::canhit = true;
+
             QAngle_t TargetAngles = CalculateAngleScalar(vars::local_player_base_pawn->get_eye_position(), ClosestEntity->get_base_pawn(vars::entity_list_address)->m_pGameSceneNode()->get_skeleton_instance()->pBoneCache->GetOrigin(6));
 
-            // QAngle_t TargetAngles = CalculateAngleScalar(vars::local_player_base_pawn->m_vOldOrigin(), ClosestEntity->get_base_pawn(vars::entity_list_address)->m_pGameSceneNode()->get_skeleton_instance()->pBoneCache->GetOrigin(6));
-            // TargetAngles.Normalize();
-            // TargetAngles.Clamp();
+            TargetAngles.Normalize();
+            TargetAngles.Clamp();
 
             QAngle_t PunchAngle = vars::local_player_controller->get_pawn(vars::entity_list_address)->m_aimPunchAngle();
             TargetAngles.x -= PunchAngle.x * 2.0f;

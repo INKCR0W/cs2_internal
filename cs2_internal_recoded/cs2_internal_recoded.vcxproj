@@ -166,6 +166,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClCompile Include="cheat\features\entity_var.cpp" />
     <ClCompile Include="cheat\features\esp.cpp" />
     <ClCompile Include="cheat\features\movement.cpp" />
+    <ClCompile Include="cheat\features\triggerbot.cpp" />
     <ClCompile Include="cheat\features\utils.cpp" />
     <ClCompile Include="config\config.cpp" />
     <ClCompile Include="core\convars.cpp" />
@@ -198,6 +199,7 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="cheat\features\entity_var.hpp" />
     <ClInclude Include="cheat\features\esp.hpp" />
     <ClInclude Include="cheat\features\movement.hpp" />
+    <ClInclude Include="cheat\features\triggerbot.hpp" />
     <ClInclude Include="cheat\features\utils.hpp" />
     <ClInclude Include="config\config.hpp" />
     <ClInclude Include="core\common.hpp" />

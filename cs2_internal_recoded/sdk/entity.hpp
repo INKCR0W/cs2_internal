@@ -75,6 +75,8 @@ namespace entity {
 	public:
 		CGameSceneNode() = delete;
 
+		SCHEMA_ADD_OFFSET(Vector_t, m_vecAbsOrigin, schemas::client_dll::CGameSceneNode::m_vecAbsOrigin)
+
 		CSkeletonInstance* get_skeleton_instance()
 		{
 			return memory::mem.call_VFunc<CSkeletonInstance*, 8U>(this);
@@ -137,6 +139,7 @@ namespace entity {
 		[[nodiscard]] CCSPlayerController* get_controller(std::uintptr_t entity_list);
 	};
 
+	class C_CSWeaponBase;
 
 	class C_CSPlayerPawnBase : public C_BasePlayerPawn
 	{
@@ -148,6 +151,7 @@ namespace entity {
 		SCHEMA_ADD_OFFSET(float, m_flFlashMaxAlpha, schemas::client_dll::C_CSPlayerPawnBase::m_flFlashMaxAlpha)
 		SCHEMA_ADD_OFFSET(float, m_flFlashDuration, schemas::client_dll::C_CSPlayerPawnBase::m_flFlashDuration)
 		SCHEMA_ADD_OFFSET(Vector_t, m_vLastSmokeOverlayColor, schemas::client_dll::C_CSPlayerPawnBase::m_vLastSmokeOverlayColor)
+		SCHEMA_ADD_OFFSET(C_CSWeaponBase*, m_pClippingWeapon, schemas::client_dll::C_CSPlayerPawnBase::m_pClippingWeapon)
 	};
 
 	class C_CSPlayerPawn : public C_CSPlayerPawnBase
@@ -207,6 +211,32 @@ namespace entity {
 
 		SCHEMA_ADD_OFFSET(std::uint8_t, m_iObserverMode, schemas::client_dll::CPlayer_ObserverServices::m_iObserverMode)
 		SCHEMA_ADD_OFFSET(std::uintptr_t, m_hObserverTarget, schemas::client_dll::CPlayer_ObserverServices::m_hObserverTarget)
+	};
+
+	class CBaseAnimGraph : public C_BaseModelEntity {
+	public:
+		CBaseAnimGraph() = delete;
+	};
+
+	class C_BaseFlex : public CBaseAnimGraph{
+	public:
+		C_BaseFlex() = delete;
+	};
+
+	class C_EconEntity : public C_BaseFlex {
+	public:
+		C_EconEntity() = delete;
+	};
+
+	class C_BasePlayerWeapon : public C_EconEntity {
+	public:
+		C_BasePlayerWeapon() = delete;
+		SCHEMA_ADD_OFFSET(int, m_nNextPrimaryAttackTick, schemas::client_dll::C_BasePlayerWeapon::m_nNextPrimaryAttackTick)
+	};
+
+	class C_CSWeaponBase : public C_BasePlayerWeapon {
+	public:
+		C_CSWeaponBase() = delete;
 	};
 
 }
