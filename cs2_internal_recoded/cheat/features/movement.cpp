@@ -138,7 +138,7 @@ namespace features {
 		float smoothing = 70.f;
 		bool wasdstrafe = true;
 
-		if (vars::local_player_pawn->m_fFlags() & FL_ONGROUND)
+		if (vars::local_player_pawn->m_fFlags() & FL_ONGROUND || !(cmd->nButtons.nValue & in_jump))
 			return;
 
 		auto rotate_movement = [](CUserCmd& cmd, float target_yaw, CBaseUserCmdPB* bb)
