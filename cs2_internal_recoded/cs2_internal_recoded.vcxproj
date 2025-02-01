@@ -212,9 +212,47 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <ClInclude Include="core\hooks.hpp" />
     <ClInclude Include="log\log.hpp" />
     <ClInclude Include="memory\memory.hpp" />
+    <ClInclude Include="offset\animationsystem_dll.hpp" />
+    <ClInclude Include="offset\buttons.hpp" />
     <ClInclude Include="offset\client_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\animationsystem_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\buttons.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\client_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\engine2_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\host_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\interfaces.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\materialsystem2_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\networksystem_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\offsets.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\panorama_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\particles_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\pulse_system_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\rendersystemdx11_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\resourcesystem_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\scenesystem_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\schemasystem_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\server_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\soundsystem_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\vphysics2_dll.hpp" />
+    <ClInclude Include="offset\cs2_dumper\output\worldrenderer_dll.hpp" />
+    <ClInclude Include="offset\engine2_dll.hpp" />
+    <ClInclude Include="offset\host_dll.hpp" />
+    <ClInclude Include="offset\interfaces.hpp" />
+    <ClInclude Include="offset\materialsystem2_dll.hpp" />
+    <ClInclude Include="offset\networksystem_dll.hpp" />
     <ClInclude Include="offset\offset.hpp" />
     <ClInclude Include="offset\offsets.hpp" />
+    <ClInclude Include="offset\panorama_dll.hpp" />
+    <ClInclude Include="offset\particles_dll.hpp" />
+    <ClInclude Include="offset\pulse_system_dll.hpp" />
+    <ClInclude Include="offset\rendersystemdx11_dll.hpp" />
+    <ClInclude Include="offset\resourcesystem_dll.hpp" />
+    <ClInclude Include="offset\scenesystem_dll.hpp" />
+    <ClInclude Include="offset\schemasystem_dll.hpp" />
+    <ClInclude Include="offset\server_dll.hpp" />
+    <ClInclude Include="offset\soundsystem_dll.hpp" />
+    <ClInclude Include="offset\vphysics2_dll.hpp" />
+    <ClInclude Include="offset\worldrenderer_dll.hpp" />
     <ClInclude Include="render\font.hpp" />
     <ClInclude Include="render\menu.hpp" />
     <ClInclude Include="render\render.hpp" />
@@ -267,6 +305,10 @@ Normaliz.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDep
     <MASM Include="utils\spoofer_stub.asm">
       <FileType>Document</FileType>
     </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sync_offset.bat" />
+    <None Include="sync_offset.sh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
