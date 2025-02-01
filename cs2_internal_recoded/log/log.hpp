@@ -105,7 +105,6 @@ namespace log_system {
 		}
 
 
-
 	private:
 		bool ended = true;
 

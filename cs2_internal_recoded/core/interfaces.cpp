@@ -163,17 +163,19 @@ const bool interfaces::setup() {
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("EngineClient found: ") << reinterpret_cast<uintptr_t>(engine) << set_level() << endl;
 #endif
 
-	trace = *reinterpret_cast<Tracing**>(memory::mem.get_absolute_address(memory::mem.find_pattern(modules::client_dll, xorstr_("4C 8B 3D ? ? ? ? 24 C9 0C 49 66 0F 7F 45 ?")), 0x3));
+	trace = *reinterpret_cast<Tracing**>(memory::mem.get_absolute_address(memory::mem.find_pattern(modules::client_dll, xorstr_("48 8B 0D ? ? ? ? 4C 8B C3 66 89 44 24")), 0x3));
 	success &= (trace != nullptr);
 
 #ifdef _DEBUG
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("Trace found: ") << reinterpret_cast<uintptr_t>(trace) << set_level() << endl;
 #endif
 
-	if (crt::crt.string_compare(engine->GetProductVersionString(), GAME_VERSION) != 0) {
-		logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("Game version mismatch! local CS2 version: ") << GAME_VERSION << xorstr_(", current CS2 version: ") << interfaces::engine->GetProductVersionString() << xorstr_(". Something might not function as normal.") << set_level() << endl;
-		windows_api::winapi.fn_MessageBoxA(NULL, xorstr_("Game version mismatch!\nSomething might not function as normal.\nUse on your own risk!!!!!!"), xorstr_("WARNING"), MB_OK | MB_ICONWARNING);
-	}
+	//if (crt::crt.string_compare(engine->GetProductVersionString(), GAME_VERSION) != 0) {
+	//	logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("Game version mismatch! local CS2 version: ") << GAME_VERSION << xorstr_(", current CS2 version: ") << interfaces::engine->GetProductVersionString() << xorstr_(". Something might not function as normal.") << set_level() << endl;
+	//	windows_api::winapi.fn_MessageBoxA(NULL, xorstr_("Game version mismatch!\nSomething might not function as normal.\nUse on your own risk!!!!!!"), xorstr_("WARNING"), MB_OK | MB_ICONWARNING);
+	//}
+
+	logger << set_level(log_level_flags::LOG_WARNING) << xorstr_("current CS2 version: ") << interfaces::engine->GetProductVersionString() << set_level() << endl;
 
 	auto pTier0RegisterList = get_register_list(modules::tier0_dll);
 	if (pTier0RegisterList == nullptr)
@@ -190,7 +192,7 @@ const bool interfaces::setup() {
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("EngineCvar found: ") << reinterpret_cast<uintptr_t>(cvar) << set_level() << endl;
 #endif
 
-	swap_chain = **reinterpret_cast<ISwapChainDx11***>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::rendersystem_dll, xorstr_("66 0F 7F 0D ? ? ? ? 66 0F 7F 05 ? ? ? ? 0F 1F 40"))), 0x4, 0x8));
+	swap_chain = **reinterpret_cast<ISwapChainDx11***>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::rendersystem_dll, xorstr_("66 0F 7F 0D 83 C9 43 ? 48 8B F7 66 0F 7F 05 88 C9 43 ?"))), 0x4, 0x8));
 	success &= (swap_chain != nullptr);
 
 #ifdef _DEBUG
@@ -224,7 +226,7 @@ const bool interfaces::setup() {
 	logger << set_level(log_level_flags::LOG_INFO) << xorstr_("InputSystem found: ") << reinterpret_cast<uintptr_t>(&input_system) << set_level() << endl;
 #endif
 
-	input = *reinterpret_cast<CCSGOInput**>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::client_dll, xorstr_("48 8B 0D ? ? ? ? E8 ? ? ? ? 8B BE 84 12 00 00"))), 0x3, 0x7));
+	input = *reinterpret_cast<CCSGOInput**>(memory::mem.resolve_relative_address(reinterpret_cast<uint8_t*>(memory::mem.find_pattern(modules::client_dll, xorstr_("48 89 05 ? ? ? ? 0F 57 C0 0F 11 05"))), 0x3, 0x7));
 	success &= (input != nullptr);
 
 #ifdef _DEBUG

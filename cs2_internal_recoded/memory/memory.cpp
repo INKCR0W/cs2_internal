@@ -21,6 +21,8 @@
 #include "../log/log.hpp"
 // used: xorstr_
 #include "../utils/xorstr.hpp"
+// used: log system
+#include "../log/log.hpp"
 
 namespace memory {
 	bool memory_class::setup() {
@@ -127,9 +129,14 @@ namespace memory {
 			};
 
 		for (uintptr_t i{ module_base }; i < static_cast<uintptr_t>(module_base + module_size); ++i)
-			if (compare(i))
+			if (compare(i)) {
+#ifdef _DEBUG
+				log_system::logger << log_system::set_level(log_system::LOG_INFO) << "[pattern scanner] Found \"" << pattern << "\" in " << module_name << log_system::set_level() << log_system::endl;
+#endif
 				return i;
+			}
 
+		log_system::logger << log_system::set_level(log_system::LOG_ERROR) << "[pattern scanner] Failed to find \"" << pattern << "\" in " << module_name << log_system::set_level() << log_system::endl;
 		return 0;
 	}
 

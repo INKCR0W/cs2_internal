@@ -34,7 +34,7 @@ namespace vtable
 	{
 		enum
 		{
-			ISRELATIVEMOUSEMODE = 78U,
+			ISRELATIVEMOUSEMODE = 76U,
 		};
 	}
 }
