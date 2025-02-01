@@ -1,0 +1,3 @@
+[submodule "cs2_internal_recoded/offset/cs2_dumper"]
+	path = cs2_internal_recoded/offset/cs2_dumper
+	url = git@github.com:a2x/cs2-dumper.git
