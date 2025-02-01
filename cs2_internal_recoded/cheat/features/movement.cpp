@@ -91,7 +91,7 @@ namespace features {
 		}
 	}
 
-	void strafe(CCSGOInput* input) {
+	void strafe(CCSGOInput* input, CUserCmd* pCmd) {
 		if (!config::cfg.strafe_on)
 			return;
 
@@ -99,7 +99,8 @@ namespace features {
 		static uint64_t last_buttons = 0;
 		static uint64_t m_last_button = 0;
 
-		auto cmd = input->GetUserCmd();
+		//auto cmd = input->GetUserCmd();
+		auto cmd = pCmd;
 		auto base = cmd->csgoUserCmd.pBaseCmd;
 
 		const auto current_buttons = cmd->nButtons.nValue;

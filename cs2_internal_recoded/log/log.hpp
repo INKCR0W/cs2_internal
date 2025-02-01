@@ -2,6 +2,7 @@
 
 #ifdef _DEBUG
 #define _LOG_CONSOLE
+#define _LOG_FILE
 #else
 #define _LOG_FILE
 #endif

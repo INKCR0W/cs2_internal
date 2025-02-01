@@ -18,7 +18,7 @@ namespace hook {
 	HRESULT WINAPI Present(IDXGISwapChain* pSwapChain, UINT uSyncInterval, UINT uFlags);
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	bool __fastcall CreateMove(CCSGOInput* pInput, int nSlot, bool bActive);
+	bool __fastcall CreateMove(CCSGOInput* pInput, int nSlot, CUserCmd* pCmd);
 	void* IsRelativeMouseMode(void* pThisptr, bool bActive);
 
 

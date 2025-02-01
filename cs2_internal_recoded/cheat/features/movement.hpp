@@ -5,6 +5,6 @@
 
 namespace features {
 	void bhop(CUserCmd* cmd);
-	void strafe(CCSGOInput* input);
+	void strafe(CCSGOInput* input, CUserCmd* pCmd);
 	void autostop(CUserCmd* cmd);
 }

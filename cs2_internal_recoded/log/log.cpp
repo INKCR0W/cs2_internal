@@ -34,13 +34,16 @@ namespace log_system {
 	}
 
 	const bool log_class::setup() {
+		bool bc = false;
+		bool bf = false;
 #ifdef _LOG_CONSOLE
-		return attach_console();
+		bc = attach_console();
 #endif
 
 #ifdef _LOG_FILE
-		return open_file();
+		bf = open_file();
 #endif
+		return bc || bf;
 	}
 
 
@@ -52,9 +55,6 @@ namespace log_system {
 
 		if (winapi.fn_AllocConsole() != TRUE)
 			return false;
-
-		// if (::AllocConsole() != TRUE)
-		// 	return false;
 
 		if (console_handle = winapi.fn_CreateFileW(L"CONOUT$", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); console_handle == INVALID_HANDLE_VALUE)
 			return false;

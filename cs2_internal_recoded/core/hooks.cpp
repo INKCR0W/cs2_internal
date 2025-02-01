@@ -62,8 +62,8 @@ namespace hook {
 #endif
 
 		// @ida: #STR: cl: CreateMove clamped invalid attack history index %d in frame history to -1. Was %d, frame history size %d.\n
-		//if (!hk_CreateMove.create(reinterpret_cast<void*>(memory::mem.find_pattern(modules::client_dll, xorstr_("48 8B C4 4C 89 40 ? 48 89 48 ? 55 53 56 57 48 8D A8"))), reinterpret_cast<void*>(&CreateMove)))
-		//	return false;
+		if (!hk_CreateMove.create(reinterpret_cast<void*>(memory::mem.find_pattern(modules::client_dll, xorstr_("48 8B C4 4C 89 40 ? 48 89 48 ? 55 53 57"))), reinterpret_cast<void*>(&CreateMove)))
+			return false;
 
 #ifdef _DEBUG
 		logger << set_level(log_level_flags::LOG_INFO) << xorstr_("\"CreateMove\" hook has been created: ") << reinterpret_cast<std::uintptr_t>(hk_CreateMove.get_original()) << set_level() << endl;
@@ -89,7 +89,6 @@ namespace hook {
 
 	HRESULT __stdcall Present(IDXGISwapChain* pSwapChain, UINT uSyncInterval, UINT uFlags)
 	{
-		features::update_entitys();
 		const auto oPresent = hk_Present.get_original();
 
 		if (interfaces::render_target_view == nullptr)
@@ -111,11 +110,11 @@ namespace hook {
 		return windows_api::winapi.fn_CallWindowProcW(inputsystem::old_WndProc, hWnd, uMsg, wParam, lParam);
 	}
 
-	bool __fastcall CreateMove(CCSGOInput* pInput, int nSlot, bool bActive)
+	bool __fastcall CreateMove(CCSGOInput* pInput, int nSlot, CUserCmd* pCmd)
 	{
-		const bool result = FakeReturnAddress(return_address, hk_CreateMove.get_original(), pInput, nSlot, bActive);
+		const bool result = FakeReturnAddress(return_address, hk_CreateMove.get_original(), pInput, nSlot, pCmd);
 
-		// features::update_entitys();
+		features::update_entitys();
 
 		// memory::mem.write_memory<std::int32_t>(reinterpret_cast<uintptr_t>(features::vars::local_player_controller + cs2_dumper::schemas::client_dll::CCSPlayerController::m_iMusicKitID), 25);
 
@@ -124,11 +123,12 @@ namespace hook {
 
 		
 		if (features::vars::local_player_controller->m_bPawnIsAlive() && features::vars::local_player_base_pawn->m_iHealth() > 0) {
-			features::silent_aim(pInput->GetUserCmd());
+			// features::silent_aim(pCmd);
 			// features::autostop(pInput->GetUserCmd());
 			// features::trigger(pInput->GetUserCmd());
-			features::bhop(pInput->GetUserCmd());
-			features::strafe(pInput);
+			features::bhop(pCmd);
+			features::strafe(pInput, pCmd);
+			//features::rcs();
 		}
 
 		return result;
